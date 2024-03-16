@@ -1,0 +1,23 @@
+<Project Sdk="Godot.NET.Sdk/4.2.0">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <LangVersion>12</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="GodotSharpExtras" Version="0.4.0" />
+    <PackageReference Include="NodaTime" Version="3.1.11" />
+    <PackageReference Include="OBSClient" Version="2.0.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" />
+    <PackageReference Include="SpotifyAPI.Web" Version="7.1.1" />
+    <PackageReference Include="SpotifyAPI.Web.Auth" Version="7.1.1" />
+    <PackageReference Include="StreamingClientLibrary.Twitch" Version="1.0.0.77" />
+    <PackageReference Include="StreamingClientLibrary.YouTube" Version="1.0.0.21" />
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwitchWidgets.Data\TwitchWidgets.Data.csproj" />
+  </ItemGroup>
+</Project>

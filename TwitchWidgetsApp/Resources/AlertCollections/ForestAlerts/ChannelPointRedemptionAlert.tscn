@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://u45l0f01a67i"]
+
+[ext_resource type="Texture2D" uid="uid://b3ph068v6voea" path="res://Assets/Images/AlertsArtwork/flag_02_blue02.png" id="1_hpyf2"]
+[ext_resource type="Script" path="res://Resources/AlertCollections/ForestAlerts/AlertScript.cs" id="1_w0m1h"]
+[ext_resource type="Texture2D" uid="uid://bvxstlc82sina" path="res://Assets/Images/AlertsArtwork/Banner_14.png" id="2_5fu0l"]
+[ext_resource type="FontFile" uid="uid://jcugmw1ux02j" path="res://Assets/Fonts/Splash-Regular.ttf" id="3_p5kek"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0uknj"]
+font = ExtResource("3_p5kek")
+font_size = 72
+outline_size = 8
+outline_color = Color(0.294118, 0.294118, 0.294118, 1)
+
+[node name="ChannelPointRedemptionAlert" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w0m1h")
+Logo = "res://Assets/Images/AlertsArtwork/Banner_14.png"
+
+[node name="Banner" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -568.5
+offset_right = 568.5
+offset_bottom = 597.0
+grow_horizontal = 2
+texture = ExtResource("1_hpyf2")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Logo" type="TextureRect" parent="Banner"]
+unique_name_in_owner = true
+self_modulate = Color(0.592157, 0.643137, 0.760784, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -301.0
+offset_top = -172.0
+offset_right = 301.0
+offset_bottom = 172.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5fu0l")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -299.0
+offset_top = 106.0
+offset_right = 299.0
+offset_bottom = 466.0
+grow_horizontal = 2
+text = "CasperDragonWolf
+Has just Redeemed
+Redemption"
+label_settings = SubResource("LabelSettings_0uknj")
+horizontal_alignment = 1
+vertical_alignment = 1

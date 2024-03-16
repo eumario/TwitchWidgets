@@ -1,0 +1,90 @@
+[gd_scene load_steps=3 format=3 uid="uid://bc4tl4f52ytj4"]
+
+[ext_resource type="Script" path="res://Library/Controls/AccountInfo.cs" id="1_dokko"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ov6v1"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 1, 1, 1)
+border_color = Color(0.321569, 0.321569, 0.321569, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+
+[node name="AccountInfo" type="GridContainer"]
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 4
+script = ExtResource("1_dokko")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Streamer Account:"
+horizontal_alignment = 2
+
+[node name="StreamerName" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Account Name"
+
+[node name="StreamerPfp" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+expand_mode = 2
+
+[node name="StreamerOnline" type="Panel" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ov6v1")
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+text = "Bot Account:"
+horizontal_alignment = 2
+
+[node name="BotName" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Account Name"
+
+[node name="BotPfp" type="TextureRect" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+expand_mode = 2
+
+[node name="BotOnline" type="Panel" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ov6v1")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="ConnectTwitch" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Connect"
+
+[node name="DisconnectTwitch" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Disconnect"
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 2

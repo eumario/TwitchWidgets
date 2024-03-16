@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cq0gj2lwv4aeu"]
+
+[ext_resource type="Script" path="res://Scenes/Widgets/TickerScroller.gd" id="1_0w7o1"]
+[ext_resource type="FontFile" uid="uid://cy0oi61dy0dq" path="res://Assets/Fonts/Orbitron-VariableFont_wght.ttf" id="2_1xmsm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_myt2m"]
+font = ExtResource("2_1xmsm")
+font_size = 30
+
+[node name="TickerScroller" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 43.0
+grow_horizontal = 2
+script = ExtResource("1_0w7o1")
+label_settings = SubResource("LabelSettings_myt2m")
+speed = 120.0
+separator_text = "//"

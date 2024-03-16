@@ -1,0 +1,159 @@
+[gd_scene load_steps=15 format=3 uid="uid://cqd8ayos2i4ff"]
+
+[ext_resource type="VideoStream" path="res://Assets/Videos/MagicForestWonderland.ogv" id="1_pdxij"]
+[ext_resource type="Script" path="res://Library/Controls/ObsScene.cs" id="1_s4b8g"]
+[ext_resource type="Script" path="res://Scenes/Widgets/TickerScroller.cs" id="2_omqa6"]
+[ext_resource type="FontFile" uid="uid://cy0oi61dy0dq" path="res://Assets/Fonts/Orbitron-VariableFont_wght.ttf" id="3_7opsq"]
+[ext_resource type="PackedScene" uid="uid://dnn5m42urxq7u" path="res://Scenes/Widgets/SocialLink.tscn" id="4_7t26h"]
+[ext_resource type="Script" path="res://Scenes/Widgets/ChatBox.cs" id="5_jdna3"]
+[ext_resource type="FontFile" uid="uid://byuiwhihhm6h7" path="res://Assets/Fonts/Indelible.otf" id="6_380b8"]
+[ext_resource type="PackedScene" uid="uid://duh6hxp80nbpt" path="res://Scenes/Widgets/MessageTemplate.tscn" id="7_4neai"]
+[ext_resource type="FontFile" uid="uid://bq0mpm6h3dl1u" path="res://Assets/Fonts/Neon.ttf" id="7_vpmr8"]
+[ext_resource type="PackedScene" uid="uid://dbyuvxann2jd0" path="res://Scenes/Widgets/MusicPlayer.tscn" id="10_dykin"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jrur1"]
+font = ExtResource("3_7opsq")
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bu2w"]
+bg_color = Color(0.607843, 0.705882, 0.431373, 0.729412)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="LabelSettings" id="LabelSettings_vlrum"]
+font = ExtResource("6_380b8")
+font_size = 128
+font_color = Color(0.435294, 0.164706, 1, 1)
+shadow_size = 10
+shadow_color = Color(0.552941, 0.552941, 0.552941, 0.823529)
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4jbhc"]
+font = ExtResource("7_vpmr8")
+font_size = 121
+font_color = Color(0.317647, 0.647059, 1, 1)
+outline_size = 13
+shadow_size = 50
+shadow_color = Color(0.643137, 0.807843, 1, 1)
+
+[node name="StreamEnding" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s4b8g")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_pdxij")
+volume_db = -80.0
+autoplay = true
+expand = true
+loop = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -41.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.258824, 0.478431, 1, 1)
+
+[node name="TickerScroller" type="Control" parent="ColorRect"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_omqa6")
+Messages = ["First Stream Back, over year hatius!", "Working on Stream Overlay in Godot", "Working on Godot Manager 0.3.0 Re-write", "Working on Survival Game, currently called Project First Light", "Developer for Falinere Fantasy, Check it out on Steam Now! https://store.steampowered.com/app/1976930/"]
+LabelSettings = SubResource("LabelSettings_jrur1")
+Speed = 80.0
+SeparatorText = "//"
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 51.0
+offset_top = 955.0
+offset_right = 1474.0
+offset_bottom = 1029.0
+metadata/_edit_group_ = true
+
+[node name="Facebook" parent="VBoxContainer" instance=ExtResource("4_7t26h")]
+layout_mode = 2
+icon_class = "brands"
+icon_name = "square-facebook"
+display_text = "facebook.com/casperdragonwolf"
+text_font = ExtResource("3_7opsq")
+text_size = 22
+
+[node name="YouTube" parent="VBoxContainer" instance=ExtResource("4_7t26h")]
+layout_mode = 2
+icon_color = Color(1, 0, 0, 1)
+icon_class = "brands"
+icon_name = "youtube"
+display_text = "youtube.com/@casperdragonwolf"
+text_font = ExtResource("3_7opsq")
+text_size = 22
+
+[node name="Twitch" parent="VBoxContainer" instance=ExtResource("4_7t26h")]
+layout_mode = 2
+icon_color = Color(0.568627, 0.27451, 1, 1)
+icon_class = "brands"
+icon_name = "twitch"
+display_text = "twitch.tv/casperdragonwolf"
+text_font = ExtResource("3_7opsq")
+text_size = 22
+
+[node name="ChatBox" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = 15.0
+offset_right = 1904.0
+offset_bottom = 1011.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6bu2w")
+script = ExtResource("5_jdna3")
+MessageTemplate = ExtResource("7_4neai")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 292.0
+offset_top = 382.0
+offset_right = 1226.0
+offset_bottom = 510.0
+rotation = -0.347552
+text = "Stream Ending"
+label_settings = SubResource("LabelSettings_vlrum")
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 720.0
+offset_top = 449.0
+offset_right = 1430.0
+offset_bottom = 706.0
+text = "Thank you
+for Watching"
+label_settings = SubResource("LabelSettings_4jbhc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MusicPlayer" parent="." instance=ExtResource("10_dykin")]
+layout_mode = 1
+offset_left = 105.0
+offset_top = 751.0
+offset_right = -1465.0
+offset_bottom = -189.0

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bwqkcxou3rihi"
+path="res://.godot/imported/Guns n Roses - Sweet Child O Mine.mp3-7a05641a952921cca0e2c3b063658438.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Alerts/Guns n Roses - Sweet Child O Mine.mp3"
+dest_files=["res://.godot/imported/Guns n Roses - Sweet Child O Mine.mp3-7a05641a952921cca0e2c3b063658438.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

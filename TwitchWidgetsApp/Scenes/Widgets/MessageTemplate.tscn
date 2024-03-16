@@ -1,0 +1,109 @@
+[gd_scene load_steps=9 format=3 uid="uid://duh6hxp80nbpt"]
+
+[ext_resource type="Script" path="res://Scenes/Widgets/MessageTemplate.cs" id="1_fco4f"]
+[ext_resource type="Texture2D" uid="uid://bn233vy4dq05" path="res://Assets/Images/dbdc9198-def8-11e9-8681-784f43822e80-profile_image-300x300.png" id="1_rt614"]
+[ext_resource type="FontFile" uid="uid://bugksnj267pb7" path="res://Assets/Fonts/commando.ttf" id="2_ciwef"]
+[ext_resource type="FontFile" uid="uid://bq0mpm6h3dl1u" path="res://Assets/Fonts/Neon.ttf" id="3_u3hee"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4wxqr"]
+bg_color = Color(0.427451, 0.427451, 0.427451, 0.682353)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pquqn"]
+corner_radius_top_left = 90
+corner_radius_top_right = 90
+corner_radius_bottom_right = 90
+corner_radius_bottom_left = 90
+
+[sub_resource type="LabelSettings" id="LabelSettings_8w4lp"]
+font = ExtResource("2_ciwef")
+
+[sub_resource type="LabelSettings" id="LabelSettings_828hh"]
+font = ExtResource("3_u3hee")
+
+[node name="MessageTemplate" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4wxqr")
+script = ExtResource("1_fco4f")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+clip_children = 2
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pquqn")
+
+[node name="UserIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("1_rt614")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DisplayName" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 6
+text = "Test User"
+label_settings = SubResource("LabelSettings_8w4lp")
+
+[node name="Badges" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TimeStamp" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "02/16, 03:01 AM"
+label_settings = SubResource("LabelSettings_828hh")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="Message" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Message Here"
+fit_content = true
+scroll_active = false

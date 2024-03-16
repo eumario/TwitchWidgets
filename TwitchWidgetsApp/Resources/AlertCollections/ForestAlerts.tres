@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AlertSet" load_steps=10 format=3 uid="uid://bayx8ii73dh2b"]
+
+[ext_resource type="PackedScene" uid="uid://u45l0f01a67i" path="res://Resources/AlertCollections/ForestAlerts/ChannelPointRedemptionAlert.tscn" id="1_mqcud"]
+[ext_resource type="Script" path="res://Library/AlertSet.cs" id="1_vymmp"]
+[ext_resource type="PackedScene" uid="uid://b5w00sjym5073" path="res://Resources/AlertCollections/ForestAlerts/CheerAlert.tscn" id="2_a4jba"]
+[ext_resource type="PackedScene" uid="uid://c4nnor680tf7s" path="res://Resources/AlertCollections/ForestAlerts/FollowAlert.tscn" id="3_st2ms"]
+[ext_resource type="PackedScene" uid="uid://6kcbkgtxf7kj" path="res://Resources/AlertCollections/ForestAlerts/NewChatterAlert.tscn" id="4_02153"]
+[ext_resource type="PackedScene" uid="uid://c6l4fjtq587by" path="res://Resources/AlertCollections/ForestAlerts/RaidAlert.tscn" id="4_d2hal"]
+[ext_resource type="PackedScene" uid="uid://08hbkylh2rch" path="res://Resources/AlertCollections/ForestAlerts/SubscriptionAlert.tscn" id="5_tpkaa"]
+[ext_resource type="PackedScene" uid="uid://bhmya8cnyiulb" path="res://Resources/AlertCollections/ForestAlerts/GiftedSubscriptionsAlert.tscn" id="6_x3cft"]
+[ext_resource type="PackedScene" uid="uid://b3mvs2wgqs3av" path="res://Resources/AlertCollections/ForestAlerts/SubscriptionMessageAlert.tscn" id="7_wmbdo"]
+
+[resource]
+script = ExtResource("1_vymmp")
+AlertSetName = "Forest Alerts"
+ChannelPointRedemptionAlert = ExtResource("1_mqcud")
+CheerAlert = ExtResource("2_a4jba")
+FollowAlert = ExtResource("3_st2ms")
+SubscriptionGiftedAlert = ExtResource("6_x3cft")
+NewChatterAlert = ExtResource("4_02153")
+RaidAlert = ExtResource("4_d2hal")
+SubscriptionAlert = ExtResource("5_tpkaa")
+SubscriptionMessageAlert = ExtResource("7_wmbdo")

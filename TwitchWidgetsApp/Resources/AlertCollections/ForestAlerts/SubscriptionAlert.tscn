@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3 uid="uid://08hbkylh2rch"]
+
+[ext_resource type="Script" path="res://Resources/AlertCollections/ForestAlerts/AlertScript.cs" id="1_27wdq"]
+[ext_resource type="Texture2D" uid="uid://b0lmb7rukwsqm" path="res://Assets/Images/AlertsArtwork/flag_02_yellow.png" id="1_ma0hv"]
+[ext_resource type="Texture2D" uid="uid://bk512fuptw666" path="res://Assets/Images/AlertsArtwork/Banner_18.png" id="2_wdtyr"]
+[ext_resource type="FontFile" uid="uid://jcugmw1ux02j" path="res://Assets/Fonts/Splash-Regular.ttf" id="3_7vmdk"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kh8uo"]
+font = ExtResource("3_7vmdk")
+font_size = 72
+outline_size = 8
+outline_color = Color(0.294118, 0.294118, 0.294118, 1)
+
+[node name="SubscriptionAlert" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_27wdq")
+Logo = "res://Assets/Images/AlertsArtwork/Banner_18.png"
+
+[node name="Banner" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -568.5
+offset_right = 568.5
+offset_bottom = 597.0
+grow_horizontal = 2
+texture = ExtResource("1_ma0hv")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Logo" type="TextureRect" parent="Banner"]
+unique_name_in_owner = true
+self_modulate = Color(0.807843, 0.721569, 0.407843, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -301.0
+offset_top = -172.0
+offset_right = 301.0
+offset_bottom = 172.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_wdtyr")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.5
+offset_top = 148.0
+offset_right = 300.5
+offset_bottom = 387.0
+grow_horizontal = 2
+text = "CasperDragonWolf
+Has just Subscribed"
+label_settings = SubResource("LabelSettings_kh8uo")
+horizontal_alignment = 1
+vertical_alignment = 1

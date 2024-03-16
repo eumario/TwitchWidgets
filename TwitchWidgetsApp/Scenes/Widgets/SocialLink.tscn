@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://dnn5m42urxq7u"]
+
+[ext_resource type="Script" path="res://Scenes/Widgets/SocialLink.gd" id="1_xy2s8"]
+[ext_resource type="Script" path="res://addons/fontawesome/FontAwesome.gd" id="2_rv2lf"]
+[ext_resource type="FontFile" uid="uid://b8fa5uy525sum" path="res://addons/fontawesome/fonts/fa-solid-900.woff2" id="3_kep6e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8p70b"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.152941, 0.152941, 0.152941, 0.87451)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_hheub"]
+font_size = 20
+
+[node name="SocialLink" type="PanelContainer"]
+offset_right = 454.0
+offset_bottom = 74.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8p70b")
+script = ExtResource("1_xy2s8")
+icon_size = 64
+icon_color = Color(0.192157, 0.435294, 0.964706, 1)
+icon_class = "solid"
+icon_name = "user"
+display_text = "<Enter Text Here>"
+text_size = 20
+text_color = Color(1, 1, 1, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SocialIcon" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+self_modulate = Color(0.192157, 0.435294, 0.964706, 1)
+layout_mode = 2
+auto_translate = false
+localize_numeral_system = false
+theme_override_fonts/font = ExtResource("3_kep6e")
+theme_override_font_sizes/font_size = 64
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_rv2lf")
+icon_size = 64
+icon_name = "user"
+
+[node name="Text" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "<Enter Text Here>"
+label_settings = SubResource("LabelSettings_hheub")
+vertical_alignment = 1

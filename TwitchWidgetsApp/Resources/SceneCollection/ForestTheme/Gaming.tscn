@@ -1,0 +1,110 @@
+[gd_scene load_steps=10 format=3 uid="uid://b72t586my2lii"]
+
+[ext_resource type="Script" path="res://Library/Controls/ObsScene.cs" id="1_1geoc"]
+[ext_resource type="Script" path="res://Scenes/Widgets/TickerScroller.cs" id="1_gjtch"]
+[ext_resource type="FontFile" uid="uid://cy0oi61dy0dq" path="res://Assets/Fonts/Orbitron-VariableFont_wght.ttf" id="2_vg7xd"]
+[ext_resource type="Script" path="res://Scenes/Widgets/ChatBox.cs" id="3_ueekx"]
+[ext_resource type="PackedScene" uid="uid://duh6hxp80nbpt" path="res://Scenes/Widgets/MessageTemplate.tscn" id="4_jnk56"]
+[ext_resource type="PackedScene" uid="uid://dnn5m42urxq7u" path="res://Scenes/Widgets/SocialLink.tscn" id="5_yoept"]
+[ext_resource type="PackedScene" uid="uid://dbyuvxann2jd0" path="res://Scenes/Widgets/MusicPlayer.tscn" id="7_yl8pu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7uj41"]
+font = ExtResource("2_vg7xd")
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_04lw5"]
+bg_color = Color(0.207843, 0.67451, 0.721569, 0.509804)
+corner_radius_top_left = 45
+corner_radius_top_right = 45
+corner_radius_bottom_right = 45
+corner_radius_bottom_left = 45
+
+[node name="Gaming" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1geoc")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -41.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.258824, 0.478431, 1, 1)
+
+[node name="TickerScroller" type="Control" parent="ColorRect"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gjtch")
+Messages = ["First Stream Back, over year hatius!", "Working on Stream Overlay in Godot", "Working on Godot Manager 0.3.0 Re-write", "Working on Survival Game, currently called Project First Light", "Developer for Falinere Fantasy, Check it out on Steam Now! https://store.steampowered.com/app/1976930/"]
+LabelSettings = SubResource("LabelSettings_7uj41")
+Speed = 80.0
+SeparatorText = "//"
+
+[node name="ChatBox" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -346.0
+offset_bottom = 781.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_04lw5")
+script = ExtResource("3_ueekx")
+MessageTemplate = ExtResource("4_jnk56")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 418.0
+offset_top = -3.0
+offset_right = 1546.0
+offset_bottom = 44.0
+metadata/_edit_group_ = true
+
+[node name="Facebook" parent="VBoxContainer" instance=ExtResource("5_yoept")]
+layout_mode = 2
+icon_size = 36
+icon_class = "brands"
+icon_name = "square-facebook"
+display_text = "facebook.com/casperdragonwolf"
+text_font = ExtResource("2_vg7xd")
+text_size = 18
+
+[node name="YouTube" parent="VBoxContainer" instance=ExtResource("5_yoept")]
+layout_mode = 2
+icon_size = 36
+icon_color = Color(1, 0, 0, 1)
+icon_class = "brands"
+icon_name = "youtube"
+display_text = "youtube.com/@casperdragonwolf"
+text_font = ExtResource("2_vg7xd")
+text_size = 18
+
+[node name="Twitch" parent="VBoxContainer" instance=ExtResource("5_yoept")]
+layout_mode = 2
+icon_size = 36
+icon_color = Color(0.568627, 0.27451, 1, 1)
+icon_class = "brands"
+icon_name = "twitch"
+display_text = "twitch.tv/casperdragonwolf"
+text_font = ExtResource("2_vg7xd")
+text_size = 18
+
+[node name="MusicPlayer" parent="." instance=ExtResource("7_yl8pu")]
+layout_mode = 1
+offset_left = 1239.0
+offset_top = 884.0
+offset_right = -331.0
+offset_bottom = -56.0

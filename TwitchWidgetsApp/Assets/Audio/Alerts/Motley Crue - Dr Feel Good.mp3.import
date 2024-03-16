@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c8mdxa4v4f3da"
+path="res://.godot/imported/Motley Crue - Dr Feel Good.mp3-cf7caaa39fd792b746cdd3d429efd3ac.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Alerts/Motley Crue - Dr Feel Good.mp3"
+dest_files=["res://.godot/imported/Motley Crue - Dr Feel Good.mp3-cf7caaa39fd792b746cdd3d429efd3ac.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,27 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchWidgetsApp", "TwitchWidgetsApp\TwitchWidgetsApp.csproj", "{DF819E45-4960-4C6D-A3DD-877F6AAE99A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitchWidgets.Data", "TwitchWidgets.Data\TwitchWidgets.Data.csproj", "{170912AC-18A5-4E9F-AAB5-BB62005909DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF819E45-4960-4C6D-A3DD-877F6AAE99A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF819E45-4960-4C6D-A3DD-877F6AAE99A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF819E45-4960-4C6D-A3DD-877F6AAE99A0}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{DF819E45-4960-4C6D-A3DD-877F6AAE99A0}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{DF819E45-4960-4C6D-A3DD-877F6AAE99A0}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{DF819E45-4960-4C6D-A3DD-877F6AAE99A0}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{170912AC-18A5-4E9F-AAB5-BB62005909DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{170912AC-18A5-4E9F-AAB5-BB62005909DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{170912AC-18A5-4E9F-AAB5-BB62005909DE}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{170912AC-18A5-4E9F-AAB5-BB62005909DE}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{170912AC-18A5-4E9F-AAB5-BB62005909DE}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{170912AC-18A5-4E9F-AAB5-BB62005909DE}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+EndGlobal

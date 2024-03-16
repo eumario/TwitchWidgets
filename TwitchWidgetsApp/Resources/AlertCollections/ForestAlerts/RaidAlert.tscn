@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6l4fjtq587by"]
+
+[ext_resource type="Texture2D" uid="uid://0nk08uu5sis4" path="res://Assets/Images/AlertsArtwork/flag_02_green.png" id="1_000aj"]
+[ext_resource type="Script" path="res://Resources/AlertCollections/ForestAlerts/AlertScript.cs" id="1_drwmf"]
+[ext_resource type="Texture2D" uid="uid://b81opla0qvggc" path="res://Assets/Images/AlertsArtwork/Banner_30.png" id="2_kiaov"]
+[ext_resource type="FontFile" uid="uid://jcugmw1ux02j" path="res://Assets/Fonts/Splash-Regular.ttf" id="3_syfyv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_256g8"]
+font = ExtResource("3_syfyv")
+font_size = 72
+outline_size = 8
+outline_color = Color(0.294118, 0.294118, 0.294118, 1)
+
+[node name="RaidAlert" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_drwmf")
+Logo = "res://Assets/Images/AlertsArtwork/Banner_30.png"
+
+[node name="Banner" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -568.5
+offset_right = 568.5
+offset_bottom = 597.0
+grow_horizontal = 2
+texture = ExtResource("1_000aj")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Logo" type="TextureRect" parent="Banner"]
+unique_name_in_owner = true
+self_modulate = Color(0.619608, 0.862745, 0.513726, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -301.0
+offset_top = -172.0
+offset_right = 301.0
+offset_bottom = 172.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_kiaov")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -299.0
+offset_top = 155.0
+offset_right = 299.0
+offset_bottom = 394.0
+grow_horizontal = 2
+text = "CasperDragonWolf
+Has just Raided
+With 500 Viewers"
+label_settings = SubResource("LabelSettings_256g8")
+horizontal_alignment = 1
+vertical_alignment = 1

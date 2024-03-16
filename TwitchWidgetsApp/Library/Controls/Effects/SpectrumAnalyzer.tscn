@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddpnveug4cchn"]
+
+[ext_resource type="Script" path="res://Library/Controls/Effects/SpectrumAnalyzer.cs" id="1_67avp"]
+[ext_resource type="Shader" path="res://Shaders/spectrum_analyzier.gdshader" id="1_g0dnu"]
+[ext_resource type="Texture2D" uid="uid://b04xfghxhuobf" path="res://Assets/Images/spectrum.jpg" id="2_y6mco"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y8nov"]
+shader = ExtResource("1_g0dnu")
+shader_parameter/hz0 = null
+shader_parameter/hz1 = null
+shader_parameter/hz2 = null
+shader_parameter/hz3 = null
+shader_parameter/hz4 = null
+shader_parameter/hz5 = null
+shader_parameter/hz6 = null
+shader_parameter/hz7 = null
+shader_parameter/hz8 = null
+shader_parameter/hz9 = null
+shader_parameter/hz10 = null
+shader_parameter/hz11 = null
+shader_parameter/hz12 = null
+shader_parameter/hz13 = null
+shader_parameter/hz14 = null
+shader_parameter/hz15 = null
+shader_parameter/hz16 = null
+shader_parameter/hz17 = null
+shader_parameter/hz18 = null
+shader_parameter/hz19 = null
+shader_parameter/hz20 = null
+shader_parameter/hz21 = null
+shader_parameter/hz22 = null
+shader_parameter/hz23 = null
+shader_parameter/hz24 = null
+shader_parameter/hz25 = null
+shader_parameter/hz26 = null
+shader_parameter/hz27 = null
+shader_parameter/hz28 = null
+shader_parameter/hz29 = null
+shader_parameter/hz30 = null
+shader_parameter/hz31 = null
+shader_parameter/alpha = 0.4
+shader_parameter/tex = ExtResource("2_y6mco")
+
+[node name="SpectrumAnalyzer" type="ColorRect"]
+material = SubResource("ShaderMaterial_y8nov")
+custom_minimum_size = Vector2(243, 60)
+script = ExtResource("1_67avp")

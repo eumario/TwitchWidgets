@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://m6erbyq6rjf1"]
+
+[ext_resource type="Script" path="res://Library/Controls/ObsSettings.cs" id="1_wlcq3"]
+
+[node name="OBSSettings" type="GridContainer"]
+columns = 2
+script = ExtResource("1_wlcq3")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Host:"
+horizontal_alignment = 2
+
+[node name="Host" type="LineEdit" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+text = "Port:"
+horizontal_alignment = 2
+
+[node name="Port" type="LineEdit" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+text = "Password:"
+horizontal_alignment = 2
+
+[node name="Password" type="LineEdit" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+secret = true

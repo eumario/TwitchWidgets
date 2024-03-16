@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="SceneCollection" load_steps=8 format=3 uid="uid://c3gupuclna52b"]
+
+[ext_resource type="PackedScene" uid="uid://b77dpjqitulqr" path="res://Resources/SceneCollection/ForestTheme/BRB.tscn" id="1_3ott2"]
+[ext_resource type="PackedScene" uid="uid://dshfie2mv4hcu" path="res://Resources/SceneCollection/ForestTheme/Desktop.tscn" id="1_nm5dy"]
+[ext_resource type="PackedScene" uid="uid://cl58fh5u1iga3" path="res://Resources/SceneCollection/ForestTheme/StartingSoon.tscn" id="1_qaqy7"]
+[ext_resource type="Script" path="res://Library/SceneCollection.cs" id="1_qyrr3"]
+[ext_resource type="PackedScene" uid="uid://bwhj4fmq2lg0k" path="res://Resources/SceneCollection/ForestTheme/Talking.tscn" id="2_0mxin"]
+[ext_resource type="PackedScene" uid="uid://b72t586my2lii" path="res://Resources/SceneCollection/ForestTheme/Gaming.tscn" id="3_jkw0u"]
+[ext_resource type="PackedScene" uid="uid://cqd8ayos2i4ff" path="res://Resources/SceneCollection/ForestTheme/StreamEnding.tscn" id="5_s3gr0"]
+
+[resource]
+script = ExtResource("1_qyrr3")
+CollectionName = "The Forest from the Trees"
+StartingSoonName = "StartingSoon"
+TalkingName = "Talking"
+BeRightBackName = "BRB"
+DesktopName = "Desktop"
+GamingName = "Gaming"
+StreamEndingName = "StreamEnding"
+StartingSoon = ExtResource("1_qaqy7")
+Talking = ExtResource("2_0mxin")
+BRB = ExtResource("1_3ott2")
+Desktop = ExtResource("1_nm5dy")
+Gaming = ExtResource("3_jkw0u")
+StreamEnding = ExtResource("5_s3gr0")

@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3 uid="uid://c4nnor680tf7s"]
+
+[ext_resource type="Script" path="res://Resources/AlertCollections/ForestAlerts/AlertScript.cs" id="1_esood"]
+[ext_resource type="Texture2D" uid="uid://dstc86soqpycc" path="res://Assets/Images/AlertsArtwork/flag_02_red.png" id="1_xbdug"]
+[ext_resource type="Texture2D" uid="uid://df1mgyn3wol1e" path="res://Assets/Images/AlertsArtwork/Banner_25.png" id="2_72mfo"]
+[ext_resource type="FontFile" uid="uid://jcugmw1ux02j" path="res://Assets/Fonts/Splash-Regular.ttf" id="3_j2ctm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_idsgs"]
+font = ExtResource("3_j2ctm")
+font_size = 72
+outline_size = 8
+outline_color = Color(0.294118, 0.294118, 0.294118, 1)
+
+[node name="FollowAlert" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_esood")
+Logo = "res://Assets/Images/AlertsArtwork/Banner_25.png"
+
+[node name="Banner" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -568.5
+offset_right = 568.5
+offset_bottom = 597.0
+grow_horizontal = 2
+texture = ExtResource("1_xbdug")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Logo" type="TextureRect" parent="Banner"]
+unique_name_in_owner = true
+self_modulate = Color(0.862745, 0.513726, 0.588235, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -301.0
+offset_top = -172.0
+offset_right = 301.0
+offset_bottom = 172.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_72mfo")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -299.0
+offset_top = 155.0
+offset_right = 299.0
+offset_bottom = 394.0
+grow_horizontal = 2
+text = "CasperDragonWolf
+Has just followed."
+label_settings = SubResource("LabelSettings_idsgs")
+horizontal_alignment = 1
+vertical_alignment = 1

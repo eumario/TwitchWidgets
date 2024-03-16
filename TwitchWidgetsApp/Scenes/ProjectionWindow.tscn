@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2wu0d0ppnj8p"]
+
+[ext_resource type="Script" path="res://Scenes/ProjectionWindow.cs" id="1_fs68h"]
+[ext_resource type="PackedScene" uid="uid://cjtwqauusiqd4" path="res://Scenes/DefaultScene.tscn" id="2_x3al5"]
+
+[node name="ProjectionWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fs68h")
+
+[node name="Label" parent="." instance=ExtResource("2_x3al5")]
+layout_mode = 1

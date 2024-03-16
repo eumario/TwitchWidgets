@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://b5w00sjym5073"]
+
+[ext_resource type="Script" path="res://Resources/AlertCollections/ForestAlerts/AlertScript.cs" id="1_4tmy0"]
+[ext_resource type="Texture2D" uid="uid://c3xse5wknp3fo" path="res://Assets/Images/AlertsArtwork/flag_02_blue01.png" id="1_13be8"]
+[ext_resource type="Texture2D" uid="uid://b1wxlygqiu862" path="res://Assets/Images/AlertsArtwork/Banner_22.png" id="2_3r5tf"]
+[ext_resource type="FontFile" uid="uid://jcugmw1ux02j" path="res://Assets/Fonts/Splash-Regular.ttf" id="3_rrvqu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dfuq8"]
+font = ExtResource("3_rrvqu")
+font_size = 72
+outline_size = 8
+outline_color = Color(0.294118, 0.294118, 0.294118, 1)
+
+[node name="CheerAlert" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4tmy0")
+Logo = "res://Assets/Images/AlertsArtwork/Banner_22.png"
+
+[node name="Banner" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -564.0
+offset_right = 573.0
+offset_bottom = 597.0
+grow_horizontal = 2
+texture = ExtResource("1_13be8")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Logo" type="TextureRect" parent="Banner"]
+unique_name_in_owner = true
+self_modulate = Color(0.603922, 0.792157, 0.823529, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -301.0
+offset_top = -172.0
+offset_right = 301.0
+offset_bottom = 172.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_3r5tf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -299.0
+offset_top = 79.0
+offset_right = 299.0
+offset_bottom = 439.0
+grow_horizontal = 2
+text = "CasperDragonWolf
+Has Just Cheered
+100 bits"
+label_settings = SubResource("LabelSettings_dfuq8")
+horizontal_alignment = 1
+vertical_alignment = 1
