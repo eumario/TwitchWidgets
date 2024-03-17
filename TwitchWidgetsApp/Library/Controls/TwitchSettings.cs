@@ -31,8 +31,7 @@ public partial class TwitchSettings : GridContainer
 
 	private void UpdateInfo()
 	{
-		if (Globals.Database == null) { Globals.RunOnMain(UpdateInfo); return; }
-		if (Globals.Database.Secrets == null) { Globals.RunOnMain(UpdateInfo); return; }
+		if (Globals.Database?.Secrets == null) { Globals.RunOnMain(UpdateInfo); return; }
 
 		var res = Globals.Database.Secrets.ToList();
 		if (res.Count == 0) return;
