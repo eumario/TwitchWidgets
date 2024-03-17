@@ -18,11 +18,16 @@ public class EchoCommand : ICommand
         CommandHelp = commandHelp;
         CommandDescription = commandDescription;
     }
+
+    public void Init()
+    {
+        // Noop
+    }
     public void RunCommand(UserModel? model, string args, string messageId, bool isWhisper = false)
     {
         if (!isWhisper)
-            Globals.TwitchManager.Chat.SendMessage(Globals.TwitchManager.Streamer, CommandDescription);
+            Globals.Chat.SendMessage(Globals.Streamer, CommandDescription);
         else
-            Globals.TwitchManager.Chat.SendWhisperMessage(Globals.TwitchManager.Streamer, model, CommandDescription);
+            Globals.Chat.SendWhisperMessage(Globals.Streamer, model, CommandDescription);
     }
 }

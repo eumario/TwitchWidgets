@@ -15,11 +15,16 @@ public class FollowAge : ICommand
     public string CommandAlias => "";
     public string CommandHelp => "Get's the amount of time you have followed this channel.";
     public string CommandDescription => "Get's the amount of time you have followed this channel.";
+
+    public void Init()
+    {
+        // Noop
+    }
     public async void RunCommand(UserModel model, string args, string messageId = "", bool isWhisper = false)
     {
-        var streamer = Globals.TwitchManager.Streamer;
-        var conn = Globals.TwitchManager.Connection;
-        var chat = Globals.TwitchManager.Chat;
+        var streamer = Globals.Streamer;
+        var conn = Globals.TwitchConnection;
+        var chat = Globals.Chat;
         var api = $"channels/followers?broadcaster_id={streamer.id}&user_id={model.id}";
         var res = await conn.NewAPI.Channels.GetPagedDataResultAsync<ChannelFollowerModel>(api, 1);
         var user = res.First();

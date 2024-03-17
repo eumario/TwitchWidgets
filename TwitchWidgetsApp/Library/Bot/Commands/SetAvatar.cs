@@ -28,26 +28,31 @@ public class SetAvatar : ICommand
         files = files.Select(x => x[..x.LastIndexOf("_", StringComparison.Ordinal)]).Distinct().ToList();
         _shortList.AddRange(files);
     }
+
+    public void Init()
+    {
+        // Noop
+    }
     public void RunCommand(UserModel model, string args, string messageId, bool isWhisper = false)
     {
         if (args is "" or "list")
         {
             var msg = "Skins List: " + _shortList.Aggregate((a, b) => a.Replace(".png","") + ", " + b.Replace(".png",""));
             GD.Print($"Sending> {msg} ({msg.Length} characters)");
-            Globals.TwitchManager.Chat.SendReplyMessage(Globals.TwitchManager.Streamer, msg, messageId);
+            Globals.Chat.SendReplyMessage(Globals.Streamer, msg, messageId);
         }
         else if (args is "reset" or "random")
         {
             var kc = Globals.KnownChatters.FirstOrDefault(x => x.TwitchId == model.id);
             if (kc is null)
-                Globals.TwitchManager.Chat.SendReplyMessage(Globals.TwitchManager.Streamer,
+                Globals.Chat.SendReplyMessage(Globals.Streamer,
                     "Unable to update your skin.", messageId);
             else
             {
                 kc.StreamAvatar = "";
                 Globals.Database.SaveChanges();
                 Globals.EmitSignal(Globals.SignalName.UpdateSkin, model.id, "");
-                Globals.TwitchManager.Chat.SendReplyMessage(Globals.TwitchManager.Streamer, "Skin reset to random.", messageId);
+                Globals.Chat.SendReplyMessage(Globals.Streamer, "Skin reset to random.", messageId);
             }
         }
         else
@@ -55,21 +60,21 @@ public class SetAvatar : ICommand
             var skin = _shortList.FirstOrDefault(x => x.ToLower() == args.ToLower());
             if (skin is null)
             {
-                Globals.TwitchManager.Chat.SendReplyMessage(Globals.TwitchManager.Streamer, "Skin not found. Use !avatar list to see a list of skins.", messageId);
+                Globals.Chat.SendReplyMessage(Globals.Streamer, "Skin not found. Use !avatar list to see a list of skins.", messageId);
             }
             else
             {
                 var path = _avatarPath + skin + "_0.png";
                 var kc = Globals.KnownChatters.FirstOrDefault(x => x.TwitchId == model.id);
                 if (kc is null)
-                    Globals.TwitchManager.Chat.SendReplyMessage(Globals.TwitchManager.Streamer,
+                    Globals.Chat.SendReplyMessage(Globals.Streamer,
                         "Unable to update your skin.", messageId);
                 else
                 {
                     kc.StreamAvatar = path;
                     Globals.Database.SaveChanges();
                     Globals.EmitSignal(Globals.SignalName.UpdateSkin, model.id, path);
-                    Globals.TwitchManager.Chat.SendReplyMessage(Globals.TwitchManager.Streamer, $"Skin updated to {args}.", messageId);
+                    Globals.Chat.SendReplyMessage(Globals.Streamer, $"Skin updated to {args}.", messageId);
                 }
             }
         }
