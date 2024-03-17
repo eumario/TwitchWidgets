@@ -133,8 +133,7 @@ public partial class TextCommands : MarginContainer
 
 	private void LoadCommands()
 	{
-		if (Globals.Database == null) { Globals.RunOnMain(LoadCommands); return; }
-		if (Globals.Database.Commands == null) { Globals.RunOnMain(LoadCommands); return; }
+		if (Globals.Database?.Commands == null) { Globals.RunOnMain(LoadCommands); return; }
 
 		foreach (var command in Globals.Database.Commands)
 		{
