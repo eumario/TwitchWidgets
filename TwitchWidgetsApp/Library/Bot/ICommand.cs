@@ -12,4 +12,5 @@ public interface ICommand
     public string CommandDescription { get; }
     
     public void RunCommand(UserModel model, string args, string messageId, bool isWhisper = false);
+    public void Init();
 }
