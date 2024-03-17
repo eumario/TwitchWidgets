@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 using Godot.Sharp.Extras;
 using Twitch.Base.Models.Clients.Chat;
@@ -106,17 +108,36 @@ public partial class AlertManager : Node
         EmitSignal(SignalName.ShowAlert, alert);
     }
 
-    private void EventSubOnCheer(object sender, CheerEvent e)
+    private async void EventSubOnCheer(object sender, CheerEvent e)
     {
         if (CurrentSet == null) return;
         var alert = CurrentSet.CheerAlert.Instantiate<AlertScript>();
         alert.Text = $"{e.UserName}\nHas Just Cheered\n{e.Bits} Bits";
+        await CheckForTts(e.UserId, e.Message, e.Bits);
+        Globals.TtsManager.AddTtsMessage(e.Message);
         _queuedAlerts.Enqueue(alert);
         alert.AlertFinished += PlayNextAlert;
         alert.AlertReady += CheckAlerts;
         EmitSignal(SignalName.ShowAlert, alert);
     }
-    
+
+    private async Task CheckForTts(string userId, string message, int bits)
+    {
+        var user = Globals.Chatters.FirstOrDefault(x => x.id == userId);
+        if (user == null) {
+            Globals.RunOnMain(() => CheckForTts(userId, message, bits));
+            return;
+        }
+
+        var isSubbed =
+            await Globals.TwitchApi.Subscriptions.GetSubscription(Globals.Streamer,
+                user);
+        if (isSubbed == null && bits >= 500)
+            Globals.TtsManager.AddTtsMessage(message);
+        else if (isSubbed != null && bits >= 100)
+            Globals.TtsManager.AddTtsMessage(message);
+    }
+
     public void NewChatterAlert(UserModel user, ChatMessagePacketModel message)
     {
         if (CurrentSet == null) return;
