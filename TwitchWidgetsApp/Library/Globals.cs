@@ -4,8 +4,11 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 using Godot.Sharp.Extras;
+using Twitch.Base;
+using Twitch.Base.Clients;
 using Twitch.Base.Models.Clients.Chat;
 using Twitch.Base.Models.NewAPI.Users;
+using Twitch.Base.Services.NewAPI;
 using TwitchWidgets.Data.Context;
 using TwitchWidgets.Data.Models;
 using TwitchWidgetsApp.Library.Managers;
@@ -23,6 +26,7 @@ public partial class Globals : Node
     [Signal] public delegate void UpdateSkinEventHandler(string userId, string skin);
     [Signal] public delegate void UpdateCommandsEventHandler();
     [Signal] public delegate void UpdateTickerEventHandler();
+    [Signal] public delegate void HeckleMessageEventHandler(string message);
     #endregion
     
     #region Global Variables
@@ -71,9 +75,18 @@ public partial class Globals : Node
     public bool RandomizeMusic => SettingsManager.GetValue("randomize_music", false);
     public bool LoopMusic => SettingsManager.GetValue("loop_music", false);
     public bool UseMockServer => SettingsManager.GetValue("use_mock_server", false);
+    public string SelectedVoice => SettingsManager.GetValue("tts_voice", "");
 
     public List<string> MusicFolders =>
         Json.ParseString(SettingsManager.GetValue("music_folders", "")).As<Array<string>>().ToList();
+    #endregion
+    
+    #region Shortcut Methods
+
+    public TwitchConnection TwitchConnection => TwitchManager.Connection;
+    public UserModel Streamer => TwitchManager.Streamer;
+    public ChatClient Chat => TwitchManager.Chat;
+    public NewTwitchAPIServices TwitchApi => TwitchManager.Connection.NewAPI;
     #endregion
     
     #region Private Variables
