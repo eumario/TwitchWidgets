@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://dwgrt5nk10o31"]
+
+[ext_resource type="Script" path="res://Scenes/Widgets/TtsWidget.cs" id="1_iwi3o"]
+[ext_resource type="FontFile" uid="uid://cy0oi61dy0dq" path="res://Assets/Fonts/Orbitron-VariableFont_wght.ttf" id="1_xt20u"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wik0r"]
+font = ExtResource("1_xt20u")
+font_size = 30
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ufbfu"]
+content_margin_right = 15.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_8rs7h"]
+font = ExtResource("1_xt20u")
+font_size = 30
+
+[node name="TtsWidgetSmall" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1459.0
+offset_bottom = -1039.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_iwi3o")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 41)
+layout_mode = 0
+offset_right = 461.0
+offset_bottom = 41.0
+color = Color(0.258824, 0.478431, 1, 0.698039)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ColorRect/HBoxContainer"]
+layout_mode = 2
+text = "  TTS Count:"
+label_settings = SubResource("LabelSettings_wik0r")
+
+[node name="QueueCount" type="Label" parent="ColorRect/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ufbfu")
+text = "999/999"
+label_settings = SubResource("LabelSettings_8rs7h")
+horizontal_alignment = 2

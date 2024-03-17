@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://djhhcx3nl8yhq"]
+
+[ext_resource type="Texture2D" uid="uid://bg4fr81hahk6x" path="res://Assets/Images/UI/bg_01.png" id="1_7ctr7"]
+[ext_resource type="Script" path="res://Scenes/Widgets/TtsWidget.cs" id="1_elbxu"]
+[ext_resource type="FontFile" uid="uid://jcugmw1ux02j" path="res://Assets/Fonts/Splash-Regular.ttf" id="2_qi6lw"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_d2tgg"]
+texture = ExtResource("1_7ctr7")
+
+[sub_resource type="LabelSettings" id="LabelSettings_tebkj"]
+font = ExtResource("2_qi6lw")
+font_size = 26
+font_color = Color(0.260502, 0.463496, 0.435028, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_g254f"]
+font = ExtResource("2_qi6lw")
+font_size = 35
+font_color = Color(0.631373, 0.47451, 0.796078, 1)
+
+[node name="TtsWidget" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_elbxu")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_right = 281.0
+offset_bottom = 121.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_d2tgg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "TTS QUEUE"
+label_settings = SubResource("LabelSettings_tebkj")
+horizontal_alignment = 1
+
+[node name="QueueCount" type="Label" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0/0"
+label_settings = SubResource("LabelSettings_g254f")
+horizontal_alignment = 1
