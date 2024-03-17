@@ -84,7 +84,7 @@ public partial class ChatBox : PanelContainer
     public override void _ExitTree()
     {
         if (Engine.IsEditorHint()) return;
-        Globals.TwitchManager.Chat.OnMessageReceived -= ChatMessageReceived;
+        Globals.Chat.OnMessageReceived -= ChatMessageReceived;
     }
 
     private async Task FetchImages()
@@ -96,7 +96,7 @@ public partial class ChatBox : PanelContainer
 
     private void SetupEvents()
     {
-        Globals.TwitchManager.Chat.OnMessageReceived += ChatMessageReceived;
+        Globals.Chat.OnMessageReceived += ChatMessageReceived;
     }
 
     private void ChatMessageReceived(object? sender, ChatMessagePacketModel model)
