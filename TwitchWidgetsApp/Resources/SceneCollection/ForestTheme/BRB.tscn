@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b77dpjqitulqr"]
+[gd_scene load_steps=19 format=3 uid="uid://b77dpjqitulqr"]
 
 [ext_resource type="Script" path="res://Scenes/Widgets/TickerScroller.cs" id="1_5p433"]
 [ext_resource type="Script" path="res://Library/Controls/ObsScene.cs" id="1_e6wfc"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://Scenes/Widgets/TimerDisplay.cs" id="8_x7xwn"]
 [ext_resource type="FontFile" uid="uid://byuiwhihhm6h7" path="res://Assets/Fonts/Indelible.otf" id="9_s7sy3"]
 [ext_resource type="PackedScene" uid="uid://dbyuvxann2jd0" path="res://Scenes/Widgets/MusicPlayer.tscn" id="12_35ker"]
+[ext_resource type="PackedScene" uid="uid://dwgrt5nk10o31" path="res://Scenes/Widgets/TtsWidgetSmall.tscn" id="13_rmgis"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ux4wx"]
 font = ExtResource("2_uoo3r")
@@ -82,6 +83,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -41.0
+offset_right = -461.0
 grow_horizontal = 2
 grow_vertical = 0
 color = Color(0.258824, 0.478431, 1, 0.698039)
@@ -99,6 +101,18 @@ Messages = ["First Stream Back, over year hatius!", "Working on Stream Overlay i
 LabelSettings = SubResource("LabelSettings_ux4wx")
 Speed = 80.0
 SeparatorText = "//"
+
+[node name="TtsWidgetSmall" parent="." instance=ExtResource("13_rmgis")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+offset_left = -461.0
+offset_top = -41.0
+offset_right = -461.0
+offset_bottom = -41.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="ChatBox" type="PanelContainer" parent="."]
 layout_mode = 0

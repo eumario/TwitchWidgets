@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dshfie2mv4hcu"]
+[gd_scene load_steps=13 format=3 uid="uid://dshfie2mv4hcu"]
 
 [ext_resource type="Script" path="res://Scenes/Widgets/TickerScroller.cs" id="1_2c832"]
 [ext_resource type="Script" path="res://Library/Controls/ObsScene.cs" id="1_8o6fq"]
@@ -8,6 +8,7 @@
 [ext_resource type="FontFile" uid="uid://cv3cqsy0350py" path="res://Assets/Fonts/Road_Rage.otf" id="5_4m5uu"]
 [ext_resource type="PackedScene" uid="uid://dbyuvxann2jd0" path="res://Scenes/Widgets/MusicPlayer.tscn" id="7_0cchf"]
 [ext_resource type="PackedScene" uid="uid://drkc3hgw7wsri" path="res://Scenes/CatCafe/Scenes/CafeScene.tscn" id="8_6p0ct"]
+[ext_resource type="PackedScene" uid="uid://dwgrt5nk10o31" path="res://Scenes/Widgets/TtsWidgetSmall.tscn" id="9_wvcvf"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_2dc0v"]
 font = ExtResource("2_6t7e0")
@@ -48,6 +49,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -41.0
+offset_right = -461.0
 grow_horizontal = 2
 grow_vertical = 0
 color = Color(0.258824, 0.478431, 1, 0.698039)
@@ -65,6 +67,18 @@ Messages = ["First Stream Back, over year hatius!", "Working on Stream Overlay i
 LabelSettings = SubResource("LabelSettings_2dc0v")
 Speed = 80.0
 SeparatorText = "//"
+
+[node name="TtsWidgetSmall" parent="." instance=ExtResource("9_wvcvf")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+offset_left = -461.0
+offset_top = -41.0
+offset_right = -461.0
+offset_bottom = -41.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="ChatBox" type="PanelContainer" parent="."]
 layout_mode = 0

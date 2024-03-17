@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cqd8ayos2i4ff"]
+[gd_scene load_steps=16 format=3 uid="uid://cqd8ayos2i4ff"]
 
 [ext_resource type="VideoStream" path="res://Assets/Videos/MagicForestWonderland.ogv" id="1_pdxij"]
 [ext_resource type="Script" path="res://Library/Controls/ObsScene.cs" id="1_s4b8g"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://duh6hxp80nbpt" path="res://Scenes/Widgets/MessageTemplate.tscn" id="7_4neai"]
 [ext_resource type="FontFile" uid="uid://bq0mpm6h3dl1u" path="res://Assets/Fonts/Neon.ttf" id="7_vpmr8"]
 [ext_resource type="PackedScene" uid="uid://dbyuvxann2jd0" path="res://Scenes/Widgets/MusicPlayer.tscn" id="10_dykin"]
+[ext_resource type="PackedScene" uid="uid://dwgrt5nk10o31" path="res://Scenes/Widgets/TtsWidgetSmall.tscn" id="11_j4kh1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jrur1"]
 font = ExtResource("3_7opsq")
@@ -67,9 +68,10 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -41.0
+offset_right = -461.0
 grow_horizontal = 2
 grow_vertical = 0
-color = Color(0.258824, 0.478431, 1, 1)
+color = Color(0.258824, 0.478431, 1, 0.698039)
 
 [node name="TickerScroller" type="Control" parent="ColorRect"]
 clip_contents = true
@@ -84,6 +86,18 @@ Messages = ["First Stream Back, over year hatius!", "Working on Stream Overlay i
 LabelSettings = SubResource("LabelSettings_jrur1")
 Speed = 80.0
 SeparatorText = "//"
+
+[node name="TtsWidgetSmall" parent="." instance=ExtResource("11_j4kh1")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+offset_left = -461.0
+offset_top = -41.0
+offset_right = -461.0
+offset_bottom = -41.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="VBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 0
