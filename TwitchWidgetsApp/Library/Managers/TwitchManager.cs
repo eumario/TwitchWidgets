@@ -102,8 +102,7 @@ public partial class TwitchManager : Node
 
     private async void LoadConnectionInfo()
     {
-        if (Globals.Database == null) { Globals.RunOnMain(LoadConnectionInfo); return; }
-        if (Globals.Database.Secrets == null) { Globals.RunOnMain(LoadConnectionInfo); return; }
+        if (Globals.Database?.Secrets == null) { Globals.RunOnMain(LoadConnectionInfo); return; }
 
         var res = Globals.Database.Secrets.ToList();
         if (res.Count == 0) return;
@@ -156,7 +155,7 @@ public partial class TwitchManager : Node
             return;
         }
         
-        user = await Globals.TwitchManager.Connection.NewAPI.Users.GetUserByID(e.UserID);
+        user = await Globals.TwitchApi.Users.GetUserByID(e.UserID);
 
         if (user == null) return;
         
