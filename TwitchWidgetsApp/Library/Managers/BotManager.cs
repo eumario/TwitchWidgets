@@ -29,6 +29,7 @@ public partial class BotManager : Node
             if (t == typeof(ICommand)) continue;
             var inst = (ICommand)Activator.CreateInstance(t);
             inst.Globals = Globals;
+            inst.Init();
             _commands.Add(inst);
         }
 
@@ -38,8 +39,7 @@ public partial class BotManager : Node
 
     private void LoadEchoCommands()
     {
-        if (Globals.Database == null) { Globals.RunOnMain(LoadEchoCommands); return; }
-        if (Globals.Database.Commands == null) { Globals.RunOnMain(LoadEchoCommands); return; }
+        if (Globals.Database?.Commands == null) { Globals.RunOnMain(LoadEchoCommands); return; }
         
         _commands.RemoveAll(x => x is EchoCommand);
         
@@ -47,6 +47,7 @@ public partial class BotManager : Node
         {
             var ecmd = new EchoCommand(tcmd.CommandName, tcmd.CommandAlias, tcmd.CommandHelp, tcmd.CommandDescription);
             ecmd.Globals = Globals;
+            ecmd.Init();
             _commands.Add(ecmd);
         }
     }
@@ -54,10 +55,10 @@ public partial class BotManager : Node
     private void SetupEvents()
     {
         if (Globals.TwitchManager == null) { Globals.RunOnMain(SetupEvents); return; }
-        if (Globals.TwitchManager.Chat == null) { Globals.RunOnMain(SetupEvents); return; }
+        if (Globals.Chat == null) { Globals.RunOnMain(SetupEvents); return; }
         
-        Globals.TwitchManager.Chat.OnMessageReceived += ProcessMessage;
-        Globals.TwitchManager.Chat.OnWhisperMessageReceived += ProcessWhisper;
+        Globals.Chat.OnMessageReceived += ProcessMessage;
+        Globals.Chat.OnWhisperMessageReceived += ProcessWhisper;
     }
 
     private void ProcessWhisper(object sender, ChatWhisperMessagePacketModel e)
