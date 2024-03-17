@@ -13,6 +13,7 @@ public class TwitchWidgetsContext : DbContext
     public DbSet<TickerMessage>? TickerMessages { get; set; }
     
     public DbSet<KnownChatter>? KnownChatters { get; set; }
+    public DbSet<HeckleMessage>? HeckleMessages { get; set; }
 
     public static string DatabaseLocation;
     public string DbPath { get; }
