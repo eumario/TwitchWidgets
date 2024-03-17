@@ -17,6 +17,24 @@ namespace TwitchWidgets.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
+            modelBuilder.Entity("TwitchWidgets.Data.Models.HeckleMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Heckle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SuggestedId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HeckleMessages");
+                });
+
             modelBuilder.Entity("TwitchWidgets.Data.Models.KnownChatter", b =>
                 {
                     b.Property<int>("Id")
