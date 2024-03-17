@@ -35,6 +35,13 @@ public partial class TtsManager : Node
         _player.Bus = "tts";
         _player.Finished += TtsPlayerOnFinished;
         AddChild(_player);
+        Globals.SettingsLoaded += GlobalsOnSettingsLoaded;
+        Globals.SettingsUpdated += GlobalsOnSettingsLoaded;
+    }
+
+    private void GlobalsOnSettingsLoaded()
+    {
+        SelectedVoice = Globals.SelectedVoice;
     }
 
     public override void _ExitTree()
@@ -79,14 +86,48 @@ public partial class TtsManager : Node
 
     public void AddTtsMessage(string message) => FetchTTSMessage(message);
 
+    // tts play_previous, play_next, repeat, stop, skip
+
+    public void PlayPreviousMessage()
+    {
+        if (_player.Playing) return;
+        if (_player.Stream != null) return;
+        var tts = _played[^2];
+        _player.Stream = tts.Sound;
+        _player.Play();
+    }
+    
     public void PlayNextMessage()
     {
-        if (_player.Stream != null) return;
         if (_player.Playing) return;
+        if (_player.Stream != null) return;
         var tts = _queued.Dequeue();
         _played.Add(tts);
         _player.Stream = tts.Sound;
         _player.Play();
+    }
+
+    public void RepeatLastMessage()
+    {
+        if (_player.Playing) return;
+        if (_player.Stream != null) return;
+        var tts = _played[^1];
+        _player.Stream = tts.Sound;
+        _player.Play();
+    }
+
+    public void StopMessage()
+    {
+        if (!_player.Playing) return;
+        if (_player.Stream == null) return;
+        _player.Stop();
+        _player.Stream = null;
+    }
+
+    public void SkipMessage()
+    {
+        var tts = _queued.Dequeue();
+        _played.Add(tts);
     }
 
     public void ClearAll()
