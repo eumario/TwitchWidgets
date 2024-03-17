@@ -48,9 +48,9 @@ public partial class ImageManager : Node
     
     public async Task FetchTwitchEmotes()
     {
-        var globalEmotes = await Globals.TwitchManager.Connection.NewAPI.Chat.GetGlobalEmotes();
+        var globalEmotes = await Globals.TwitchApi.Chat.GetGlobalEmotes();
         var channelEmotes =
-            await Globals.TwitchManager.Connection.NewAPI.Chat.GetChannelEmotes(Globals.TwitchManager.Streamer);
+            await Globals.TwitchApi.Chat.GetChannelEmotes(Globals.Streamer);
 
         var printOnce = false;
         foreach (var emote in globalEmotes)
@@ -86,9 +86,9 @@ public partial class ImageManager : Node
 
     public async Task FetchTwitchBadges()
     {
-        var globalBadges = await Globals.TwitchManager.Connection.NewAPI.Chat.GetGlobalChatBadges();
+        var globalBadges = await Globals.TwitchApi.Chat.GetGlobalChatBadges();
         var channelBadges =
-            await Globals.TwitchManager.Connection.NewAPI.Chat.GetChannelChatBadges(Globals.TwitchManager.Streamer);
+            await Globals.TwitchApi.Chat.GetChannelChatBadges(Globals.Streamer);
 
         foreach (var badgeSet in globalBadges)
         {
@@ -121,7 +121,7 @@ public partial class ImageManager : Node
     {
         var globalEmotes = 
             await _3rdPartyProvider.GetGlobalEmotes([Provider.BetterTV, Provider.FrankerFaceZ, Provider.SevenTV]);
-        var channelEmotes = await _3rdPartyProvider.GetChannelEmotes(Globals.TwitchManager.Streamer.id,
+        var channelEmotes = await _3rdPartyProvider.GetChannelEmotes(Globals.Streamer.id,
             [Provider.BetterTV, Provider.FrankerFaceZ, Provider.SevenTV]);
 
         foreach (var emote in globalEmotes)
