@@ -35,7 +35,7 @@ public partial class AccountInfo : GridContainer
 	private void MonitorConnection()
 	{
 		if (Globals.TwitchManager == null) { Globals.RunOnMain(MonitorConnection); return; }
-		if (Globals.TwitchManager.Chat == null) { Globals.RunOnMain(MonitorConnection); return; }
+		if (Globals.Chat == null) { Globals.RunOnMain(MonitorConnection); return; }
 		if (Globals.TwitchManager.EventSub == null) { Globals.RunOnMain(MonitorConnection); return; }
 		_streamerOnline.SelfModulate = Globals.TwitchManager.IsEventSubConnected ? Colors.Green : Colors.Red;
 		_botOnline.SelfModulate = Globals.TwitchManager.IsChatConnected ? Colors.Green : Colors.Red;
@@ -45,14 +45,13 @@ public partial class AccountInfo : GridContainer
 	private void DisconnectTwitchOnPressed()
 	{
 		// Handle Disconnection
-		Globals.TwitchManager.Chat.SendMessage(Globals.TwitchManager.Streamer, "Disconnecting.");
+		Globals.Chat.SendMessage(Globals.Streamer, "Disconnecting.");
 		Globals.TwitchManager.DisconnectTwitch();
 	}
 
 	private async void UpdateInfo()
 	{
-		if (Globals.Database == null) { Globals.RunOnMain(UpdateInfo); return; }
-		if (Globals.Database.Secrets == null) { Globals.RunOnMain(UpdateInfo); return; }
+		if (Globals.Database?.Secrets == null) { Globals.RunOnMain(UpdateInfo); return; }
 
 		var res = Globals.Database.Secrets.ToList();
 		if (res.Count == 0) return;
