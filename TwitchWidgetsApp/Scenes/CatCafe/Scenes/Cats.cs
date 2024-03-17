@@ -45,14 +45,14 @@ public partial class Cats : Node2D
 
 	public override void _ExitTree()
 	{
-		Globals.TwitchManager.Chat.OnMessageReceived -= HandleChatMessage;
+		Globals.Chat.OnMessageReceived -= HandleChatMessage;
 	}
 
 	private void Initialize()
 	{
 		if (Globals.TwitchManager == null) { Globals.RunOnMain(Initialize); return; }
-		if (Globals.TwitchManager.Chat == null) { Globals.RunOnMain(Initialize); return; }
-		Globals.TwitchManager.Chat.OnMessageReceived += HandleChatMessage;
+		if (Globals.Chat == null) { Globals.RunOnMain(Initialize); return; }
+		Globals.Chat.OnMessageReceived += HandleChatMessage;
 		Globals.RunOnMain(PopulateAvatars);
 	}
 
