@@ -9,7 +9,7 @@ namespace TwitchWidgetsApp.Library.Managers;
 
 public partial class TtsManager : Node
 {
-    [Singleton] public Globals Globals;
+    [Singleton] public Globals? Globals;
     [Signal] public delegate void TtsFinishedEventHandler(string msg);
     [Signal] public delegate void TtsDownloadedEventHandler(string msg);
     public List<string> Voices = [
@@ -24,7 +24,7 @@ public partial class TtsManager : Node
     public string? SelectedVoice = null;
     private List<TextToSpeech> _played = [];
     private Queue<TextToSpeech> _queued = new();
-    private AudioStreamPlayer _player;
+    private AudioStreamPlayer? _player;
     private HttpClient _httpClient = new();
     public int TotalQueue => _played.Count + _queued.Count;
     public int CurrentQueue => _played.Count;
@@ -35,13 +35,13 @@ public partial class TtsManager : Node
         _player.Bus = "tts";
         _player.Finished += TtsPlayerOnFinished;
         AddChild(_player);
-        Globals.SettingsLoaded += GlobalsOnSettingsLoaded;
+        Globals!.SettingsLoaded += GlobalsOnSettingsLoaded;
         Globals.SettingsUpdated += GlobalsOnSettingsLoaded;
     }
 
     private void GlobalsOnSettingsLoaded()
     {
-        SelectedVoice = Globals.SelectedVoice;
+        SelectedVoice = Globals!.SelectedVoice;
     }
 
     public override void _ExitTree()
@@ -81,7 +81,7 @@ public partial class TtsManager : Node
     private void TtsPlayerOnFinished()
     {
         EmitSignal(SignalName.TtsFinished, _played[^1]);
-        _player.Stream = null;
+        _player!.Stream = null;
     }
 
     public void AddTtsMessage(string message) => FetchTTSMessage(message);
@@ -90,7 +90,7 @@ public partial class TtsManager : Node
 
     public void PlayPreviousMessage()
     {
-        if (_player.Playing) return;
+        if (_player!.Playing) return;
         if (_player.Stream != null) return;
         if (_played.Count < 2) return;
         var tts = _played[^2];
@@ -100,7 +100,7 @@ public partial class TtsManager : Node
     
     public void PlayNextMessage()
     {
-        if (_player.Playing) return;
+        if (_player!.Playing) return;
         if (_player.Stream != null) return;
         var tts = _queued.Dequeue();
         _played.Add(tts);
@@ -110,7 +110,7 @@ public partial class TtsManager : Node
 
     public void RepeatLastMessage()
     {
-        if (_player.Playing) return;
+        if (_player!.Playing) return;
         if (_player.Stream != null) return;
         var tts = _played[^1];
         _player.Stream = tts.Sound;
@@ -119,7 +119,7 @@ public partial class TtsManager : Node
 
     public void StopMessage()
     {
-        if (!_player.Playing) return;
+        if (!_player!.Playing) return;
         if (_player.Stream == null) return;
         _player.Stop();
         _player.Stream = null;
@@ -133,8 +133,8 @@ public partial class TtsManager : Node
 
     public void ClearAll()
     {
-        if (_player.Stream != null) { Globals.RunOnMain(ClearAll); return; }
-        if (_player.Playing) { Globals.RunOnMain(ClearAll); return; }
+        if (_player!.Stream != null) { Globals!.RunOnMain(ClearAll); return; }
+        if (_player.Playing) { Globals!.RunOnMain(ClearAll); return; }
 
         foreach (var tts in _played) tts.Free();
         _played.Clear();

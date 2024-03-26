@@ -4,7 +4,7 @@ namespace TwitchWidgetsApp.Library.Bot;
 
 public interface ICommand
 {
-    public TwitchWidgetsApp.Library.Globals Globals { get; set; }
+    public Globals? Globals { get; set; }
     public bool Enabled { get; }
     public string CommandText { get; }
     public string CommandAlias { get; }

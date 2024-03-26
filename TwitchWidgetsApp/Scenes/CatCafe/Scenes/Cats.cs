@@ -10,14 +10,14 @@ namespace TwitchWidgetsApp.Scenes.CatCafe.Scenes;
 
 public partial class Cats : Node2D
 {
-	[Singleton] public Globals Globals;
-	[Export] private Node2D _spawnPosition;
-	[Export] private Node2D _initialWalkingPosition;
-	[Export] private TileMap _map;
+	[Singleton] public Globals? Globals;
+	[Export] private Node2D? _spawnPosition;
+	[Export] private Node2D? _initialWalkingPosition;
+	[Export] private TileMap? _map;
 
-	[Export(PropertyHint.Dir)] private string _avatarPath;
+	[Export(PropertyHint.Dir)] private string? _avatarPath;
 
-	private RandomNumberGenerator _rng;
+	private RandomNumberGenerator? _rng;
 
 	private List<Texture2D> _avatarSkins = new();
 	// Called when the node enters the scene tree for the first time.
@@ -36,7 +36,7 @@ public partial class Cats : Node2D
 		_rng = new RandomNumberGenerator();
 		_rng.Randomize();
 		
-		Globals.RunOnMain(() => PopulateCafe());
+		Globals!.RunOnMain(() => PopulateCafe());
 	}
 
 	private void PopulateCafe()
@@ -45,12 +45,12 @@ public partial class Cats : Node2D
 
 	public override void _ExitTree()
 	{
-		Globals.Chat.OnMessageReceived -= HandleChatMessage;
+		Globals!.Chat.OnMessageReceived -= HandleChatMessage;
 	}
 
 	private void Initialize()
 	{
-		if (Globals.TwitchManager == null) { Globals.RunOnMain(Initialize); return; }
+		if (Globals!.TwitchManager == null) { Globals.RunOnMain(Initialize); return; }
 		if (Globals.Chat == null) { Globals.RunOnMain(Initialize); return; }
 		Globals.Chat.OnMessageReceived += HandleChatMessage;
 		Globals.RunOnMain(PopulateAvatars);
@@ -58,21 +58,21 @@ public partial class Cats : Node2D
 
 	private void PopulateAvatars()
 	{
-		foreach (var avatar in Globals.StreamAvatars)
+		foreach (var avatar in Globals!.StreamAvatars)
 		{
 			var chatter = Chatter.Create();
-			chatter.Map = _map;
+			chatter.Map = _map!;
 			AddChild(chatter);
 			chatter.RestoreState(avatar);
 		}
 	}
 
-	private void HandleChatMessage(object sender, ChatMessagePacketModel e)
+	private void HandleChatMessage(object? sender, ChatMessagePacketModel e)
 	{
 		if (IsQueuedForDeletion()) return;
 		var node = GetNodeOrNull<Chatter>(e.UserID);
 		if (node != null) return;
-		var user = Globals.Chatters.FirstOrDefault(x => x.id == e.UserID);
+		var user = Globals!.Chatters.FirstOrDefault(x => x.id == e.UserID);
 		if (user == null)
 		{
 			Globals.RunOnMain(() => HandleChatMessage(sender, e));
@@ -92,16 +92,16 @@ public partial class Cats : Node2D
 		// Need to Spawn our cat for this user.
 		var chatter = Chatter.Create();
 		chatter.Name = e.UserID;
-		chatter.Map = _map;
+		chatter.Map = _map!;
 		chatter.ChatterColor = Globals.SavedChatColors[user];
 		chatter.ChatterName = user.display_name;
 		chatter.AvatarSkin = avatar == ""
-			? _avatarSkins[_rng.RandiRange(0, _avatarSkins.Count - 1)]
+			? _avatarSkins[_rng!.RandiRange(0, _avatarSkins.Count - 1)]
 			: GD.Load<Texture2D>(avatar);
 		chatter.UserModel = user;
 		AddChild(chatter);
-		chatter.SetSpawnPoint(_spawnPosition.GlobalPosition);
-		chatter.SetSpecificPoint(_initialWalkingPosition.GlobalPosition);
-		chatter.RandomizeSkin += () => chatter.AvatarSkin = _avatarSkins[_rng.RandiRange(0, _avatarSkins.Count - 1)];
+		chatter.SetSpawnPoint(_spawnPosition!.GlobalPosition);
+		chatter.SetSpecificPoint(_initialWalkingPosition!.GlobalPosition);
+		chatter.RandomizeSkin += () => chatter.AvatarSkin = _avatarSkins[_rng!.RandiRange(0, _avatarSkins.Count - 1)];
 	}
 }

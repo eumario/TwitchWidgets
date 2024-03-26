@@ -30,19 +30,19 @@ public partial class Globals : Node
     #endregion
     
     #region Global Variables
-    [Singleton] public Node ElgatoStreamDeck;
-    public TwitchWidgetsContext Database;
-    [Resource("res://Scenes/SettingsWindow.tscn")] private PackedScene _settings;
+    [Singleton] public Node? ElgatoStreamDeck;
+    public TwitchWidgetsContext? Database;
+    [Resource("res://Scenes/SettingsWindow.tscn")] private PackedScene? _settings;
 
-    public ObsManager ObsManager { get; set; }
-    public TwitchManager TwitchManager { get; set; }
-    public SettingsManager SettingsManager { get; set; }
-    public ImageManager ImageManager { get; set; }
-    public MusicController MusicController { get; set; }
-    public TtsManager TtsManager { get; set; }
-    public AlertManager AlertManager { get; set; }
+    public ObsManager? ObsManager { get; set; }
+    public TwitchManager? TwitchManager { get; set; }
+    public SettingsManager? SettingsManager { get; set; }
+    public ImageManager? ImageManager { get; set; }
+    public MusicController? MusicController { get; set; }
+    public TtsManager? TtsManager { get; set; }
+    public AlertManager? AlertManager { get; set; }
     
-    public BotManager BotManager { get; set; }
+    public BotManager? BotManager { get; set; }
 
     public List<ChatMessagePacketModel> ChatHistory { get; set; } = [];
     
@@ -50,9 +50,9 @@ public partial class Globals : Node
 
     public List<UserModel> Chatters { get; set; } = [];
     
-    public Window ProjectorWindow { get; set; }
-    public ProjectionWindow ProjectionWindow { get; set; }
-    public Window SettingsWindow { get; set; }
+    public Window? ProjectorWindow { get; set; }
+    public ProjectionWindow? ProjectionWindow { get; set; }
+    public Window? SettingsWindow { get; set; }
 
     public List<StreamAvatar> StreamAvatars = [];
     public List<KnownChatter> KnownChatters = [];
@@ -60,33 +60,33 @@ public partial class Globals : Node
     #endregion
     
     #region Global Settings Variables (Read Only)
-    public bool IsDebugging => SettingsManager.GetValue("is_debugging", false);
-    public bool AutoConnectTwitch => SettingsManager.GetValue("auto_connect_twitch", false);
-    public bool AutoConnectObs => SettingsManager.GetValue("auto_connect_obs", false);
-    public bool AutoPlayMusic => SettingsManager.GetValue("auto_play_music", false);
-    public bool UseSpotify => SettingsManager.GetValue("use_spotify", false);
-    public bool UseFullscreen => SettingsManager.GetValue("use_fullscreen", false);
-    public bool UseSpecificScreen => SettingsManager.GetValue("use_specific", false);
-    public int SpecificScreen => SettingsManager.GetValue("use_display", 0);
+    public bool IsDebugging => SettingsManager!.GetValue("is_debugging", false);
+    public bool AutoConnectTwitch => SettingsManager!.GetValue("auto_connect_twitch", false);
+    public bool AutoConnectObs => SettingsManager!.GetValue("auto_connect_obs", false);
+    public bool AutoPlayMusic => SettingsManager!.GetValue("auto_play_music", false);
+    public bool UseSpotify => SettingsManager!.GetValue("use_spotify", false);
+    public bool UseFullscreen => SettingsManager!.GetValue("use_fullscreen", false);
+    public bool UseSpecificScreen => SettingsManager!.GetValue("use_specific", false);
+    public int SpecificScreen => SettingsManager!.GetValue("use_display", 0);
 
-    public string ObsHost => SettingsManager.GetValue("obs_host", "");
-    public int ObsPort => SettingsManager.GetValue("obs_port", 0);
-    public string ObsPass => SettingsManager.GetValue("obs_pass", "");
-    public bool RandomizeMusic => SettingsManager.GetValue("randomize_music", false);
-    public bool LoopMusic => SettingsManager.GetValue("loop_music", false);
-    public bool UseMockServer => SettingsManager.GetValue("use_mock_server", false);
-    public string SelectedVoice => SettingsManager.GetValue("tts_voice", "");
+    public string ObsHost => SettingsManager!.GetValue("obs_host", "");
+    public int ObsPort => SettingsManager!.GetValue("obs_port", 0);
+    public string ObsPass => SettingsManager!.GetValue("obs_pass", "");
+    public bool RandomizeMusic => SettingsManager!.GetValue("randomize_music", false);
+    public bool LoopMusic => SettingsManager!.GetValue("loop_music", false);
+    public bool UseMockServer => SettingsManager!.GetValue("use_mock_server", false);
+    public string SelectedVoice => SettingsManager!.GetValue("tts_voice", "");
 
     public List<string> MusicFolders =>
-        Json.ParseString(SettingsManager.GetValue("music_folders", "")).As<Array<string>>().ToList();
+        Json.ParseString(SettingsManager!.GetValue("music_folders", "")).As<Array<string>>().ToList();
     #endregion
     
     #region Shortcut Methods
 
-    public TwitchConnection TwitchConnection => TwitchManager.Connection;
-    public UserModel Streamer => TwitchManager.Streamer;
-    public ChatClient Chat => TwitchManager.Chat;
-    public NewTwitchAPIServices TwitchApi => TwitchManager.Connection.NewAPI;
+    public TwitchConnection TwitchConnection => TwitchManager!.Connection!;
+    public UserModel Streamer => TwitchManager!.Streamer!;
+    public ChatClient Chat => TwitchManager!.Chat!;
+    public NewTwitchAPIServices TwitchApi => TwitchManager!.Connection!.NewAPI;
     #endregion
     
     #region Private Variables
@@ -122,7 +122,7 @@ public partial class Globals : Node
         AddChild(TtsManager);
         AddChild(AlertManager);
         AddChild(BotManager);
-        ElgatoStreamDeck.Connect("on_key_down", Callable.From((string data) => ElgatoCall(data)));
+        ElgatoStreamDeck!.Connect("on_key_down", Callable.From((string data) => ElgatoCall(data)));
     }
 
     private void ProcessOnMainThread()
@@ -146,7 +146,7 @@ public partial class Globals : Node
         ProcessOnMainThread();
         if (Input.IsActionJustPressed("fullscreen"))
         {
-            ProjectorWindow.Mode = ProjectorWindow.Mode == Window.ModeEnum.Fullscreen
+            ProjectorWindow!.Mode = ProjectorWindow.Mode == Window.ModeEnum.Fullscreen
                 ? Window.ModeEnum.Maximized
                 : Window.ModeEnum.Fullscreen;
         }
@@ -166,7 +166,7 @@ public partial class Globals : Node
         SettingsWindow = window;
         GetTree().Root.AddChild(window);
         window.PopupCentered(new Vector2I(1152, 688));
-        var panel = _settings.Instantiate<SettingsWindow>();
+        var panel = _settings!.Instantiate<SettingsWindow>();
         window.AddChild(panel);
         panel.Position = Vector2.Zero;
         window.CloseRequested += () =>
@@ -184,7 +184,7 @@ public partial class Globals : Node
                 ShowSettingsWindow();
                 break;
             case "toggle-fullscreen":
-                ProjectorWindow.Mode = ProjectorWindow.Mode == Window.ModeEnum.Fullscreen
+                ProjectorWindow!.Mode = ProjectorWindow.Mode == Window.ModeEnum.Fullscreen
                     ? Window.ModeEnum.Maximized
                     : Window.ModeEnum.Fullscreen;
                 break;

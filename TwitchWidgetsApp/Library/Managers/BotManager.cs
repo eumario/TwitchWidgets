@@ -11,7 +11,7 @@ namespace TwitchWidgetsApp.Library.Managers;
 
 public partial class BotManager : Node
 {
-    [Singleton] public Globals Globals;
+    [Singleton] public Globals? Globals;
 
     private List<ICommand> _commands = new();
 
@@ -27,19 +27,19 @@ public partial class BotManager : Node
         {
             if (t == typeof(EchoCommand)) continue;
             if (t == typeof(ICommand)) continue;
-            var inst = (ICommand)Activator.CreateInstance(t);
-            inst.Globals = Globals;
+            var inst = Activator.CreateInstance(t) as ICommand;
+            inst!.Globals = Globals!;
             inst.Init();
             _commands.Add(inst);
         }
 
         LoadEchoCommands();
-        Globals.UpdateCommands += LoadEchoCommands;
+        Globals!.UpdateCommands += LoadEchoCommands;
     }
 
     private void LoadEchoCommands()
     {
-        if (Globals.Database?.Commands == null) { Globals.RunOnMain(LoadEchoCommands); return; }
+        if (Globals!.Database?.Commands == null) { Globals.RunOnMain(LoadEchoCommands); return; }
         
         _commands.RemoveAll(x => x is EchoCommand);
         
@@ -54,7 +54,7 @@ public partial class BotManager : Node
 
     private void SetupEvents()
     {
-        if (Globals.TwitchManager == null) { Globals.RunOnMain(SetupEvents); return; }
+        if (Globals!.TwitchManager == null) { Globals.RunOnMain(SetupEvents); return; }
         if (Globals.Chat == null) { Globals.RunOnMain(SetupEvents); return; }
         
         Globals.Chat.OnMessageReceived += ProcessMessage;
@@ -63,14 +63,14 @@ public partial class BotManager : Node
         Globals.TwitchManager.NewConnection += SetupEvents;
     }
 
-    private void ProcessWhisper(object sender, ChatWhisperMessagePacketModel e)
+    private void ProcessWhisper(object? sender, ChatWhisperMessagePacketModel e)
     {
         var msg = e.Message;
         var cmd = msg.Split(" ")[0];
         var args = msg.Replace(cmd, "").Trim();
         var icmd = _commands.FirstOrDefault(x => x.CommandText == cmd || x.CommandText.Contains(cmd));
         if (icmd == null) return;
-        var chatter = Globals.Chatters.FirstOrDefault(x => x.id == e.UserID);
+        var chatter = Globals!.Chatters.FirstOrDefault(x => x.id == e.UserID);
         if (chatter == null)
         {
             Globals.RunOnMain(() => ProcessWhisper(sender, e));
@@ -79,14 +79,14 @@ public partial class BotManager : Node
         if (icmd.Enabled) icmd.RunCommand(chatter, args, e.ID, true);
     }
 
-    private void ProcessMessage(object sender, ChatMessagePacketModel e)
+    private void ProcessMessage(object? sender, ChatMessagePacketModel e)
     {
         var msg = e.Message;
         var cmd = msg.Split(" ")[0];
         var args = msg.Replace(cmd, "").Trim();
         var icmd = _commands.FirstOrDefault(x => x.CommandText == cmd || x.CommandAlias.Contains(cmd));
         if (icmd == null) return;
-        var chatter = Globals.Chatters.FirstOrDefault(x => x.id == e.UserID);
+        var chatter = Globals!.Chatters.FirstOrDefault(x => x.id == e.UserID);
         if (chatter == null)
         {
             Globals.RunOnMain(() => ProcessMessage(sender, e));

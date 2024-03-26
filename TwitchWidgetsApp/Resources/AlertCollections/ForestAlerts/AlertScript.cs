@@ -6,21 +6,21 @@ namespace TwitchWidgetsApp.Resources.AlertCollections.ForestAlerts;
 
 public partial class AlertScript : Control
 {
-	[Singleton] public Globals Globals;
+	[Singleton] public Globals? Globals;
 
 	[Signal] public delegate void AlertReadyEventHandler(AlertScript alert);
 	[Signal] public delegate void AlertFinishedEventHandler();
 
-	[NodePath] private TextureRect _banner;
-	[NodePath] private TextureRect _logo;
-	[NodePath] private Label _text;
+	[NodePath] private TextureRect? _banner;
+	[NodePath] private TextureRect? _logo;
+	[NodePath] private Label? _text;
 
-	private string _logoPath;
-	private string _textString;
+	private string? _logoPath;
+	private string? _textString;
 
 	[Export] public AnimationMode Animation;
 
-	[Export(PropertyHint.File)] public string Logo
+	[Export(PropertyHint.File)] public string? Logo
 	{
 		get => _logoPath;
 		set
@@ -32,7 +32,7 @@ public partial class AlertScript : Control
 		}
 	}
 
-	public string Text
+	public string? Text
 	{
 		get => _textString;
 		set
@@ -57,13 +57,13 @@ public partial class AlertScript : Control
 		switch (Animation)
 		{
 			case AnimationMode.SlideFade:
-				_banner.Position = new Vector2(_banner.Position.X, -Size.Y);
+				_banner!.Position = new Vector2(_banner.Position.X, -Size.Y);
 				_banner.Modulate = Colors.Transparent;
-				_text.VisibleRatio = 0.0f;
+				_text!.VisibleRatio = 0.0f;
 				break;
 			case AnimationMode.Rollout:
 				// 739.5 -> 218
-				_text.Size = new Vector2(0, 195);
+				_text!.Size = new Vector2(0, 195);
 				_text.Position = new Vector2(739.5f, 0);
 				_text.VisibleRatio = 0.0f;
 				_text.Modulate = Colors.Transparent;
@@ -80,7 +80,7 @@ public partial class AlertScript : Control
 	private void AnimateSlideFade()
 	{
 		var tween = CreateTween().SetParallel(true);
-		tween.TweenProperty(_banner, "position", new Vector2(_banner.Position.X, 0), 1.0f);
+		tween.TweenProperty(_banner, "position", new Vector2(_banner!.Position.X, 0), 1.0f);
 		tween.TweenProperty(_banner, "modulate", Colors.White, 1.75f);
 		tween.Chain().TweenProperty(_text, "visible_ratio", 1.0f, 1.5f);
 		tween.Chain().TweenInterval(3.0);

@@ -17,18 +17,20 @@ public class TEmotesService
 
     public TEmotesService()
     {
-        _client = new HttpClient();
-        _client.BaseAddress = new Uri("https://emotes.adamcy.pl/v1/");
+        _client = new HttpClient
+        {
+            BaseAddress = new Uri("https://emotes.adamcy.pl/v1/")
+        };
         _client.DefaultRequestHeaders.Accept.Clear();
         _client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-    public async Task<List<Emote>> GetGlobalEmotes(List<Provider> providers)
+    public async Task<List<Emote>?> GetGlobalEmotes(List<Provider> providers)
     {
         var services = string.Join(".", providers.ConvertAll(x => (int)x).ConvertAll(x => _providerStrings[x]));
         var response = await _client.GetAsync(string.Format(globalEmotes,services));
-        List<Emote> emotes = null;
+        List<Emote>? emotes = null;
         if (response.IsSuccessStatusCode)
         {
             emotes = await response.ProcessResponse<List<Emote>>();
@@ -37,11 +39,11 @@ public class TEmotesService
         return emotes;
     }
     
-    public async Task<List<Emote>> GetChannelEmotes(string channelId, List<Provider> providers)
+    public async Task<List<Emote>?> GetChannelEmotes(string channelId, List<Provider> providers)
     {
         var services = string.Join(".", providers.ConvertAll(x => (int)x).ConvertAll(x => _providerStrings[x]));
         var response = await _client.GetAsync(string.Format(channelEmotes, channelId, services));
-        List<Emote> emotes = null;
+        List<Emote>? emotes = null;
         if (response.IsSuccessStatusCode)
         {
             emotes = await response.ProcessResponse<List<Emote>>();

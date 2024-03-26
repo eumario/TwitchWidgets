@@ -10,12 +10,12 @@ namespace TwitchWidgetsApp.Library.EventSub;
 
 public class PredictionLockEvent
 {
-    [JsonProperty("id")] public string Id;
-    [JsonProperty("broadcaster_user_id")] public string BroadcasterId;
-    [JsonProperty("broadcaster_user_login")] public string BroadcasterLogin;
-    [JsonProperty("broadcaster_user_name")] public string BroadcasterName;
-    [JsonProperty("title")] public string Title;
-    [JsonProperty("outcomes")] public List<OutcomeOptionResults> Outcomes;
-    [JsonProperty("started_at")] public string StartedAt;
-    [JsonProperty("locked_at")] public string LockedAt;
+    [JsonProperty("id")] public string? Id;
+    [JsonProperty("broadcaster_user_id")] public string? BroadcasterId;
+    [JsonProperty("broadcaster_user_login")] public string? BroadcasterLogin;
+    [JsonProperty("broadcaster_user_name")] public string? BroadcasterName;
+    [JsonProperty("title")] public string? Title;
+    [JsonProperty("outcomes")] public List<OutcomeOptionResults?>? Outcomes;
+    [JsonProperty("started_at")] public string? StartedAt;
+    [JsonProperty("locked_at")] public string? LockedAt;
 }

@@ -7,12 +7,12 @@ namespace TwitchWidgetsApp.Library.Controls;
 [GlobalClass]
 public partial class ObsScene : Control
 {
-    [Singleton] public Globals Globals;
+    [Singleton] public Globals? Globals;
 
     public override void _Ready()
     {
         this.OnReady();
-        Globals.AlertManager.ShowAlert += AlertManagerOnShowAlert;
+        Globals!.AlertManager!.ShowAlert += AlertManagerOnShowAlert;
     }
 
     private void AlertManagerOnShowAlert(AlertScript alert)
@@ -22,6 +22,6 @@ public partial class ObsScene : Control
 
     public override void _ExitTree()
     {
-        Globals.AlertManager.ShowAlert -= AlertManagerOnShowAlert;
+        Globals!.AlertManager!.ShowAlert -= AlertManagerOnShowAlert;
     }
 }

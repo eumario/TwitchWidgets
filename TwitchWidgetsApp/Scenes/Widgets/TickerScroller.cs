@@ -10,9 +10,9 @@ namespace TwitchWidgetsApp.Scenes.Widgets;
 [GlobalClass]
 public partial class TickerScroller : Control
 {
-    [Singleton] public Globals Globals;
+    [Singleton] public Globals? Globals;
     [ExportCategory("Message Settings")]
-    [Export] public Array<string> Messages = new();
+    [Export] public Array<string> Messages = [];
     [Export] public LabelSettings LabelSettings = new();
     [ExportCategory("Speed and Spacing")]
     [Export] public double Speed = 30.0;
@@ -24,14 +24,14 @@ public partial class TickerScroller : Control
     {
         this.OnReady();
         ClearMessages();
-        Globals.Database.TickerMessages.ToList().ForEach(x => AddTicker(x.Message));
+        Globals?.Database?.TickerMessages?.ToList().ForEach(x => AddTicker(x.Message));
         ClipContents = true;
         ResetTicker();
 
-        Globals.UpdateTicker += () =>
+        Globals!.UpdateTicker += () =>
         {
             ClearMessages();
-            Globals.Database.TickerMessages.ToList().ForEach(x => AddTicker(x.Message));
+            Globals?.Database?.TickerMessages?.ToList().ForEach(x => AddTicker(x.Message));
         };
     }
 
@@ -40,13 +40,13 @@ public partial class TickerScroller : Control
         foreach (var node in GetChildren())
         {
             var lbl = node as Label;
-            lbl.Position = new Vector2(lbl.Position.X - (float)(Speed * delta), 0);
+            lbl!.Position = new Vector2(lbl.Position.X - (float)(Speed * delta), 0);
         }
 
         foreach (var node in GetChildren())
         {
             var lbl = node as Label;
-            if (lbl.Position.X < -lbl.Size.X)
+            if (lbl!.Position.X < -lbl.Size.X)
                 ResetPosition(lbl);
         }
     }
@@ -68,7 +68,7 @@ public partial class TickerScroller : Control
         foreach (var node in GetChildren())
         {
             var clbl = node as Label;
-            if (clbl.Position.X + clbl.Size.X > sx)
+            if (clbl!.Position.X + clbl.Size.X > sx)
                 sx = clbl.Position.X + clbl.Size.X + (float)Spacing;
         }
 
@@ -77,10 +77,12 @@ public partial class TickerScroller : Control
 
     private float MakeLabel(string msg, float startX)
     {
-        var lbl = new Label();
-        lbl.Text = msg;
-        lbl.LabelSettings = LabelSettings;
-        lbl.Position = new Vector2(startX, 0);
+        var lbl = new Label
+        {
+            Text = msg,
+            LabelSettings = LabelSettings,
+            Position = new Vector2(startX, 0)
+        };
         AddChild(lbl);
         if (Size.Y < lbl.Size.Y)
         {

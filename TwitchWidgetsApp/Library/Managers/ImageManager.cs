@@ -10,10 +10,10 @@ namespace TwitchWidgetsApp.Library.Managers;
 
 public partial class ImageManager : Node
 {
-    [Singleton] public Globals Globals;
-    private Dictionary<ChatBadgeSetModel, Dictionary<ChatBadgeModel, ImageTexture>> _chatBadges = new();
-    private Dictionary<ChatEmoteModel, ImageTexture> _twitchEmotes = new();
-    private Dictionary<string, ImageTexture> _3rdPartyEmotes = new();
+    [Singleton] public Globals? Globals;
+    private Dictionary<ChatBadgeSetModel, Dictionary<ChatBadgeModel, ImageTexture>> _chatBadges = [];
+    private Dictionary<ChatEmoteModel, ImageTexture> _twitchEmotes = [];
+    private Dictionary<string, ImageTexture> _3rdPartyEmotes = [];
     private TEmotesService _3rdPartyProvider = new();
 
     public bool LoadedBadges = false;
@@ -42,13 +42,13 @@ public partial class ImageManager : Node
         };
         var img = await Util.FetchImage(emoteModel.BuildImageURL("static", "dark", "1.0"), 
             "twitchEmotes", $"{emoteModel.id}.png");
-        _twitchEmotes[emoteModel] = img;
+        _twitchEmotes[emoteModel] = img!;
         return img;
     }
     
     public async Task FetchTwitchEmotes()
     {
-        var globalEmotes = await Globals.TwitchApi.Chat.GetGlobalEmotes();
+        var globalEmotes = await Globals!.TwitchApi.Chat.GetGlobalEmotes();
         var channelEmotes =
             await Globals.TwitchApi.Chat.GetChannelEmotes(Globals.Streamer);
 
@@ -61,14 +61,14 @@ public partial class ImageManager : Node
             }
             var img = await Util.FetchImage(emote.BuildImageURL("static", "dark", "1.0"),
                 "twitchEmotes", $"{emote.id}.png");
-            _twitchEmotes[emote] = img;
+            _twitchEmotes[emote] = img!;
         }
 
         foreach (var emote in channelEmotes)
         {
             var img = await Util.FetchImage(emote.BuildImageURL("static", "dark", "1.0"),
                 "twitchEmotes", $"{emote.id}.png");
-            _twitchEmotes[emote] = img;
+            _twitchEmotes[emote] = img!;
         }
 
         LoadedTwitch = true;
@@ -86,27 +86,27 @@ public partial class ImageManager : Node
 
     public async Task FetchTwitchBadges()
     {
-        var globalBadges = await Globals.TwitchApi.Chat.GetGlobalChatBadges();
+        var globalBadges = await Globals!.TwitchApi.Chat.GetGlobalChatBadges();
         var channelBadges =
             await Globals.TwitchApi.Chat.GetChannelChatBadges(Globals.Streamer);
 
         foreach (var badgeSet in globalBadges)
         {
-            _chatBadges[badgeSet] = new Dictionary<ChatBadgeModel, ImageTexture>();
+            _chatBadges[badgeSet] = [];
             foreach (var (badge, index) in badgeSet.versions.WithIndex())
             {
                 var img = await Util.FetchImage(badge.image_url_4x, "twitchBadges", $"{badgeSet.set_id}.{index}.png");
-                _chatBadges[badgeSet][badge] = img;
+                _chatBadges[badgeSet][badge] = img!;
             }
         }
 
         foreach (var badgeSet in channelBadges)
         {
-            _chatBadges[badgeSet] = new Dictionary<ChatBadgeModel, ImageTexture>();
+            _chatBadges[badgeSet] = [];
             foreach (var (badge, index) in badgeSet.versions.WithIndex())
             {
                 var img = await Util.FetchImage(badge.image_url_4x, "twitchBadges", $"{badgeSet.set_id}.{index}.png");
-                _chatBadges[badgeSet][badge] = img;
+                _chatBadges[badgeSet][badge] = img!;
             }
         }
 
@@ -121,15 +121,15 @@ public partial class ImageManager : Node
     {
         var globalEmotes = 
             await _3rdPartyProvider.GetGlobalEmotes([Provider.BetterTV, Provider.FrankerFaceZ, Provider.SevenTV]);
-        var channelEmotes = await _3rdPartyProvider.GetChannelEmotes(Globals.Streamer.id,
+        var channelEmotes = await _3rdPartyProvider.GetChannelEmotes(Globals!.Streamer.id,
             [Provider.BetterTV, Provider.FrankerFaceZ, Provider.SevenTV]);
 
-        foreach (var emote in globalEmotes)
+        foreach (var emote in globalEmotes!)
         {
             var url = emote.Get1x();
-            var fileName = string.Join("_", url.Split("/")[^2..]);
+            var fileName = string.Join("_", url!.Split("/")[^2..]);
             var img = await Util.FetchImage(url, "3rdPartyEmotes", fileName);
-            _3rdPartyEmotes[emote.Code] = img;
+            _3rdPartyEmotes[emote!.Code!] = img!;
         }
 
         if (channelEmotes == null) return;
@@ -137,9 +137,9 @@ public partial class ImageManager : Node
         foreach (var emote in channelEmotes)
         {
             var url = emote.Get1x();
-            var fileName = string.Join("_", url.Split("/")[^2..]);
+            var fileName = string.Join("_", url!.Split("/")[^2..]);
             var img = await Util.FetchImage(url, "3rdPartyEmotes", fileName);
-            _3rdPartyEmotes[emote.Code] = img;
+            _3rdPartyEmotes[emote!.Code!] = img!;
         }
 
         Loaded3rdParty = true;

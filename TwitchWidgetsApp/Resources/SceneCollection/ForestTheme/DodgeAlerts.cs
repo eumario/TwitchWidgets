@@ -9,13 +9,13 @@ namespace TwitchWidgetsApp.Resources.SceneCollection.ForestTheme;
 
 public partial class DodgeAlerts : Node
 {
-	[Singleton] public Globals Globals;
+	[Singleton] public Globals? Globals;
 
-	[Export] public string SceneName;
-	[Export] public string SourceToDodge;
+	[Export] public string? SceneName;
+	[Export] public string? SourceToDodge;
 	[Export] public Vector2 TargetPosition;
 	[Export] public Vector2 TargetSize;
-	private SceneItem _sourceToDodge;
+	private SceneItem? _sourceToDodge;
 
 	private Rect2 _originTransform;
 	private Rect2 _newTransform;
@@ -25,12 +25,12 @@ public partial class DodgeAlerts : Node
 	{
 		this.OnReady();
 		GatherInfo();
-		Globals.AlertManager.ShowAlert += HandleAlert;
+		Globals!.AlertManager!.ShowAlert += HandleAlert;
 	}
 
 	public override void _ExitTree()
 	{
-		Globals.AlertManager.ShowAlert -= HandleAlert;
+		Globals!.AlertManager!.ShowAlert -= HandleAlert;
 	}
 
 	private void HandleAlert(AlertScript alert)
@@ -48,7 +48,7 @@ public partial class DodgeAlerts : Node
 
 	private async void GatherInfo()
 	{
-		var list = await Globals.ObsManager.Client.GetSceneItemList(SceneName);
+		var list = await Globals!.ObsManager!.Client!.GetSceneItemList(SceneName!);
 		foreach (var item in list)
 		{
 			if (item.SourceName == SourceToDodge)
@@ -88,7 +88,7 @@ public partial class DodgeAlerts : Node
 
 	private async void AdjustTransform(Rect2 newPos)
 	{
-		var oldTransform = _sourceToDodge.SceneItemTransform;
+		var oldTransform = _sourceToDodge!.SceneItemTransform;
 		var newTransform = new SceneItemTransform(oldTransform.Alignment,
 			oldTransform.BoundsAlignment,
 			1,
@@ -107,6 +107,6 @@ public partial class DodgeAlerts : Node
 			oldTransform.SourceHeight,
 			oldTransform.SourceWidth,
 			newPos.Size.X);
-		await Globals.ObsManager.Client.SetSceneItemTransform(SceneName, _sourceToDodge.SceneItemId, newTransform);
+		await Globals!.ObsManager!.Client!.SetSceneItemTransform(SceneName!, _sourceToDodge.SceneItemId, newTransform);
 	}
 }

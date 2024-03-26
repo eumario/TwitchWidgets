@@ -9,7 +9,7 @@ namespace TwitchWidgetsApp.Library.Bot.Commands;
 
 public class FollowAge : ICommand
 {
-    public TwitchWidgetsApp.Library.Globals Globals { get; set; }
+    public Globals? Globals { get; set; }
     public bool Enabled => true;
     public string CommandText => "!followage";
     public string CommandAlias => "";
@@ -22,7 +22,7 @@ public class FollowAge : ICommand
     }
     public async void RunCommand(UserModel model, string args, string messageId = "", bool isWhisper = false)
     {
-        var streamer = Globals.Streamer;
+        var streamer = Globals!.Streamer;
         var conn = Globals.TwitchConnection;
         var chat = Globals.Chat;
         var api = $"channels/followers?broadcaster_id={streamer.id}&user_id={model.id}";

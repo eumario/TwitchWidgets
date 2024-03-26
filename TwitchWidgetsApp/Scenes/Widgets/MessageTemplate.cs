@@ -9,21 +9,21 @@ namespace TwitchWidgetsApp.Scenes.Widgets;
 
 public partial class MessageTemplate : PanelContainer
 {
-	[Singleton] public Globals Globals;
-	[NodePath] private TextureRect _userIcon;
-	[NodePath] private Label _displayName;
-	[NodePath] private Label _timeStamp;
-	[NodePath] private RichTextLabel _message;
-	[NodePath] private HBoxContainer _badges;
+	[Singleton] public Globals? Globals;
+	[NodePath] private TextureRect? _userIcon;
+	[NodePath] private Label? _displayName;
+	[NodePath] private Label? _timeStamp;
+	[NodePath] private RichTextLabel? _message;
+	[NodePath] private HBoxContainer? _badges;
 
-	private Texture2D _icon;
-	private string _name;
+	private Texture2D? _icon;
+	private string? _name;
 	private DateTime _time;
-	private string _msg;
+	private string? _msg;
 	private Color _userColor;
-	private List<ImageTexture> _badgeTextures = new();
+	private List<ImageTexture> _badgeTextures = [];
 
-	public Texture2D UserIcon
+	public Texture2D? UserIcon
 	{
 		get => _icon;
 		set
@@ -34,7 +34,7 @@ public partial class MessageTemplate : PanelContainer
 		}
 	}
 
-	public string DisplayName
+	public string? DisplayName
 	{
 		get => _name;
 		set
@@ -67,19 +67,19 @@ public partial class MessageTemplate : PanelContainer
 		}
 	}
 
-	public string Message
+	public string? Message
 	{
 		get => _msg;
 		set
 		{
 			_msg = value;
 			if (_message != null)
-				ParseBBCode(value);
+				ParseBBCode(value!);
 				//_message.Text = value; // TODO: Need to Parse for Emoticons : EG: ParseBBCode(value); (Use PushXXXX/PopXXXX)
 		}
 	}
 
-	public ChatMessagePacketModel MessagePacketModel;
+	public ChatMessagePacketModel? MessagePacketModel;
 
 	public void AddBadge(ImageTexture texture) => _badgeTextures.Add(texture);
 
@@ -96,31 +96,32 @@ public partial class MessageTemplate : PanelContainer
 		DisplayName = _name;
 		Timestamp = _time;
 		Message = _msg;
-		_displayName.LabelSettings = (LabelSettings)_displayName.LabelSettings.Duplicate(true);
-		foreach(var node in _badges.GetChildren()) node.QueueFree();
+		_displayName!.LabelSettings = (LabelSettings)_displayName.LabelSettings.Duplicate(true);
+		foreach(var node in _badges!.GetChildren()) node.QueueFree();
 		foreach (var badge in _badgeTextures)
 		{
-			var badgeRect = new TextureRect();
-			badgeRect.ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize;
-			badgeRect.CustomMinimumSize = new Vector2(20, 20);
-			badgeRect.Texture = badge;
-			_badges.AddChild(badgeRect);
+            var badgeRect = new TextureRect
+            {
+                ExpandMode = TextureRect.ExpandModeEnum.IgnoreSize,
+                CustomMinimumSize = new Vector2(20, 20),
+                Texture = badge
+            };
+            _badges.AddChild(badgeRect);
 		}
 	}
 
 	private async void ParseBBCode(string msg)
 	{
-		//TODO: Need to implement FrankerFaceZ, BetterTTV and 7TV, along with Getting Missing Emoticons.
-		_message.Text = "";
+		_message!.Text = "";
 		var keyedIndex = new Dictionary<string, string>();
-		var cached = new Dictionary<string, ImageTexture>();
-		foreach (var (emote, positions) in MessagePacketModel.EmotesDictionary)
+		var cached = new Dictionary<string, ImageTexture?>();
+		foreach (var (emote, positions) in MessagePacketModel!.EmotesDictionary)
 		{
-			var emText = Globals.ImageManager.GetTwitchEmoteTexture(emote) ?? await Globals.ImageManager.FetchTwitchEmote(emote);
+			var emText = Globals!.ImageManager!.GetTwitchEmoteTexture(emote) ?? await Globals.ImageManager.FetchTwitchEmote(emote);
 
 			var (start, end) = positions[0];
 			keyedIndex[msg.Substr(start, end - start + 1)] = emote;
-			cached[emote] = emText;
+			cached[emote] = emText!;
 		}
 
 		// msg = keyedIndex.Keys.Aggregate(msg, (current, mote) => current.Replace(mote, $"[emote]{keyedIndex[mote]}[/emote]"));
@@ -132,9 +133,9 @@ public partial class MessageTemplate : PanelContainer
 		foreach (var part in msg.Split(" "))
 		{
 			if (part.StartsWith("[emote]")) continue;
-			if (!Globals.ImageManager.Has3rdEmote(part)) continue;
+			if (!Globals!.ImageManager!.Has3rdEmote(part)) continue;
 			if (cached.ContainsKey(part)) continue;
-			cached[part] = Globals.ImageManager.Get3rdEmote(part);
+			cached[part] = Globals!.ImageManager!.Get3rdEmote(part);
 			msg = msg.Replace(part, $"[emote]{part}[/emote]");
 		}
 

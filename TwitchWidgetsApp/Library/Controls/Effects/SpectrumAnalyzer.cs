@@ -4,9 +4,9 @@ using Godot.Sharp.Extras;
 namespace TwitchWidgetsApp.Library.Controls.Effects;
 public partial class SpectrumAnalyzer : ColorRect
 {
-	[Singleton] public Globals Globals;
-	private ShaderMaterial SpectrumShader = null;
-	private AudioEffectSpectrumAnalyzerInstance Analyzer = null;
+	[Singleton] public Globals? Globals;
+	private ShaderMaterial? SpectrumShader = null;
+	private AudioEffectSpectrumAnalyzerInstance? Analyzer = null;
 
 	private const int VU_COUNT = 32;
 	private const float FREQ_MAX = 3000.0f;
@@ -16,7 +16,7 @@ public partial class SpectrumAnalyzer : ColorRect
 	{
 		this.OnReady();
 		SpectrumShader = (ShaderMaterial)this.Material;
-		Analyzer = Globals.MusicController.GetSpectrum();
+		Analyzer = Globals!.MusicController!.GetSpectrum();
 	}
 	
 	// func ConvertLinearToDB(volume):
@@ -31,14 +31,14 @@ public partial class SpectrumAnalyzer : ColorRect
 	public override void _Process(double delta)
 	{
 		if (Analyzer is null) return;
-		if (!Globals.MusicController.IsPlaying)
+		if (!Globals!.MusicController!.IsPlaying)
 		{
 			if (cleared) return;
 			cleared = true;
 			for (int i = 0; i < VU_COUNT; i++)
 			{
 				double hz = (i + 1) * FREQ_MAX / VU_COUNT;
-				SpectrumShader.SetShaderParameter($"hz{i}", 0.0);
+				SpectrumShader!.SetShaderParameter($"hz{i}", 0.0);
 			}
 	
 			return;
@@ -50,7 +50,7 @@ public partial class SpectrumAnalyzer : ColorRect
 		{
 			var hz = (i + 1) * FREQ_MAX / VU_COUNT;
 			var mag = Analyzer.GetMagnitudeForFrequencyRange((float)prevHz, (float)hz).Length();
-			SpectrumShader.SetShaderParameter($"hz{i}", (float)Mathf.Clamp(((float)Linear2DB(mag) + MIN_DB)/MIN_DB, 0.0f, 1.0f));
+			SpectrumShader!.SetShaderParameter($"hz{i}", (float)Mathf.Clamp(((float)Linear2DB(mag) + MIN_DB)/MIN_DB, 0.0f, 1.0f));
 			prevHz = hz;
 		}
 	}

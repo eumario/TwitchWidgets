@@ -10,20 +10,20 @@ namespace TwitchWidgetsApp.Scenes;
 
 public partial class ProjectionWindow : Control
 {
-	[Singleton] public Globals Globals;
+	[Singleton] public Globals? Globals;
 
-	[Singleton] public Node ElgatoStreamDeck;
+	[Singleton] public Node? ElgatoStreamDeck;
 
-	private SceneCollection _currentCollection;
+	private SceneCollection? _currentCollection;
 
 	[Export]
-	public SceneCollection CurrentCollection
+	public SceneCollection? CurrentCollection
 	{
 		get => _currentCollection;
 		set
 		{
 			_currentCollection = value;
-			if (Globals.ObsManager.IsConnected())
+			if (Globals!.ObsManager!.IsConnected())
 				FetchScene();
 		}
 	}
@@ -35,19 +35,19 @@ public partial class ProjectionWindow : Control
 		GetTree().Root.TransparentBg = true;
 		GetViewport().TransparentBg = true;
 		TwitchWidgetsContext.DatabaseLocation = System.IO.Path.Join(OS.GetUserDataDir(), "twitch_widgets.db");
-		Globals.Database = new TwitchWidgetsContext();
-		Globals.SettingsManager.LoadSettings();
+		Globals!.Database = new TwitchWidgetsContext();
+		Globals!.SettingsManager!.LoadSettings();
 		Globals.ProjectorWindow = GetWindow();
 		Globals.ProjectionWindow = this;
 		GetWindow().Title = "TwitchWidgets";
 		
 		Globals.SettingsUpdated += GlobalsOnSettingsUpdated;
 		
-		ElgatoStreamDeck.Connect("on_key_down", Callable.From((string data) => HandleStreamDeck(data)));
+		ElgatoStreamDeck!.Connect("on_key_down", Callable.From((string data) => HandleStreamDeck(data)));
 
-		Globals.ObsManager.ObsConnected += () =>
+		Globals!.ObsManager!.ObsConnected += () =>
 		{
-			Globals.ObsManager.Client.CurrentProgramSceneChanged += ClientOnCurrentProgramSceneChanged;
+			Globals!.ObsManager!.Client!.CurrentProgramSceneChanged += ClientOnCurrentProgramSceneChanged;
 
 			FetchScene();
 		};
@@ -58,25 +58,25 @@ public partial class ProjectionWindow : Control
 
 		if (!Globals.ObsManager.IsConnected()) return;
 		
-		Globals.ObsManager.Client.CurrentProgramSceneChanged += ClientOnCurrentProgramSceneChanged;
+		Globals!.ObsManager!.Client!.CurrentProgramSceneChanged += ClientOnCurrentProgramSceneChanged;
 		FetchScene();
 	}
 
 	private async void FetchScene()
 	{
-		if (!Globals.ObsManager.IsConnected())
+		if (!Globals!.ObsManager!.IsConnected())
 		{
 			GD.Print("FetchScene called with no OBS Connection!");
 			return;
 		}
-		var scene = await Globals.ObsManager.Client.GetCurrentProgramScene();
+		var scene = await Globals!.ObsManager!.Client!.GetCurrentProgramScene();
 		ChangeObsScene(scene);
 	}
 
-	private void ClientOnCurrentProgramSceneChanged(object sender, SceneNameEventArgs e)
+	private void ClientOnCurrentProgramSceneChanged(object? sender, SceneNameEventArgs e)
 	{
 		if (CurrentCollection == null) return;
-		Globals.RunOnMain(() =>
+		Globals!.RunOnMain(() =>
 		{
 			ChangeObsScene(e.SceneName);
 		});
@@ -84,7 +84,7 @@ public partial class ProjectionWindow : Control
 
 	private void ChangeObsScene(string sceneName)
 	{
-		if (CurrentCollection == null) { Globals.RunOnMain(() => ChangeObsScene(sceneName)); return; }
+		if (CurrentCollection == null) { Globals!.RunOnMain(() => ChangeObsScene(sceneName)); return; }
 		var ps = CurrentCollection[sceneName];
 		
 		foreach (var node in GetChildren())
@@ -92,12 +92,12 @@ public partial class ProjectionWindow : Control
 			if (node is ObsScene)
 				node.QueueFree();
 		}
-		AddChild(ps.Instantiate());
+		AddChild(ps!.Instantiate());
 	}
 	
 	private void GlobalsOnSettingsUpdated()
 	{
-		var path = Globals.SettingsManager.GetValue("scene_collection", "");
+		var path = Globals!.SettingsManager!.GetValue("scene_collection", "");
 		if (path != "")
 		{
 			if (CurrentCollection == null || CurrentCollection.ResourcePath != path)

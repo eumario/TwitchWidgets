@@ -9,16 +9,16 @@ namespace TwitchWidgetsApp.Scenes.CatCafe.Scenes;
 
 public partial class Chatter : Node2D
 {
-	[Singleton] public Globals Globals;
+	[Singleton] public Globals? Globals;
 	[Signal] public delegate void RandomizeSkinEventHandler();
 	#region Paths and Exports
-	[NodePath] private Sprite2D _sprite;
-	[NodePath] private AnimationPlayer _animPlayer;
-	[NodePath] private AnimationTree _animTree;
-	[NodePath] private Label _chatterName;
-	[NodePath] private Sprite2D _destMarker;
-	[NodePath] private Label _currentState;
-	[Export] public TileMap Map;
+	[NodePath] private Sprite2D? _sprite;
+	[NodePath] private AnimationPlayer? _animPlayer;
+	[NodePath] private AnimationTree? _animTree;
+	[NodePath] private Label? _chatterName;
+	[NodePath] private Sprite2D? _destMarker;
+	[NodePath] private Label? _currentState;
+	[Export] public TileMap? Map;
 	#endregion
 	
 	#region Constants
@@ -32,15 +32,15 @@ public partial class Chatter : Node2D
 	
 	[ExportCategory("Debug Information")]
 	#region Private Variables
-	private AStarGrid2D _grid;
-	private Texture2D _avatarSkin;
+	private AStarGrid2D? _grid;
+	private Texture2D? _avatarSkin;
 	[Export] private Color _chatterColor;
 	[Export(PropertyHint.Enum)] private CurrentState _state;
 	[Export] private bool _isMoving;
 	[Export] private double _delay = 0.0;
-	private RandomNumberGenerator _rng;
+	private RandomNumberGenerator? _rng;
 	[Export] private Vector2 _randomSpot = Vector2.Zero;
-	private Node2D _debugOverlay;
+	private Node2D? _debugOverlay;
 	#endregion
 	
 	#region Public Properties
@@ -54,8 +54,8 @@ public partial class Chatter : Node2D
 		}
 	}
 
-	private string _chatterDisplayName;
-	public string ChatterName
+	private string? _chatterDisplayName;
+	public string? ChatterName
 	{
 		get => _chatterDisplayName;
 		set
@@ -65,7 +65,7 @@ public partial class Chatter : Node2D
 		}
 	}
 
-	public Texture2D AvatarSkin
+	public Texture2D? AvatarSkin
 	{
 		get => _avatarSkin;
 		set
@@ -75,7 +75,7 @@ public partial class Chatter : Node2D
 		}
 	}
 
-	public UserModel UserModel { get; set; }
+	public UserModel? UserModel { get; set; }
 	#endregion
 
 	public static Chatter Create()
@@ -88,11 +88,11 @@ public partial class Chatter : Node2D
 	{
 		return new StreamAvatar()
 		{
-			UserModel = UserModel,
+			UserModel = UserModel!,
 			State = _state,
 			TargetPosition = GlobalPosition,
-			SpritePosition = _sprite.GlobalPosition,
-			AvatarSkin = _avatarSkin,
+			SpritePosition = _sprite!.GlobalPosition,
+			AvatarSkin = _avatarSkin!,
 			Delay = _delay
 		};
 	}
@@ -108,12 +108,12 @@ public partial class Chatter : Node2D
 		_state = avatar.State;
 		UserModel = avatar.UserModel;
 		GlobalPosition = avatar.TargetPosition;
-		_sprite.GlobalPosition = avatar.SpritePosition;
+		_sprite!.GlobalPosition = avatar.SpritePosition;
 		AvatarSkin = avatar.AvatarSkin;
-		ChatterName = avatar.UserModel.display_name;
+		ChatterName = avatar.UserModel!.display_name;
 		Name = avatar.UserModel.id;
-		ChatterColor = Globals.SavedChatColors[avatar.UserModel];
-		_destMarker.Visible = false;
+		ChatterColor = Globals!.SavedChatColors[avatar.UserModel];
+		_destMarker!.Visible = false;
 		_delay = avatar.Delay;
 		UpdateState();
 		_isMoving = IsMovingState(_state);
@@ -122,20 +122,20 @@ public partial class Chatter : Node2D
 	public bool IsMovingState(CurrentState state) => state is CurrentState.Walking or CurrentState.Running;
 	public bool IsStillState(CurrentState state) => !IsMovingState(state);
 	public bool IsStandingAnimation(CurrentState state) => state is CurrentState.SittingUp or CurrentState.LayingUp;
-	private bool IsSolidPoint(Vector2I tilePos) => _grid.IsPointSolid(tilePos);
+	private bool IsSolidPoint(Vector2I tilePos) => _grid!.IsPointSolid(tilePos);
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		this.OnReady();
-		_destMarker.Visible = false;
-		var labelSettings = _chatterName.LabelSettings.Duplicate(true) as LabelSettings;
+		_destMarker!.Visible = false;
+		var labelSettings = _chatterName!.LabelSettings.Duplicate(true) as LabelSettings;
 		_chatterName.LabelSettings = labelSettings;
 		ChatterColor = _chatterColor;
 		ChatterName = _chatterDisplayName;
 		AvatarSkin = _avatarSkin;
 		_grid = new AStarGrid2D();
-		_grid.Offset = Map.GlobalPosition;
+		_grid.Offset = Map!.GlobalPosition;
 		_grid.Region = Map.GetUsedRect();
 		_grid.CellSize = new Vector2(16, 16);
 		_grid.DiagonalMode = AStarGrid2D.DiagonalModeEnum.Never;
@@ -161,7 +161,7 @@ public partial class Chatter : Node2D
 			}
 		}
 		
-		_animTree.AnimationFinished += AnimTreeOnAnimationFinished;
+		_animTree!.AnimationFinished += AnimTreeOnAnimationFinished;
 
 		_state = CurrentState.Walking;
 		_isMoving = true;
@@ -169,9 +169,9 @@ public partial class Chatter : Node2D
 		_rng.Randomize();
 		UpdateState();
 
-		Globals.UpdateSkin += (id, skin) =>
+		Globals!.UpdateSkin += (id, skin) =>
 		{
-			if (id != Name && id != UserModel.id) return;
+			if (id != Name && id != UserModel!.id) return;
 			if (skin != "") AvatarSkin = GD.Load<Texture2D>(skin);
 			else EmitSignal(SignalName.RandomizeSkin);
 		};
@@ -180,7 +180,7 @@ public partial class Chatter : Node2D
 	public override void _ExitTree()
 	{
 		GD.Print("Chatter leaving Tree.");
-		var res = Globals.StreamAvatars.FirstOrDefault(x => x.UserModel.id == Name);
+		var res = Globals!.StreamAvatars.FirstOrDefault(x => x.UserModel!.id == Name);
 		if (res != null) Globals.StreamAvatars.Remove(res);
 		Globals.StreamAvatars.Add(SnapCurrentState());
 	}
@@ -189,7 +189,7 @@ public partial class Chatter : Node2D
 	{
 		if (!(_state is CurrentState.LayingUp or CurrentState.SittingUp)) return;
 		_state = CurrentState.Deciding;
-		_delay = _rng.RandfRange(3.0f, 15.0f);
+		_delay = _rng!.RandfRange(3.0f, 15.0f);
 		UpdateState();
 	}
 
@@ -214,15 +214,15 @@ public partial class Chatter : Node2D
 			CurrentState.SittingDown => CurrentState.SittingUp,
 			_ => CurrentState.Deciding
 		};
-		if (_state == CurrentState.Deciding) _delay = _rng.RandfRange(3.0f, 15.0f);
+		if (_state == CurrentState.Deciding) _delay = _rng!.RandfRange(3.0f, 15.0f);
 		UpdateState();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		if (!_isMoving) return;
-		var path = _grid.GetIdPath(
-			Map.LocalToMap(_sprite.GlobalPosition),
+		var path = _grid!.GetIdPath(
+			Map!.LocalToMap(_sprite!.GlobalPosition),
 			Map.LocalToMap(GlobalPosition));
 		
 		if (path.Count > 0)
@@ -244,10 +244,10 @@ public partial class Chatter : Node2D
 			}
 			else
 			{
-				_destMarker.Visible = false;
+				_destMarker!.Visible = false;
 				_isMoving = false;
 				_state = CurrentState.Deciding;
-				_delay = _rng.RandfRange(3.0f, 15.0f);
+				_delay = _rng!.RandfRange(3.0f, 15.0f);
 				UpdateState();
 			}
 		}
@@ -260,7 +260,7 @@ public partial class Chatter : Node2D
 		// treeSpeed.X = MathF.Round(Math.Clamp(speed.X, -1.0f, 1.0f));
 		// treeSpeed.Y = MathF.Round(Math.Clamp(speed.Y, -1.0f, 1.0f));
 
-		_animTree.Set("parameters/anim_idle/blend_position", treeSpeed);
+		_animTree!.Set("parameters/anim_idle/blend_position", treeSpeed);
 		_animTree.Set("parameters/anim_laying_down/blend_position", treeSpeed);
 		_animTree.Set("parameters/anim_laying_up/blend_position", treeSpeed);
 		_animTree.Set("parameters/anim_looking/blend_position", treeSpeed);
@@ -272,7 +272,7 @@ public partial class Chatter : Node2D
 
 	private void DecideNextState()
 	{
-		var state = AvailableStates[_rng.RandiRange(0, AvailableStates.Count - 1)];
+		var state = AvailableStates[_rng!.RandiRange(0, AvailableStates.Count - 1)];
 
 		if (state == _state) return;
 
@@ -286,17 +286,17 @@ public partial class Chatter : Node2D
 
 	private void UpdateState()
 	{
-		if (Globals.IsDebugging)
+		if (Globals!.IsDebugging)
 		{
-			_currentState.Text = $"<{_state}>";
+			_currentState!.Text = $"<{_state}>";
 			_currentState.Visible = true;
 		}
 		else
 		{
-			_currentState.Visible = false;
+			_currentState!.Visible = false;
 		}
 
-		_animTree.Set("parameters/state_laying/transition_request", _state == CurrentState.LayingDown ? "down" : "up");
+		_animTree!.Set("parameters/state_laying/transition_request", _state == CurrentState.LayingDown ? "down" : "up");
 		_animTree.Set("parameters/state_sitting/transition_request", _state == CurrentState.SittingDown ? "down" : "up");
 		_animTree.Set("parameters/state_still/transition_request", _state switch
 		{
@@ -316,39 +316,39 @@ public partial class Chatter : Node2D
 	private void PickRandomSpot()
 	{
 		_isMoving = true;
-		var regionSize = _grid.Region.Size;
+		var regionSize = _grid!.Region.Size;
 		var regionPosition = _grid.Region.Position;
-		var pickedPosition = new Vector2I(_rng.RandiRange(0, regionSize.X -1), _rng.RandiRange(0, regionSize.Y - 1));
+		var pickedPosition = new Vector2I(_rng!.RandiRange(0, regionSize.X -1), _rng.RandiRange(0, regionSize.Y - 1));
 		while (IsSolidPoint(pickedPosition))
 			pickedPosition = new Vector2I(_rng.RandiRange(0, regionSize.X -1), _rng.RandiRange(0, regionSize.Y - 1));
-		_randomSpot = Map.MapToLocal(pickedPosition);
+		_randomSpot = Map!.MapToLocal(pickedPosition);
 		var curPos = GlobalPosition;
 		GlobalPosition = _randomSpot;
-		_sprite.GlobalPosition = curPos;
-		if (Globals.IsDebugging) _destMarker.Visible = true;
+		_sprite!.GlobalPosition = curPos;
+		if (Globals!.IsDebugging) _destMarker!.Visible = true;
 	}
 
 	private void SetupStillState(CurrentState state)
 	{
-		_delay = _rng.RandfRange(3.0f, 15.0f);
+		_delay = _rng!.RandfRange(3.0f, 15.0f);
 		_isMoving = false;
 	}
 
 	public void SetSpawnPoint(Vector2 position)
 	{
-		var tmp = Map.LocalToMap(position);
+		var tmp = Map!.LocalToMap(position);
 		GlobalPosition = Map.MapToLocal(tmp);
 	}
 
 	public void SetSpecificPoint(Vector2 position)
 	{
-		var tmp = Map.LocalToMap(position);
+		var tmp = Map!.LocalToMap(position);
 		_randomSpot = Map.MapToLocal(tmp);
 		var curPos = GlobalPosition;
 		GlobalPosition = _randomSpot;
-		_sprite.GlobalPosition = curPos;
+		_sprite!.GlobalPosition = curPos;
 		_isMoving = true;
-		if (Globals.IsDebugging) _destMarker.Visible = true;
+		if (Globals!.IsDebugging) _destMarker!.Visible = true;
 	} 
 }
 

@@ -9,46 +9,48 @@ namespace TwitchWidgetsApp.Library.Managers;
 
 public partial class MusicController : Node
 {
-    [Singleton] public Globals Globals;
-    [Singleton] public Node ElgatoStreamDeck;
+    [Singleton] public Globals? Globals;
+    [Singleton] public Node? ElgatoStreamDeck;
 
     [Signal] public delegate void SongChangedEventHandler();
     [Signal] public delegate void PauseChangedEventHandler();
     
-    private AudioStreamPlayer _player;
+    private AudioStreamPlayer? _player;
     public List<string> _songList = [];
     public Queue<string> _playlist = [];
-    public Dictionary<string, AudioStream> _cacheSongs = new();
-    public Dictionary<string, TagInfo> _tags = new();
-    public TagInfo CurrentSongTag;
+    public Dictionary<string, AudioStream> _cacheSongs = [];
+    public Dictionary<string, TagInfo> _tags = [];
+    public TagInfo? CurrentSongTag;
     public int CurrentSongIndex = 0;
     public int PlaylistCount => _songList.Count;
 
     private int _bus_index;
-    private string _currSong;
+    private string? _currSong;
     private float _curVol = 1.0f;
 
     public TimeSpan CurrentTrackLength =>
-        _currSong == null ? TimeSpan.Zero : TimeSpan.FromSeconds(_player.Stream.GetLength());
+        _currSong == null ? TimeSpan.Zero : TimeSpan.FromSeconds(_player!.Stream.GetLength());
     public TimeSpan CurrentTrackTime =>
-        _currSong == null ? TimeSpan.Zero : TimeSpan.FromSeconds(_player.GetPlaybackPosition());
-    public float CurrentTrackPosition => _currSong == null ? 0.0f : _player.GetPlaybackPosition();
-    public float CurrentTrackTotal => _currSong == null ? 0.0f : (float)_player.Stream.GetLength();
+        _currSong == null ? TimeSpan.Zero : TimeSpan.FromSeconds(_player!.GetPlaybackPosition());
+    public float CurrentTrackPosition => _currSong == null ? 0.0f : _player!.GetPlaybackPosition();
+    public float CurrentTrackTotal => _currSong == null ? 0.0f : (float)_player!.Stream.GetLength();
 
-    public bool IsPlaying => _player.Playing;
+    public bool IsPlaying => _player!.Playing;
 
     public AudioEffectSpectrumAnalyzerInstance GetSpectrum() => (AudioEffectSpectrumAnalyzerInstance)AudioServer.GetBusEffectInstance(_bus_index, 0);
 
     public override void _Ready()
     {
         this.OnReady();
-        ElgatoStreamDeck.Connect("on_key_down", Callable.From<string>(HandleElgato));
-        _player = new AudioStreamPlayer();
-        _player.Name = "MusicControllerPlayer";
-        _player.Bus = "music";
+        ElgatoStreamDeck!.Connect("on_key_down", Callable.From<string>(HandleElgato));
+        _player = new AudioStreamPlayer
+        {
+            Name = "MusicControllerPlayer",
+            Bus = "music"
+        };
         _bus_index = AudioServer.GetBusIndex("music");
         AddChild(_player);
-        Globals.SettingsLoaded += OnSettingsLoaded;
+        Globals!.SettingsLoaded += OnSettingsLoaded;
         Globals.SettingsUpdated += OnSettingsUpdated;
         _player.Finished += PlayerOnFinished;
     }
@@ -61,9 +63,9 @@ public partial class MusicController : Node
         _currSong = song;
         if (!_cacheSongs.ContainsKey(song))
             LoadSong(song);
-        _player.Stream = _cacheSongs[song];
+        _player!.Stream = _cacheSongs[song];
         CurrentSongTag = _tags[song];
-        if (Globals.LoopMusic)
+        if (Globals!.LoopMusic)
             _playlist.Enqueue(song);
         EmitSignal(SignalName.SongChanged);
         _player.Play();
@@ -74,14 +76,18 @@ public partial class MusicController : Node
         if (song.EndsWith(".mp3"))
         {
             FetchTag(song);
-            var mp3 = new AudioStreamMP3();
-            mp3.Data = File.ReadAllBytes(song);
+            var mp3 = new AudioStreamMP3
+            {
+                Data = File.ReadAllBytes(song)
+            };
             _cacheSongs[song] = mp3;
         }
         else if (song.EndsWith(".wav"))
         {
-            var wav = new AudioStreamWav();
-            wav.Data = File.ReadAllBytes(song);
+            var wav = new AudioStreamWav
+            {
+                Data = File.ReadAllBytes(song)
+            };
             _cacheSongs[song] = wav;
         }
         else if (song.EndsWith(".ogg"))
@@ -116,7 +122,7 @@ public partial class MusicController : Node
     private void OnSettingsLoaded()
     {
         _songList.Clear();
-        foreach (var file in Globals.MusicFolders.SelectMany(path => Directory.EnumerateFiles(path)))
+        foreach (var file in Globals!.MusicFolders.SelectMany(path => Directory.EnumerateFiles(path)))
         {
             if (file.EndsWith(".mp3")) _songList.Add(file);
             if (file.EndsWith(".ogg")) _songList.Add(file);
@@ -134,7 +140,7 @@ public partial class MusicController : Node
                 _playlist.Enqueue(song);
         }
 
-        _curVol = Globals.SettingsManager.GetValue("music_volume", 1.0f);
+        _curVol = Globals!.SettingsManager!.GetValue("music_volume", 1.0f);
         AudioServer.SetBusVolumeDb(_bus_index, Mathf.LinearToDb(_curVol));
         if (Globals.AutoPlayMusic)
             PlayerOnFinished();
@@ -143,7 +149,7 @@ public partial class MusicController : Node
     private void OnSettingsUpdated()
     {
         var newFolders = new List<string>();
-        foreach (var folder in Globals.MusicFolders)
+        foreach (var folder in Globals!.MusicFolders)
         {
             var found = false;
             foreach (var song in _songList)
@@ -165,7 +171,7 @@ public partial class MusicController : Node
 
         if (Globals.RandomizeMusic)
         {
-            var wasPlaying = _player.Playing;
+            var wasPlaying = _player!.Playing;
             if (_player.Playing) _player.Stop();
             RandomizePlaylist();
             if (wasPlaying) PlayerOnFinished();
@@ -189,15 +195,15 @@ public partial class MusicController : Node
         switch (data)
         {
             case "music play":
-                if (_player.Stream == null || !_player.Playing)
+                if (_player!.Stream == null || !_player.Playing)
                     PlayerOnFinished();
                 break;
             case "music pause":
-                _player.StreamPaused = !_player.StreamPaused;
+                _player!.StreamPaused = !_player.StreamPaused;
                 EmitSignal(SignalName.PauseChanged);
                 break;
             case "music stop":
-                if (_player.Playing)
+                if (_player!.Playing)
                     _player.Stop();
                 break;
             case "music vol_up":
@@ -207,7 +213,7 @@ public partial class MusicController : Node
                 ChangeVolume(-0.05f);
                 break;
             case "music next":
-                if (_player.Playing)
+                if (_player!.Playing)
                 {
                     _player.Stop();
                     PlayerOnFinished();
@@ -226,7 +232,7 @@ public partial class MusicController : Node
         GD.Print($"Volume Change: {_curVol} -> {newVol} (Change: {value})");
         _curVol = newVol;
         
-        Globals.SettingsManager.SetValue("music_volume", _curVol);
+        Globals!.SettingsManager!.SetValue("music_volume", _curVol);
         Globals.SettingsManager.SaveSettings();
         
         AudioServer.SetBusVolumeDb(_bus_index, Mathf.LinearToDb(_curVol));

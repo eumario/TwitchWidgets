@@ -18,9 +18,9 @@ public class EventSub
     private EventSubClient _eventSubClient;
     private TwitchConnection _connection;
 
-    private string _sessionId;
+    private string? _sessionId;
     private int? _keepAliveTimeout;
-    private string _reconnectUrl;
+    private string? _reconnectUrl;
     private bool _useMockServer;
     private bool _isReconnect;
     public Dictionary<SubscribeEnum, (Type, MethodInfo)> _messageTypeMap;
@@ -41,9 +41,11 @@ public class EventSub
     public event EventHandler<SubscriptionMessageEvent> OnSubscriptionMessage;
     public event EventHandler<string> OnReconnectRequested;
     public event EventHandler OnConnected;
-    
 
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public EventSub(TwitchConnection connection, bool useMockServer = false, bool isReconnect = false)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         _connection = connection;
         _useMockServer = useMockServer;
@@ -92,7 +94,7 @@ public class EventSub
         {
             try {
                 await _eventSubClient.Connect(string.IsNullOrEmpty(url) ? "ws://localhost:4090/ws" : url);
-            } catch (Exception ex) {
+            } catch (Exception) {
                 GD.Print("Failed to connect to EventSub Server.");
             }
 
@@ -164,7 +166,7 @@ public class EventSub
         }
     }
 
-    private void EventSubClientOnWelcomeMessageReceived(object sender, WelcomeMessage e)
+    private void EventSubClientOnWelcomeMessageReceived(object? sender, WelcomeMessage e)
     {
         Console.WriteLine($"Welcome Message Received at: {DateTime.Now:MM/dd/yy h:mm:ss tt}");
         if (_isReconnect)
@@ -180,25 +182,27 @@ public class EventSub
         OnConnected?.Invoke(this, EventArgs.Empty);
     }
 
-    private void EventSubClientOnNotificationMessageReceived(object sender, NotificationMessage e)
+    private void EventSubClientOnNotificationMessageReceived(object? sender, NotificationMessage e)
     {
         var sub = _messageTypeMap.Keys.FirstOrDefault(x => EnumHelper.GetEnumName(x) == e.Payload.Subscription.Type);
+#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
         if (sub == null) return;
+#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
         var payload = e.Payload.Event.ToObject(_messageTypeMap[sub].Item1);
         _messageTypeMap[sub].Item2.Invoke(this, [payload]);
     }
 
-    private void EventSubClientOnKeepAliveMessageReceived(object sender, KeepAliveMessage e)
+    private void EventSubClientOnKeepAliveMessageReceived(object? sender, KeepAliveMessage e)
     {
         // Noop
     }
 
-    private void EventSubClientOnRevocationMessageReceived(object sender, RevocationMessage e)
+    private void EventSubClientOnRevocationMessageReceived(object? sender, RevocationMessage e)
     {
         // Noop
     }
 
-    private void EventSubClientOnReconnectMessageReceived(object sender, ReconnectMessage e)
+    private void EventSubClientOnReconnectMessageReceived(object? sender, ReconnectMessage e)
     {
         Console.WriteLine($"Reconnect Message Received at: {DateTime.Now:MM/dd/yy h:mm:ss tt}");
         OnReconnectRequested?.Invoke(this, e.Payload.Session.ReconnectUrl);

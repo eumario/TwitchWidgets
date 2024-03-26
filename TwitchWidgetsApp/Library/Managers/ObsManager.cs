@@ -6,14 +6,14 @@ namespace TwitchWidgetsApp.Library.Managers;
 
 public partial class ObsManager : Node
 {
-    [Singleton] public Globals Globals;
+    [Singleton] public Globals? Globals;
     [Signal] public delegate void ObsConnectedEventHandler();
-    public ObsClient Client;
+    public ObsClient? Client;
 
     public override void _Ready()
     {
         this.OnReady();
-        Globals.SettingsLoaded += async () =>
+        Globals!.SettingsLoaded += async () =>
         {
             if (!Globals.AutoConnectObs) return;
             var client = new ObsClient();
@@ -36,7 +36,7 @@ public partial class ObsManager : Node
 
     private void SetupEvents()
     {
-        Client.ConnectionClosed += (sender, args) => Client = null;
+        Client!.ConnectionClosed += (sender, args) => Client = null;
         EmitSignal(SignalName.ObsConnected);
     }
 

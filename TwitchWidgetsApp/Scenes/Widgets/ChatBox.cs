@@ -14,11 +14,11 @@ namespace TwitchWidgetsApp.Scenes.Widgets;
 [GlobalClass]
 public partial class ChatBox : PanelContainer
 {
-    [Singleton] public Globals Globals;
-    [Export] public PackedScene MessageTemplate;
-    public VBoxContainer ChatHistory;
-    public ScrollContainer Scroll;
-    public MarginContainer Margin;
+    [Singleton] public Globals? Globals;
+    [Export] public PackedScene? MessageTemplate;
+    public VBoxContainer? ChatHistory;
+    public ScrollContainer? Scroll;
+    public MarginContainer? Margin;
 
     private double _maxScroll = 0;
     private bool _isLoading = false;
@@ -29,7 +29,7 @@ public partial class ChatBox : PanelContainer
     {
         if (Engine.IsEditorHint()) return;
         this.OnReady();
-        if (Globals.TwitchManager.IsReady)
+        if (Globals!.TwitchManager!.IsReady)
         {
             Task.Run(async () =>
             {
@@ -84,19 +84,19 @@ public partial class ChatBox : PanelContainer
     public override void _ExitTree()
     {
         if (Engine.IsEditorHint()) return;
-        Globals.Chat.OnMessageReceived -= ChatMessageReceived;
+        Globals!.Chat.OnMessageReceived -= ChatMessageReceived;
     }
 
     private async Task FetchImages()
     {
-        if (!Globals.ImageManager.LoadedBadges) await Globals.ImageManager.FetchTwitchBadges();
+        if (!Globals!.ImageManager!.LoadedBadges) await Globals.ImageManager.FetchTwitchBadges();
         if (!Globals.ImageManager.LoadedTwitch) await Globals.ImageManager.FetchTwitchEmotes();
         if (!Globals.ImageManager.Loaded3rdParty) await Globals.ImageManager.Fetch3rdPartyEmotes();
     }
 
     private void SetupEvents()
     {
-        Globals.Chat.OnMessageReceived += ChatMessageReceived;
+        Globals!.Chat.OnMessageReceived += ChatMessageReceived;
     }
 
     private void ChatMessageReceived(object? sender, ChatMessagePacketModel model)
@@ -107,7 +107,7 @@ public partial class ChatBox : PanelContainer
     private async void AddMessage(ChatMessagePacketModel message)
     {
         if (!IsInstanceIdValid(_chId)) return;
-        var user = Globals.Chatters.FirstOrDefault(x => x.id == message.UserID);
+        var user = Globals!.Chatters.FirstOrDefault(x => x.id == message.UserID);
         if (user == null)
         {
             Globals.RunOnMain(() => AddMessage(message));
@@ -129,14 +129,14 @@ public partial class ChatBox : PanelContainer
         var badges = new List<ImageTexture>();
         foreach (var (set_id, version) in message.BadgeDictionary)
         {
-            var image = Globals.ImageManager.GetBadgeTexture(set_id, version.ToString());
+            var image = Globals!.ImageManager!.GetBadgeTexture(set_id, version.ToString());
             if (image == null) continue;
             badges.Add(image);
         }
 
-        var tmpl = MessageTemplate.Instantiate<MessageTemplate>();
+        var tmpl = MessageTemplate!.Instantiate<MessageTemplate>();
         tmpl.MessagePacketModel = message;
-        tmpl.UserIcon = img;
+        tmpl.UserIcon = img!;
         tmpl.UserColor = color;
         tmpl.DisplayName = name;
         tmpl.Message = msg;
@@ -149,14 +149,14 @@ public partial class ChatBox : PanelContainer
             tmpl.QueueFree();
             return;
         }
-        ChatHistory.AddChild(tmpl);
+        ChatHistory!.AddChild(tmpl);
     }
 
     private void LoadHistory()
     {
-        foreach(var node in ChatHistory.GetChildren()) node.QueueFree();
+        foreach(var node in ChatHistory!.GetChildren()) node.QueueFree();
         
-        foreach(var message in Globals.ChatHistory)
+        foreach(var message in Globals!.ChatHistory)
             AddMessage(message);
     }
 }

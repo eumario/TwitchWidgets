@@ -10,22 +10,22 @@ namespace TwitchWidgetsApp.Library.EventSub;
 
 public class PollBeginEvent
 {
-    [JsonProperty("id")] public string Id;
-    [JsonProperty("broadcaster_user_id")] public string BroadcasterId;
-    [JsonProperty("broadcaster_user_login")] public string BroadcasterLogin;
-    [JsonProperty("broadcaster_user_name")] public string BroadcasterName;
-    [JsonProperty("title")] public string Title;
-    [JsonProperty("choices")] public List<PollChoice> Choices;
-    [JsonProperty("bits_voting")] public VotingCurrency BitsVoting;
-    [JsonProperty("channel_points_voting")] public VotingCurrency ChannelPointsVoting;
-    [JsonProperty("started_at")] public string StartedAt;
-    [JsonProperty("ends_at")] public string EndsAt;
+    [JsonProperty("id")] public string? Id;
+    [JsonProperty("broadcaster_user_id")] public string? BroadcasterId;
+    [JsonProperty("broadcaster_user_login")] public string? BroadcasterLogin;
+    [JsonProperty("broadcaster_user_name")] public string? BroadcasterName;
+    [JsonProperty("title")] public string? Title;
+    [JsonProperty("choices")] public List<PollChoice?>? Choices;
+    [JsonProperty("bits_voting")] public VotingCurrency? BitsVoting;
+    [JsonProperty("channel_points_voting")] public VotingCurrency? ChannelPointsVoting;
+    [JsonProperty("started_at")] public string? StartedAt;
+    [JsonProperty("ends_at")] public string? EndsAt;
 }
 
 public class PollChoice
 {
-    [JsonProperty("id")] public string Id;
-    [JsonProperty("title")] public string Title;
+    [JsonProperty("id")] public string? Id;
+    [JsonProperty("title")] public string? Title;
 }
 
 public class VotingCurrency

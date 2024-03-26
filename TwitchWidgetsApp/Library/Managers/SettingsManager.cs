@@ -8,7 +8,7 @@ namespace TwitchWidgetsApp.Library.Managers;
 
 public partial class SettingsManager : Node
 {
-    [Singleton] public Globals Globals;
+    [Singleton] public Globals? Globals;
     private Dictionary<string, Setting> _settings = new();
 
     public override void _Ready()
@@ -18,7 +18,7 @@ public partial class SettingsManager : Node
 
     public void LoadSettings()
     {
-        foreach (var setting in Globals.Database.Settings.ToList())
+        foreach (var setting in Globals!.Database!.Settings!.ToList())
         {
             _settings[setting.Key] = setting;
         }
@@ -37,7 +37,7 @@ public partial class SettingsManager : Node
         if (!HasSetting(key))
         {
             _settings[key] = new Setting() { Key = key };
-            Globals.Database.Settings.Add(_settings[key]);
+            Globals!.Database!.Settings!.Add(_settings[key]);
         }
     }
 
@@ -71,7 +71,7 @@ public partial class SettingsManager : Node
         _settings[key].SetValue(val);
     }
 
-    public void SaveSettings() => Globals.Database.SaveChanges();
+    public void SaveSettings() => Globals!.Database!.SaveChanges();
 
     public void ResetSettings()
     {

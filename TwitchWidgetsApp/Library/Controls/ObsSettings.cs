@@ -4,18 +4,18 @@ using Godot.Sharp.Extras;
 namespace TwitchWidgetsApp.Library.Controls;
 public partial class ObsSettings : GridContainer
 {
-	[Singleton] public Globals Globals;
-	[NodePath] private LineEdit _host;
-	[NodePath] private LineEdit _port;
-	[NodePath] private LineEdit _password;
+	[Singleton] public Globals? Globals;
+	[NodePath] private LineEdit? _host;
+	[NodePath] private LineEdit? _port;
+	[NodePath] private LineEdit? _password;
 
-	private string _sHost;
-	private string _sPort;
-	private string _sPass;
+	private string? _sHost;
+	private string? _sPort;
+	private string? _sPass;
 
 	public string Host
 	{
-		get => _host == null ? _sHost : _host.Text;
+		get => _host == null ? _sHost! : _host.Text;
 		set
 		{
 			_sHost = value;
@@ -25,7 +25,7 @@ public partial class ObsSettings : GridContainer
 
 	public string Port
 	{
-		get => _port == null ? _sPort : _port.Text;
+		get => _port == null ? _sPort! : _port.Text;
 		set
 		{
 			_sPort = value;
@@ -35,7 +35,7 @@ public partial class ObsSettings : GridContainer
 
 	public string Password
 	{
-		get => _password == null ? _sPass : _password.Text;
+		get => _password == null ? _sPass! : _password.Text;
 		set
 		{
 			_sPass = value;
@@ -47,8 +47,8 @@ public partial class ObsSettings : GridContainer
 	public override void _Ready()
 	{
 		this.OnReady();
-		Host = _sHost;
-		Password = _sPass;
-		Port = _sPort;
+		Host = _sHost!;
+		Password = _sPass!;
+		Port = _sPort!;
 	}
 }

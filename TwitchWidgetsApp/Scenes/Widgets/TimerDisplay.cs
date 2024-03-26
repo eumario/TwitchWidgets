@@ -17,16 +17,18 @@ public partial class TimerDisplay : Label
 		get => LabelSettings;
 		set => LabelSettings = value;
 	}
-	private Timer _timer;
+	private Timer? _timer;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_timer = new Timer();
-		_timer.Autostart = true;
-		_timer.OneShot = false;
-		_timer.WaitTime = 1.0;
-		AddChild(_timer);
+        _timer = new Timer
+        {
+            Autostart = true,
+            OneShot = false,
+            WaitTime = 1.0
+        };
+        AddChild(_timer);
 		if (!Countdown) TotalTime = 0;
 		_timer.Timeout += () =>
 		{
@@ -43,7 +45,7 @@ public partial class TimerDisplay : Label
 		if (Countdown && TotalTime <= 0)
 		{
 			Text = TimeUpMessage;
-			_timer.Stop();
+			_timer!.Stop();
 		}
 	}
 }

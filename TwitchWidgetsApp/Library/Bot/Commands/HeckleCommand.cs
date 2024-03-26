@@ -8,7 +8,7 @@ namespace TwitchWidgetsApp.Library.Bot.Commands;
 
 public class HeckleCommand : ICommand
 {
-    public Globals Globals { get; set; }
+    public Globals? Globals { get; set; }
     public bool Enabled => true;
     public string CommandText => "!heckle";
     public string CommandAlias => "!heck";
@@ -26,7 +26,7 @@ public class HeckleCommand : ICommand
 
     private void LoadHeckles()
     {
-        if (Globals.Database?.HeckleMessages == null) { Globals.RunOnMain(LoadHeckles); return; }
+        if (Globals!.Database?.HeckleMessages == null) { Globals.RunOnMain(LoadHeckles); return; }
         
         foreach(var heckle in Globals.Database.HeckleMessages.ToList())
             _heckles.Add(heckle);
@@ -40,6 +40,6 @@ public class HeckleCommand : ICommand
     public void RunCommand(UserModel model, string args, string messageId, bool isWhisper = false)
     {
         var heckle = _heckles[_rng.RandiRange(0, _heckles.Count - 1)];
-        Globals.Chat.SendMessage(Globals.Streamer, heckle.Heckle);
+        Globals!.Chat.SendMessage(Globals.Streamer, heckle.Heckle);
     }
 }

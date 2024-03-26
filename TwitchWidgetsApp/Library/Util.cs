@@ -33,13 +33,13 @@ public static class Util
             var stream = await client.GetStreamAsync(url);
             return stream;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return Stream.Null;
         }
     }
 
-    public static async Task<ImageTexture?> FetchImage(string url, string subPath = "avatar", string fileName = "")
+    public static async Task<ImageTexture?> FetchImage(string? url, string subPath = "avatar", string fileName = "")
     {
         var path = Path.Combine(Path.GetFullPath(OS.GetUserDataDir()), "cache");
         if (!Directory.Exists(path))
@@ -48,6 +48,8 @@ public static class Util
         path = Path.Combine(path, subPath);
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
+
+        if (url is null) return null;
 
         var file = Path.Combine(path, string.IsNullOrEmpty(fileName) ? Path.GetFileName(url) : fileName).EnsureEndsWith(".png");
 

@@ -8,7 +8,7 @@ namespace TwitchWidgetsApp.Scenes.Widgets;
 [GlobalClass]
 public partial class AlertContainer : PanelContainer
 {
-    [Singleton] public Globals Globals;
+    [Singleton] public Globals? Globals;
 
     public override void _Ready()
     {
