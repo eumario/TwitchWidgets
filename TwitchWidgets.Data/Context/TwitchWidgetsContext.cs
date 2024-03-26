@@ -15,7 +15,7 @@ public class TwitchWidgetsContext : DbContext
     public DbSet<KnownChatter>? KnownChatters { get; set; }
     public DbSet<HeckleMessage>? HeckleMessages { get; set; }
 
-    public static string DatabaseLocation;
+    public static string DatabaseLocation = String.Empty;
     public string DbPath { get; }
 
     public TwitchWidgetsContext()
