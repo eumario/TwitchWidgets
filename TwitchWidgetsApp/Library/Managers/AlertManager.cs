@@ -53,8 +53,19 @@ public partial class AlertManager : Node
         //Globals.TwitchManager.EventSub.OnPredictionEnded += (sender, @event) =>
     }
 
-    private void EventSubOnSubscriptionMessage(object sender, SubscriptionMessageEvent e)
+    private async Task<bool> CheckForUser(string userId)
     {
+        var user = await Globals.TwitchApi.Users.GetUserByID(userId);
+
+        if (user == null) return false;
+        
+        Globals.Chatters.Add(user);
+        return true;
+    }
+
+    private async void EventSubOnSubscriptionMessage(object sender, SubscriptionMessageEvent e)
+    {
+        await CheckForUser(e.UserId);
         if (CurrentSet == null) return;
         var alert = CurrentSet.SubscriptionMessageAlert.Instantiate<AlertScript>();
         alert.Text = $"{e.UserName}\nRenewed Their Subscription\n{e.Message.Text}";
@@ -64,8 +75,9 @@ public partial class AlertManager : Node
         EmitSignal(SignalName.ShowAlert, alert);
     }
 
-    private void EventSubOnSubscriptionGifted(object sender, SubscriptionGiftedEvent e)
+    private async void EventSubOnSubscriptionGifted(object sender, SubscriptionGiftedEvent e)
     {
+        await CheckForUser(e.UserId);
         if (CurrentSet == null) return;
         var alert = CurrentSet.SubscriptionGiftedAlert.Instantiate<AlertScript>();
         alert.Text = $"{e.UserName}\nHas just Gifted\n{e.Total} Subs.";
@@ -75,8 +87,9 @@ public partial class AlertManager : Node
         EmitSignal(SignalName.ShowAlert, alert);
     }
 
-    private void EventSubOnSubscription(object sender, SubscriptionEvent e)
+    private async void EventSubOnSubscription(object sender, SubscriptionEvent e)
     {
+        await CheckForUser(e.UserId);
         if (CurrentSet == null) return;
         var alert = CurrentSet.SubscriptionAlert.Instantiate<AlertScript>();
         alert.Text = $"{e.UserName}\nHas just Subscribed.";
@@ -86,8 +99,9 @@ public partial class AlertManager : Node
         EmitSignal(SignalName.ShowAlert, alert);
     }
 
-    private void EventSubOnRaid(object sender, RaidEvent e)
+    private async void EventSubOnRaid(object sender, RaidEvent e)
     {
+        await CheckForUser(e.FromBroadcasterId);
         if (CurrentSet == null) return;
         var alert = CurrentSet.RaidAlert.Instantiate<AlertScript>();
         alert.Text = $"{e.FromBroadcasterUserName}\nHas Just Raided\nWith {e.Viewers} Viewers";
@@ -97,8 +111,9 @@ public partial class AlertManager : Node
         EmitSignal(SignalName.ShowAlert, alert);
     }
 
-    private void EventSubOnFollow(object sender, FollowEvent e)
+    private async void EventSubOnFollow(object sender, FollowEvent e)
     {
+        await CheckForUser(e.UserId); 
         if (CurrentSet == null) return;
         var alert = CurrentSet.FollowAlert.Instantiate<AlertScript>();
         alert.Text = $"{e.UserName}\nHas just followed.";
@@ -113,12 +128,13 @@ public partial class AlertManager : Node
         if (CurrentSet == null) return;
         var alert = CurrentSet.CheerAlert.Instantiate<AlertScript>();
         alert.Text = $"{e.UserName}\nHas Just Cheered\n{e.Bits} Bits";
-        await CheckForTts(e.UserId, e.Message, e.Bits);
-        Globals.TtsManager.AddTtsMessage(e.Message);
+        // Globals.TtsManager.AddTtsMessage(e.Message);
         _queuedAlerts.Enqueue(alert);
         alert.AlertFinished += PlayNextAlert;
         alert.AlertReady += CheckAlerts;
         EmitSignal(SignalName.ShowAlert, alert);
+        if (!await CheckForUser(e.UserId)) return;
+        await CheckForTts(e.UserId, e.Message, e.Bits);
     }
 
     private async Task CheckForTts(string userId, string message, int bits)
@@ -132,13 +148,14 @@ public partial class AlertManager : Node
         var isSubbed =
             await Globals.TwitchApi.Subscriptions.GetSubscription(Globals.Streamer,
                 user);
+        GD.Print($"Is Subbed: {isSubbed != null} User: {user} Bits: {bits} Message: {message}");
         if (isSubbed == null && bits >= 500)
             Globals.TtsManager.AddTtsMessage(message);
         else if (isSubbed != null && bits >= 100)
             Globals.TtsManager.AddTtsMessage(message);
     }
 
-    public void NewChatterAlert(UserModel user, ChatMessagePacketModel message)
+    public async void NewChatterAlert(UserModel user, ChatMessagePacketModel message)
     {
         if (CurrentSet == null) return;
         var alert = CurrentSet.NewChatterAlert.Instantiate<AlertScript>();
