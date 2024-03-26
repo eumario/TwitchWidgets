@@ -6,7 +6,7 @@ public class Setting
 {
     public int Id { get; set; }
     
-    public string Key { get; set; }
+    public string Key { get; set; } = String.Empty;
     
     public string? SValue { get; set; }
     

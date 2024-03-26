@@ -3,8 +3,8 @@
 public class Secret
 {
     public int Id { get; set; }
-    public string ClientId { get; set; }
-    public string ClientSecret { get; set; }
+    public string ClientId { get; set; } = String.Empty;
+    public string ClientSecret { get; set; } = String.Empty;
     
     #region Streamer Info
     public string? StreamerAuthToken { get; set; }
