@@ -89,7 +89,14 @@ public class EventSub
     public async void Connect(string url = "")
     {
         if (_useMockServer)
-            await _eventSubClient.Connect(string.IsNullOrEmpty(url) ? "ws://localhost:4090/ws" : url);
+        {
+            try {
+                await _eventSubClient.Connect(string.IsNullOrEmpty(url) ? "ws://localhost:4090/ws" : url);
+            } catch (Exception ex) {
+                GD.Print("Failed to connect to EventSub Server.");
+            }
+
+        }
         else if (!string.IsNullOrEmpty(url))
             await _eventSubClient.Connect(url);
         else
