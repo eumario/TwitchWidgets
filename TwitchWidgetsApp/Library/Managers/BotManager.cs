@@ -59,6 +59,8 @@ public partial class BotManager : Node
         
         Globals.Chat.OnMessageReceived += ProcessMessage;
         Globals.Chat.OnWhisperMessageReceived += ProcessWhisper;
+        Globals.TwitchManager.NewConnection -= SetupEvents;
+        Globals.TwitchManager.NewConnection += SetupEvents;
     }
 
     private void ProcessWhisper(object sender, ChatWhisperMessagePacketModel e)
