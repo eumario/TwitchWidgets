@@ -92,6 +92,7 @@ public partial class TtsManager : Node
     {
         if (_player.Playing) return;
         if (_player.Stream != null) return;
+        if (_played.Count < 2) return;
         var tts = _played[^2];
         _player.Stream = tts.Sound;
         _player.Play();
