@@ -8,6 +8,7 @@ using StreamingClient.Base.Model.OAuth;
 using Twitch.Base;
 using Twitch.Base.Clients;
 using Twitch.Base.Models.Clients.Chat;
+using Twitch.Base.Models.NewAPI.ChannelPoints;
 using Twitch.Base.Models.NewAPI.Users;
 using TwitchWidgets.Data.Models;
 using TwitchWidgetsApp.Library.EventSub;
@@ -77,9 +78,9 @@ public partial class TwitchManager : Node
         
         currentEventSub.Disconnect();
         EventSub.Connect();
-        EventSub.OnConnected += (sender, args) =>
+        EventSub.OnConnected += async (sender, args) =>
         {
-            EventSub.Subscribe([
+            await EventSub.Subscribe([
                 SubscribeEnum.ChannelRaid, SubscribeEnum.ChannelSubscription, SubscribeEnum.ChannelFollow,
                 SubscribeEnum.ChannelCheer, SubscribeEnum.ChannelSubscriptionGifted,
                 SubscribeEnum.ChannelSubscriptionMessage
@@ -242,12 +243,12 @@ public partial class TwitchManager : Node
         };
         Chat.OnGlobalUserStateReceived += (sender, model) => Chat.Join(Streamer);
         Chat.OnUserListReceived += (sender, model) => Chat.SendMessage(Streamer, $"{Bot.display_name} is now online.");
-        Chat.Connect();
+        await Chat.Connect();
 
         EventSub.Connect();
-        EventSub.OnConnected += (sender, args) =>
+        EventSub.OnConnected += async (sender, args) =>
         {
-            EventSub.Subscribe([
+            await EventSub.Subscribe([
                 SubscribeEnum.ChannelRaid, SubscribeEnum.ChannelSubscription, SubscribeEnum.ChannelFollow,
                 SubscribeEnum.ChannelCheer, SubscribeEnum.ChannelSubscriptionGifted,
                 SubscribeEnum.ChannelSubscriptionMessage
