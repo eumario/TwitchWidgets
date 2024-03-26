@@ -14,7 +14,8 @@ config/name="TwitchWidgetsApp"
 config/description="Enter an interesting project description here!"
 run/main_scene="res://Scenes/ProjectionWindow.tscn"
 config/features=PackedStringArray("4.2", "C#")
-config/icon="res://TwitchWidgets.png"
+config/icon="res://icon.png"
+config/windows_native_icon="res://TwitchWidgets.ico"
 
 [audio]
 
