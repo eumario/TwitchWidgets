@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TwitchWidgets.Data.Context;
 
@@ -10,9 +11,11 @@ using TwitchWidgets.Data.Context;
 namespace TwitchWidgets.Data.Migrations
 {
     [DbContext(typeof(TwitchWidgetsContext))]
-    partial class TwitchWidgetsContextModelSnapshot : ModelSnapshot
+    [Migration("20240329041701_UpdatedSuggestedBy")]
+    partial class UpdatedSuggestedBy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -32,9 +35,6 @@ namespace TwitchWidgets.Data.Migrations
                     b.Property<string>("Heckle")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Rejected")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("SuggestedAt")
                         .HasColumnType("TEXT");
