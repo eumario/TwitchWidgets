@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c0od54adkkba8"]
+[gd_scene load_steps=12 format=3 uid="uid://c0od54adkkba8"]
 
 [ext_resource type="Script" path="res://Scenes/SettingsWindow.cs" id="1_eoaev"]
 [ext_resource type="PackedScene" uid="uid://dtt6bish25det" path="res://Library/Controls/TwitchSettings.tscn" id="2_6l2qo"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://Scenes/Text_To_Speech.cs" id="8_svqdi"]
 [ext_resource type="Script" path="res://Scenes/TextCommands.cs" id="9_yn4n8"]
 [ext_resource type="Script" path="res://Scenes/Ticker.cs" id="10_7vtpn"]
+[ext_resource type="Script" path="res://Scenes/Heckle.cs" id="11_6ght3"]
 
 [node name="SettingsWindow" type="Control"]
 custom_minimum_size = Vector2(1152, 648)
@@ -36,8 +37,10 @@ theme_override_constants/margin_bottom = 10
 [node name="SettingsContainer" type="TabContainer" parent="MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+current_tab = 5
 
 [node name="Connection" type="MarginContainer" parent="MarginContainer/SettingsContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -496,3 +499,56 @@ text = "Edit Message"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Remove Message"
+
+[node name="Heckle" type="MarginContainer" parent="MarginContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("11_6ght3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/SettingsContainer/Heckle"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Approve" type="Button" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Approve"
+
+[node name="Reject" type="Button" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reject"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Custom Heckle:"
+
+[node name="CustomHeckle" type="LineEdit" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddHeckle" type="Button" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add"
+
+[node name="Heckles" type="Tree" parent="MarginContainer/SettingsContainer/Heckle/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+columns = 5
+column_titles_visible = true
+hide_folding = true
+enable_recursive_folding = false
+hide_root = true
+select_mode = 1
