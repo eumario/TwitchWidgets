@@ -4,7 +4,7 @@ public class HeckleMessage
 {
     public int Id { get; set; }
     public string Heckle { get; set; } = string.Empty;
-    public KnownChatter? SuggestedBy = null;
+    public KnownChatter? SuggestedBy { get; set; } = null;
     public bool Approved { get; set; } = false;
     public bool Rejected { get; set; } = false;
 
