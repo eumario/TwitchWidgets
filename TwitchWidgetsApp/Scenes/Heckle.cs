@@ -126,7 +126,7 @@ public partial class Heckle : MarginContainer
 		};
 		dlg.Confirmed += async () =>
 		{
-			var hItem = _heckles.GetSelected();
+			var hItem = _heckles!.GetSelected();
 			hItem.Free();
 			Globals!.Database!.HeckleMessages!.Remove(_currentSelectedHeckle);
 			await Globals.Database.SaveChangesAsync();
