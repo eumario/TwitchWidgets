@@ -1,0 +1,94 @@
+[gd_scene load_steps=2 format=3 uid="uid://sp63qe1racwx"]
+
+[ext_resource type="Script" path="res://Scenes/TextCommands.cs" id="1_7401m"]
+
+[node name="Text Commands" type="MarginContainer"]
+visible = false
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_7401m")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Label" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Command:"
+horizontal_alignment = 2
+
+[node name="CommandName" type="LineEdit" parent="GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Aliases:"
+horizontal_alignment = 2
+
+[node name="CommandAlias" type="LineEdit" parent="GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Note:"
+horizontal_alignment = 2
+
+[node name="CommandHelp" type="LineEdit" parent="GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="GridContainer"]
+layout_mode = 2
+text = "Command Message:"
+horizontal_alignment = 2
+
+[node name="CommandDescription" type="LineEdit" parent="GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Control" type="Control" parent="GridContainer"]
+layout_mode = 2
+
+[node name="CommandList" type="Tree" parent="GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/item_margin = 2
+theme_override_constants/draw_guides = 2
+columns = 4
+column_titles_visible = true
+hide_folding = true
+hide_root = true
+select_mode = 1
+
+[node name="Control2" type="Control" parent="GridContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GridContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AddCommand" type="Button" parent="GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Add Command"
+
+[node name="UpdateCommand" type="Button" parent="GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Update Command"
+
+[node name="DeleteCommand" type="Button" parent="GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+text = "Delete Command"

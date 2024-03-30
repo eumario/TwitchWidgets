@@ -1,0 +1,204 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbsy8hm6vvgh"]
+
+[ext_resource type="Script" path="res://Scenes/Settings.cs" id="1_yerpl"]
+
+[node name="Settings" type="MarginContainer"]
+visible = false
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_yerpl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Scene Collection"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="SceneCollection" type="OptionButton" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Alert Set"
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="AlertSet" type="OptionButton" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Startup"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+layout_mode = 2
+columns = 5
+
+[node name="AutoTwitch" type="CheckBox" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Auto Connect Twitch"
+
+[node name="Control" type="Control" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="AutoObs" type="CheckBox" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Auto Connect OBS"
+
+[node name="Control4" type="Control" parent="VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="AutoPlay" type="CheckBox" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Auto Play Music"
+
+[node name="UseSpotify" type="CheckBox" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Use Spotify Instead"
+
+[node name="Control2" type="Control" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="UseFullScreen" type="CheckBox" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fullscreen on Start"
+
+[node name="Control3" type="Control" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="UseScreen" type="CheckBox" parent="VBoxContainer/GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Use Screen:"
+
+[node name="ScreenNumber" type="OptionButton" parent="VBoxContainer/GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Debugging" type="CheckBox" parent="VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Debugging"
+
+[node name="Control2" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Music Player"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MusicFolders" type="ItemList" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Folder Path:"
+
+[node name="FolderPath" type="LineEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 0)
+layout_mode = 2
+
+[node name="BrowseFolder" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Browse"
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="AddFolder" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/CenterContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Add Folder"
+
+[node name="SaveFolder" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/CenterContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Save Folder"
+
+[node name="RemoveFolder" type="Button" parent="VBoxContainer/HBoxContainer/VBoxContainer/CenterContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Remove Folder"
+
+[node name="RandomizeMusic" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Randomize Playlist"
+
+[node name="LoopMusic" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Loop Playlist"
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="SaveSettings" type="Button" parent="VBoxContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Save Settings"
+
+[node name="ResetSettings" type="Button" parent="VBoxContainer/CenterContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Reset Settings"

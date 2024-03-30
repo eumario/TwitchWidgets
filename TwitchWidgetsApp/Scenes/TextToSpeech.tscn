@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp6pfirc3vghd"]
+
+[ext_resource type="Script" path="res://Scenes/Text_To_Speech.cs" id="1_yjhii"]
+
+[node name="Text To Speech" type="MarginContainer"]
+visible = false
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_yjhii")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="VoiceList" type="ItemList" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Enter Test Text:"
+
+[node name="TestMessage" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+text = "The quick brown fox jumped over the lazy dog."
+
+[node name="TestSpeak" type="Button" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Speak Message"
