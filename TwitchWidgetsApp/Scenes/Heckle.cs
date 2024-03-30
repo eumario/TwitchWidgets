@@ -48,7 +48,7 @@ public partial class Heckle : MarginContainer
     private void AddHeckleItem(HeckleMessage heckle)
     {
         var user = heckle.SuggestedBy!;
-        var hItem = _heckles.CreateItem(_root);
+        var hItem = _heckles!.CreateItem(_root);
         hItem.SetText(0, heckle.Id.ToString());
         hItem.SetText(1, user!.DisplayName);
         hItem.SetText(2, heckle.Heckle);
