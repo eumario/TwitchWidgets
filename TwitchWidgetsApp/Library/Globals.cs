@@ -160,20 +160,23 @@ public partial class Globals : Node
     private void ShowSettingsWindow()
     {
         if (SettingsWindow != null) return;
-            
-        var window = new Window();
-        window.Title = "TwitchWidgets Settings";
+
+        var window = new Window
+        {
+            Title = "TwitchWidgets Settings"
+        };
         SettingsWindow = window;
         GetTree().Root.AddChild(window);
         window.PopupCentered(new Vector2I(1152, 688));
         var panel = _settings!.Instantiate<SettingsWindow>();
         window.AddChild(panel);
-        panel.Position = Vector2.Zero;
         window.CloseRequested += () =>
         {
             window.QueueFree();
             SettingsWindow = null;
         };
+        var timer = GetTree().CreateTimer(0.5);
+        timer.Timeout += () => DisplayServer.WindowMoveToForeground(window.GetWindowId());
     }
 
     private void ElgatoCall(string message)
