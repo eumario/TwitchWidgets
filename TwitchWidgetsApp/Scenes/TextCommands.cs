@@ -20,7 +20,7 @@ public partial class TextCommands : MarginContainer
 	private TreeItem? _rootNode;
 
 	private TextCommand? _selectedCommand;
-	
+
 	public override void _Ready()
 	{
 		this.OnReady();
@@ -30,7 +30,7 @@ public partial class TextCommands : MarginContainer
 		_commandList.SetColumnTitle(2, "Note");
 		_commandList.SetColumnTitle(3, "Message");
 		LoadCommands();
-		
+
 		_addCommand!.Pressed += AddCommandOnPressed;
 		_updateCommand!.Pressed += UpdateCommandOnPressed;
 		_deleteCommand!.Pressed += DeleteCommandOnPressed;
@@ -56,7 +56,7 @@ public partial class TextCommands : MarginContainer
 	private void AddCommandOnPressed()
 	{
 		if (_commandName!.Text == "" || _commandHelp!.Text == "" ||
-		    _commandDescription!.Text == "")
+			_commandDescription!.Text == "")
 		{
 			OS.Alert("Please make sure to fill in all information for info text command.", "Add Command Failed");
 			return;
@@ -107,15 +107,16 @@ public partial class TextCommands : MarginContainer
 
 	private void DeleteCommandOnPressed()
 	{
-        var dlg = new ConfirmationDialog
-        {
-            DialogAutowrap = true,
-            DialogCloseOnEscape = false,
-            DialogHideOnOk = false
-        };
-        dlg.GetOkButton().Text = "Yes";
-		dlg.GetCancelButton().Text = "No";
-		dlg.DialogText = $"Are you sure you want to delete '{_selectedCommand!.CommandName}'?";
+		var dlg = new ConfirmationDialog
+		{
+			DialogAutowrap = true,
+			DialogCloseOnEscape = false,
+			DialogHideOnOk = false,
+			OkButtonText = "Yes",
+			CancelButtonText = "No",
+			DialogText = $"Are you sure you want to delete '{_selectedCommand!.CommandName}'?",
+			Title = "Remove Command"
+		};
 		dlg.Confirmed += () =>
 		{
 			Globals!.Database!.Commands!.Remove(_selectedCommand);
@@ -129,8 +130,13 @@ public partial class TextCommands : MarginContainer
 		{
 			dlg.QueueFree();
 		};
+		dlg.CloseRequested += () =>
+		{
+			if (IsInstanceValid(dlg))
+				dlg.QueueFree();
+		};
 		AddChild(dlg);
-		dlg.PopupCentered(new Vector2I(300,200));
+		dlg.PopupCentered(new Vector2I(300, 200));
 	}
 
 	private void LoadCommands()

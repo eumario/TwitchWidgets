@@ -24,7 +24,7 @@ public partial class Ticker : MarginContainer
 			_tickerMessages.AddItem(message.Message);
 			_tickerMessages.SetItemMetadata(i, message.Id);
 		}
-		
+
 		_add!.Pressed += AddOnPressed;
 		_edit!.Pressed += EditOnPressed;
 		_remove!.Pressed += RemoveOnPressed;
@@ -56,7 +56,7 @@ public partial class Ticker : MarginContainer
 	}
 	private async void EditOnPressed()
 	{
-		var i = _tickerMessages!.GetSelectedItems(); 
+		var i = _tickerMessages!.GetSelectedItems();
 		if (i.Length == 0)
 		{
 			OS.Alert("You need to select a message to edit, before editing it.", "Edit Ticker Message Error");
@@ -78,7 +78,7 @@ public partial class Ticker : MarginContainer
 		_tickerMessages.Select(-1);
 		Globals.EmitSignal(Globals.SignalName.UpdateTicker);
 	}
-	
+
 	private void RemoveOnPressed()
 	{
 		var i = _tickerMessages!.GetSelectedItems();
@@ -87,14 +87,17 @@ public partial class Ticker : MarginContainer
 			OS.Alert("You need to select a message to remove, before removing it.", "Remove Ticker Message Error");
 			return;
 		}
-		
-		var dlg = new ConfirmationDialog();
-		dlg.DialogAutowrap = true;
-		dlg.DialogCloseOnEscape = false;
-		dlg.DialogHideOnOk = false;
-		dlg.GetOkButton().Text = "Yes";
-		dlg.GetCancelButton().Text = "No";
-		dlg.DialogText = $"Are you sure you want to delete the Ticker Message '{_tickerMessages.GetItemText(i[0])}'?";
+
+		var dlg = new ConfirmationDialog()
+		{
+			DialogAutowrap = true,
+			DialogCloseOnEscape = false,
+			DialogHideOnOk = false,
+			OkButtonText = "Yes",
+			CancelButtonText = "No",
+			Title = "Remove Ticker Message",
+			DialogText = $"Are you sure you want to delete the Ticker Message '{_tickerMessages.GetItemText(i[0])}'?"
+		};
 		dlg.Confirmed += () =>
 		{
 			var id = _tickerMessages.GetItemMetadata(i[0]).AsInt32();
@@ -111,7 +114,12 @@ public partial class Ticker : MarginContainer
 		{
 			dlg.QueueFree();
 		};
+		dlg.CloseRequested += () =>
+		{
+			if (IsInstanceValid(dlg))
+				dlg.QueueFree();
+		};
 		AddChild(dlg);
-		dlg.PopupCentered(new Vector2I(300,200));
+		dlg.PopupCentered(new Vector2I(300, 200));
 	}
 }
