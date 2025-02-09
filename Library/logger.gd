@@ -35,17 +35,20 @@ func _init(log_file : String) -> void:
 	if FileAccess.file_exists(log_file):
 		var modtime := FileAccess.get_modified_time(log_file)
 		var base_path := log_file.get_base_dir()
-		var file_name := log_file.get_file()
 		var dt := Time.get_datetime_dict_from_unix_time(modtime)
-		DirAccess.rename_absolute(log_file, base_path.path_join("%02d-%02d-%d_%02d-%02d-%02d_%s" % [
+		DirAccess.rename_absolute(log_file, base_path.path_join("widgets%02d-%02d-%d_%02d-%02d-%02d.log" % [
 			dt.month,
 			dt.day,
 			dt.year,
 			dt.hour,
 			dt.minute,
-			dt.second,
-			file_name
+			dt.second
 		]))
+		var files := Array(DirAccess.get_files_at(base_path)).filter(func(x): return x.begins_with("widgets"))
+		files.sort()
+		if files.size() > 4:
+			var remove_file = files.pop_front()
+			DirAccess.remove_absolute(base_path.path_join(remove_file))
 	var fh := FileAccess.open(_log_file, FileAccess.WRITE)
 	var stamp := Time.get_datetime_dict_from_system()
 	fh.store_string("[%02d-%02d-%d - %02d:%02d:%02d] Log File Started\n" % [
@@ -62,6 +65,7 @@ func _init(log_file : String) -> void:
 
 func log_message(level : LogLevel, message : String) -> void:
 	if log_level < level: return
+	if level == LogLevel.DEBUG && !Managers.settings.data.log_debug: return
 	var stamp := Time.get_datetime_dict_from_system()
 	var fh := FileAccess.open(_log_file, FileAccess.READ_WRITE)
 	fh.seek_end(0)
@@ -89,6 +93,18 @@ func log_message(level : LogLevel, message : String) -> void:
 			LEVEL_NAME[level],
 			message,
 		])
+	elif Managers.settings.data.log_to_console:
+		print("[%02d-%02d-%d - %02d:%02d:%02d] %s> %s\n" % [
+			stamp.month,
+			stamp.day,
+			stamp.year,
+			stamp.hour,
+			stamp.minute,
+			stamp.second,
+			LEVEL_NAME[level],
+			message,
+		])
+		
 
 static func info(message : String) -> void: instance.log_message(LogLevel.INFO, message)
 static func debug(message : String) -> void: instance.log_message(LogLevel.DEBUG, message)
