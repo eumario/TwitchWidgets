@@ -43,17 +43,3 @@ enabled=PackedStringArray("res://addons/cpmanager/plugin.cfg", "res://addons/fon
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
-
-[twitcher]
-
-logs/TwitchEventsubConfig="debug"
-logs/TwitchAPI="debug"
-logs/TwitchEventsub="debug"
-logs/TwitchAuth="debug"
-logs/TwitchImageTransformer="debug"
-logs/ImageMagickConverter="debug"
-logs/TwitchService="debug"
-logs/TwitchEventListener="debug"
-logs/TwitchChat="debug"
-"logs/Twitcher Plugin"="debug"
-logs/Http="debug"

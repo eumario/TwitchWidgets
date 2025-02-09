@@ -6,6 +6,7 @@ var streamdeck : StreamDeckManager
 var obs : ObsManager
 var music : MusicManager
 var tts : TtsManager
+var scene : SceneManager
 
 func _ready() -> void:
 	Logger.new("user://logs/widgets.log")
@@ -40,3 +41,8 @@ func _ready() -> void:
 	tts.name = "TtsManager"
 	add_child(tts)
 	Logger.info("Loaded TtsManager.")
+	
+	scene = SceneManager.new()
+	scene.name = "SceneManager"
+	add_child(scene)
+	Logger.info("Loaded SceneManager.")
