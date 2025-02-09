@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqsx0tdtifyvn"]
+[gd_scene load_steps=5 format=3 uid="uid://dqsx0tdtifyvn"]
 
 [ext_resource type="FontFile" uid="uid://stlv4flfgd6g" path="res://Assets/Fonts/NotoSansMono-Bold.ttf" id="1_8bxsb"]
-[ext_resource type="Script" uid="uid://djccewgr062ac" path="res://Scenes/Dialogs/connection_settings.gd" id="1_d38gr"]
+[ext_resource type="Script" uid="uid://djccewgr062ac" path="res://Scenes/Dialogs/connection.gd" id="1_d38gr"]
+[ext_resource type="Script" uid="uid://bhekc4uooiwrq" path="res://Scenes/Dialogs/general.gd" id="3_de83h"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_d38gr"]
 font = ExtResource("1_8bxsb")
@@ -9,15 +10,15 @@ font = ExtResource("1_8bxsb")
 [node name="SettingsDialog" type="ConfirmationDialog"]
 title = "Overlay Settings"
 initial_position = 2
-size = Vector2i(800, 600)
+size = Vector2i(920, 680)
 visible = true
 ok_button_text = "Save Settings"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 792.0
-offset_bottom = 551.0
+offset_right = 912.0
+offset_bottom = 631.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -25,10 +26,11 @@ theme_override_constants/margin_bottom = 10
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 
-[node name="Connection Settings" type="MarginContainer" parent="MarginContainer/TabContainer"]
+[node name="Connection" type="MarginContainer" parent="MarginContainer/TabContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -37,127 +39,127 @@ theme_override_constants/margin_bottom = 4
 script = ExtResource("1_d38gr")
 metadata/_tab_index = 0
 
-[node name="Connection" type="VBoxContainer" parent="MarginContainer/TabContainer/Connection Settings"]
+[node name="Connection" type="VBoxContainer" parent="MarginContainer/TabContainer/Connection"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection"]
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection/Connection"]
 layout_mode = 2
 text = "Twitch Connection"
 label_settings = SubResource("LabelSettings_d38gr")
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Connection Settings/Connection"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Connection/Connection"]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/TabContainer/Connection Settings/Connection"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/TabContainer/Connection/Connection"]
 layout_mode = 2
 columns = 3
 
-[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/GridContainer"]
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 layout_mode = 2
 text = "Client ID:"
 horizontal_alignment = 2
 
-[node name="ClientId" type="LineEdit" parent="MarginContainer/TabContainer/Connection Settings/Connection/GridContainer"]
+[node name="ClientId" type="LineEdit" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 placeholder_text = "Enter Client ID"
 
-[node name="Authorize" type="Button" parent="MarginContainer/TabContainer/Connection Settings/Connection/GridContainer"]
+[node name="Authorize" type="Button" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Authorize"
 
-[node name="Label2" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/GridContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 layout_mode = 2
 text = "Client Secret:"
 horizontal_alignment = 2
 
-[node name="ClientSecret" type="LineEdit" parent="MarginContainer/TabContainer/Connection Settings/Connection/GridContainer"]
+[node name="ClientSecret" type="LineEdit" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 placeholder_text = "Enter Client Secret"
 secret = true
 
-[node name="Connect" type="Button" parent="MarginContainer/TabContainer/Connection Settings/Connection/GridContainer"]
+[node name="Connect" type="Button" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Connect"
 
-[node name="Control" type="Control" parent="MarginContainer/TabContainer/Connection Settings/Connection"]
+[node name="Control" type="Control" parent="MarginContainer/TabContainer/Connection/Connection"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection"]
+[node name="Label2" type="Label" parent="MarginContainer/TabContainer/Connection/Connection"]
 layout_mode = 2
 text = "OBS Connection"
 label_settings = SubResource("LabelSettings_d38gr")
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/TabContainer/Connection Settings/Connection"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/TabContainer/Connection/Connection"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Connection Settings/Connection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Connection/Connection"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer"]
 layout_mode = 2
 
-[node name="GridContainer2" type="GridContainer" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer"]
+[node name="GridContainer2" type="GridContainer" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
 layout_mode = 2
 text = "Host:"
 horizontal_alignment = 2
 
-[node name="ObsHost" type="LineEdit" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
+[node name="ObsHost" type="LineEdit" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
 layout_mode = 2
 text = "Port:"
 horizontal_alignment = 2
 
-[node name="ObsPort" type="LineEdit" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
+[node name="ObsPort" type="LineEdit" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
+[node name="Label3" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
 layout_mode = 2
 text = "Password:"
 horizontal_alignment = 2
 
-[node name="ObsPassword" type="LineEdit" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
+[node name="ObsPassword" type="LineEdit" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer/GridContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 
-[node name="ConnectOBS" type="Button" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/VBoxContainer"]
+[node name="ConnectOBS" type="Button" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Connect OBS"
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/PanelContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/PanelContainer"]
 layout_mode = 2
 columns = 2
 
-[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/PanelContainer/GridContainer"]
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/PanelContainer/GridContainer"]
 layout_mode = 2
 text = "Connection Status:"
 horizontal_alignment = 2
 
-[node name="ConnectStatus" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/PanelContainer/GridContainer"]
+[node name="ConnectStatus" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/PanelContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -165,12 +167,12 @@ bbcode_enabled = true
 text = "[color=red]Offline[/color]"
 scroll_active = false
 
-[node name="Label3" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/PanelContainer/GridContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/PanelContainer/GridContainer"]
 layout_mode = 2
 text = "Streaming Status:"
 horizontal_alignment = 2
 
-[node name="StreamingStatus" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/PanelContainer/GridContainer"]
+[node name="StreamingStatus" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/PanelContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -178,15 +180,171 @@ bbcode_enabled = true
 text = "[color=red]Offline[/color]"
 scroll_active = false
 
-[node name="Label5" type="Label" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/PanelContainer/GridContainer"]
+[node name="Label5" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/PanelContainer/GridContainer"]
 layout_mode = 2
 text = "Recording Status:"
 horizontal_alignment = 2
 
-[node name="RecordingStatus" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection Settings/Connection/HBoxContainer/PanelContainer/GridContainer"]
+[node name="RecordingStatus" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection/Connection/HBoxContainer/PanelContainer/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
 text = "[color=red]Not Recording[/color]"
 scroll_active = false
+
+[node name="General" type="MarginContainer" parent="MarginContainer/TabContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("3_de83h")
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/General"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+text = "Scene Collection"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+
+[node name="SceneSelection" type="OptionButton" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+text = "Alert Set"
+
+[node name="AlertSelection" type="OptionButton" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+text = "Startup"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 3
+
+[node name="AutoTwitch" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Auto Connect Twitch"
+
+[node name="AutoObs" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Auto Connect OBS"
+
+[node name="AutoMusic" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Auto Play Music"
+
+[node name="StartFullscreen" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Fullscreen On Start"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="UseScreen" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+text = "Use Screen"
+
+[node name="ScreenSelect" type="OptionButton" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ShowDebug" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Debugging"
+
+[node name="LogToConsole" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Log to Console"
+
+[node name="Control3" type="Control" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+text = "Music Player"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FolderList" type="ItemList" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Folder Path:"
+
+[node name="FolderPath" type="LineEdit" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FolderBrowse" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Browse"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="AddFolder" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Add Folder"
+
+[node name="SaveFolder" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Save Folder"
+
+[node name="RemoveFolder" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Remove Folder"
+
+[node name="RandomisePlaylist" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Randomize Playlist"
+
+[node name="LoopPlaylist" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Loop Playlist"
