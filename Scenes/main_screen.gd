@@ -27,8 +27,9 @@ func switch_scene(packed : PackedScene) -> void:
 func _handle_settings() -> void:
 	var ps : PackedScene = load("res://Scenes/Dialogs/settings_dialog.tscn")
 	var dlg : ConfirmationDialog = ps.instantiate()
-	dlg.close_requested.connect(dlg.queue_free)
-	dlg.canceled.connect(dlg.queue_free)
+	Managers.settings.data.snapshot()
+	dlg.close_requested.connect(func(): dlg.queue_free(); Managers.settings.data.restore())
+	dlg.canceled.connect(func(): dlg.queue_free(); Managers.settings.data.restore())
 	dlg.confirmed.connect(_handle_save_settings.bind(dlg))
 	dlg.popup_exclusive_centered(self)
 
