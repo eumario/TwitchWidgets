@@ -7,15 +7,16 @@ var obs : ObsManager
 var music : MusicManager
 var tts : TtsManager
 var scene : SceneManager
+var alert : AlertManager
 
 func _ready() -> void:
-	Logger.new("user://logs/widgets.log")
-	Logger.instance.log_level = Logger.LogLevel.ERROR
-	
 	settings = SettingsManager.new()
 	settings.name = "SettingsManager"
 	add_child(settings)
 	Logger.info("Loaded SettingsManager.")
+	
+	Logger.new("user://logs/widgets.log")
+	Logger.instance.log_level = Logger.LogLevel.ERROR
 	
 	twitch = TwitchManager.new()
 	twitch.name = "TwitchManager"
@@ -46,3 +47,8 @@ func _ready() -> void:
 	scene.name = "SceneManager"
 	add_child(scene)
 	Logger.info("Loaded SceneManager.")
+	
+	alert = AlertManager.new()
+	alert.name = "AlertManager"
+	add_child(alert)
+	Logger.info("Loaded AlertManager.")
