@@ -214,6 +214,7 @@ text = "Scene Collection"
 layout_mode = 2
 
 [node name="SceneSelection" type="OptionButton" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Control" type="Control" parent="MarginContainer/TabContainer/General/VBoxContainer"]
@@ -225,6 +226,7 @@ layout_mode = 2
 text = "Alert Set"
 
 [node name="AlertSelection" type="OptionButton" parent="MarginContainer/TabContainer/General/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Control2" type="Control" parent="MarginContainer/TabContainer/General/VBoxContainer"]
@@ -245,21 +247,25 @@ theme_override_constants/v_separation = 5
 columns = 3
 
 [node name="AutoTwitch" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Auto Connect Twitch"
 
 [node name="AutoObs" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Auto Connect OBS"
 
 [node name="AutoMusic" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Auto Play Music"
 
 [node name="StartFullscreen" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Fullscreen On Start"
 
@@ -268,18 +274,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="UseScreen" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Use Screen"
 
 [node name="ScreenSelect" type="OptionButton" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ShowDebug" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Debugging"
 
 [node name="LogToConsole" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Log to Console"
 
@@ -299,6 +309,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="FolderList" type="ItemList" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
@@ -314,10 +325,12 @@ layout_mode = 2
 text = "Folder Path:"
 
 [node name="FolderPath" type="LineEdit" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="FolderBrowse" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Browse"
 
@@ -327,24 +340,31 @@ theme_override_constants/separation = 20
 alignment = 1
 
 [node name="AddFolder" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 text = "Add Folder"
 
 [node name="SaveFolder" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
+disabled = true
 text = "Save Folder"
 
 [node name="RemoveFolder" type="Button" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
+disabled = true
 text = "Remove Folder"
 
-[node name="RandomisePlaylist" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="RandomizePlaylist" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Randomize Playlist"
 
 [node name="LoopPlaylist" type="CheckBox" parent="MarginContainer/TabContainer/General/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Loop Playlist"
