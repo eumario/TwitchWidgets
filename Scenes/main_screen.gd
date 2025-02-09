@@ -33,7 +33,7 @@ func _handle_settings() -> void:
 	dlg.popup_exclusive_centered(self)
 
 func _handle_save_settings(dlg : ConfirmationDialog) -> void:
-	Managers.settings.data.save_settings()
+	Managers.settings.save_settings()
 	dlg.queue_free()
 
 func _handle_shutdown() -> void:
