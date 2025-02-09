@@ -44,4 +44,8 @@ func _handle_signal(args : String) -> void:
 			if args_arr.has("vol_up"): music_volume.emit(MusicVolume.UP)
 			if args_arr.has("vol_down"): music_volume.emit(MusicVolume.DOWN)
 			if args_arr.has("mute"): music_volume.emit(MusicVolume.MUTE)
+			if args_arr.has("pause"): music_pause.emit()
+			if args_arr.has("play"): music_play.emit()
+			if args_arr.has("next"): music_next.emit()
+			
 #endregion
