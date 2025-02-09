@@ -55,7 +55,8 @@ var EVENTSUB_EVENTS : Array[TwitchEventsubDefinition] = [
 
 func _ready() -> void:
 	var settings = Managers.settings.data
-	if settings.client_id != "" and settings.client_secret != "":
+	if settings.client_id == "" and settings.client_secret == "": return
+	if settings.auto_connect_twitch:
 		setup_auth_info(settings.client_id, settings.client_secret)
 
 func _wait_for_ready() -> void:
