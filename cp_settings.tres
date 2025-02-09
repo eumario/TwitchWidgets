@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CPSettings" load_steps=2 format=3 uid="uid://kb5yjnr7kigj"]
+
+[ext_resource type="Script" uid="uid://cx4akbpric765" path="res://addons/cpmanager/Resources/cp_settings.gd" id="1_s4p5y"]
+
+[resource]
+script = ExtResource("1_s4p5y")
+cp_version = ""
+cp_folder = "res://Plugins"
+external_folder = "user://Plugins"
+build_folder = "res://builds"
+format = 0

@@ -1,0 +1,191 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6gs3gaptx657"]
+
+[ext_resource type="Script" path="res://addons/cpmanager/Dialogs/cp_manager.gd" id="1_eg3t7"]
+[ext_resource type="Script" path="res://addons/cpmanager/Dialogs/settings.gd" id="2_7vp5v"]
+[ext_resource type="Script" path="res://addons/cpmanager/Dialogs/build_output.gd" id="2_yuie6"]
+[ext_resource type="Script" path="res://addons/cpmanager/Dialogs/content_packs.gd" id="3_ervsi"]
+
+[node name="PackManagerDialog" type="Window"]
+title = "Pack Manager"
+initial_position = 2
+size = Vector2i(800, 500)
+script = ExtResource("1_eg3t7")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 1
+
+[node name="Settings" type="PanelContainer" parent="TabContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = ExtResource("2_7vp5v")
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Settings"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="TabContainer/Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 2
+
+[node name="Label" type="Label" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Content Pack Folder:"
+horizontal_alignment = 2
+
+[node name="CPFolder" type="HBoxContainer" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FolderPath" type="LineEdit" parent="TabContainer/Settings/VBoxContainer/GridContainer/CPFolder"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Location in File Structure where Content Packs will exist."
+text = "res://Games"
+placeholder_text = "Select Path"
+
+[node name="Browse" type="Button" parent="TabContainer/Settings/VBoxContainer/GridContainer/CPFolder"]
+layout_mode = 2
+text = "..."
+
+[node name="Label2" type="Label" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "External Location:"
+horizontal_alignment = 2
+
+[node name="ExternalFolder" type="LineEdit" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Folder mapping on the End User's Computer:
+
+res:// - Points to the install path on end user's computer.
+user:// - Points to User Directory as set in Project Settings"
+text = "user://GamePacks"
+placeholder_text = "Enter a Directory"
+
+[node name="Label3" type="Label" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Build Directory:"
+horizontal_alignment = 2
+
+[node name="BuildFolder" type="HBoxContainer" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FolderPath" type="LineEdit" parent="TabContainer/Settings/VBoxContainer/GridContainer/BuildFolder"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Location within file structure, where built content packs will be located."
+text = "res://build"
+placeholder_text = "Select Path"
+
+[node name="Browse" type="Button" parent="TabContainer/Settings/VBoxContainer/GridContainer/BuildFolder"]
+layout_mode = 2
+text = "..."
+
+[node name="Label4" type="Label" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Pack Format:"
+horizontal_alignment = 2
+
+[node name="PackFormat" type="OptionButton" parent="TabContainer/Settings/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "PCK Pack Format"
+popup/item_1/text = "ZIP Pack Format"
+popup/item_1/id = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Settings/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[b]**Note**[/b] Make sure that when you create your export settings, that on the Resources Tab, you add your [color=green][b]Content Pack Folder[/b][/color] and your [color=green][b]Build Directory[/b][/color] to be ignored when exporting your project.
+
+[color=red][b]**NOTE**[/b][/color] Do not touch any exports that have the prefix '[b]pack_[/b]' in their name."
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Settings/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SaveSettings" type="Button" parent="TabContainer/Settings/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save Settings"
+
+[node name="Content Packs" type="PanelContainer" parent="TabContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_ervsi")
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Content Packs"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Content Packs/VBoxContainer"]
+layout_mode = 2
+text = "Currently Detected Mods:"
+
+[node name="CPList" type="Tree" parent="TabContainer/Content Packs/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+column_titles_visible = true
+hide_folding = true
+hide_root = true
+select_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Content Packs/VBoxContainer"]
+layout_mode = 2
+
+[node name="CreateCP" type="Button" parent="TabContainer/Content Packs/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Create Pack"
+
+[node name="EditCP" type="Button" parent="TabContainer/Content Packs/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Edit Pack"
+
+[node name="RemoveCP" type="Button" parent="TabContainer/Content Packs/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Remove Pack"
+
+[node name="BuildCB" type="Button" parent="TabContainer/Content Packs/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Build Pack"
+
+[node name="Build Output" type="PanelContainer" parent="TabContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+script = ExtResource("2_yuie6")
+metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Build Output"]
+layout_mode = 2
+
+[node name="History" type="RichTextLabel" parent="TabContainer/Build Output/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
