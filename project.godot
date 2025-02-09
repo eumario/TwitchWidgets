@@ -35,6 +35,18 @@ window/per_pixel_transparency/allowed=true
 
 enabled=PackedStringArray("res://addons/cpmanager/plugin.cfg", "res://addons/fontawesome/plugin.cfg", "res://addons/godot-sqlite/plugin.cfg", "res://addons/no-obs-ws/plugin.cfg", "res://addons/streamcontroller_websocket/plugin.cfg", "res://addons/twitcher/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://Assets/": "green",
+"res://Library/": "blue",
+"res://Plugins/": "purple",
+"res://Resources/": "orange",
+"res://Scenes/": "teal",
+"res://addons/": "yellow",
+"res://tests/": "gray"
+}
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
