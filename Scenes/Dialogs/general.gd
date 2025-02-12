@@ -4,6 +4,19 @@ func _ready() -> void:
 	_load_settings()
 	
 	#-- Signal Handlers --#
+	%SceneSelection.item_selected.connect(func(i : int):
+		if %SceneSelection.get_item_text(i) == "<None Selected>":
+			Managers.settings.data.collection_name = ""
+		else:
+			Managers.settings.data.collection_name = %SceneSelection.get_item_text(i)
+	)
+	%AlertSelection.item_selected.connect(func(i : int):
+		if %AlertSelection.get_item_text(i) == "<None Selected>":
+			Managers.settings.data.alert_set_name = ""
+		else:
+			Managers.settings.data.alert_set_name = %AlertSelection.get_item_text(i)
+	)
+	
 	# Music
 	%FolderList.item_selected.connect(_handle_folder_selected)
 	%FolderBrowse.pressed.connect(_handle_folder_browse)
@@ -29,15 +42,17 @@ func _ready() -> void:
 #region Loading Settings
 func _load_settings() -> void:
 	#-- Scene Collection --#
+	%SceneSelection.add_item("<None Selected>")
 	for item : SceneCollection in Managers.scene.get_scene_collections():
 		%SceneSelection.add_item(item.collection_name)
-		if item.collection_name == Managers.settings.data.selected_collection:
+		if item.collection_name == Managers.settings.data.collection_name:
 			%SceneSelection.select(%SceneSelection.item_count - 1)
 	
 	#-- Alert Sets --#
+	%AlertSelection.add_item("<None Selected>")
 	for item : AlertSet in Managers.alert.get_alert_sets():
 		%AlertSelection.add_item(item.set_name)
-		if item.set_name == Managers.settings.data.selected_alert_set:
+		if item.set_name == Managers.settings.data.alert_set_name:
 			%AlertSelection.select(%AlertSelection.item_count - 1)
 	
 	#-- Startup --#
