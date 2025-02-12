@@ -24,9 +24,15 @@ func _ready() -> void:
 	_streamdeck = SCWebsocketClient.new()
 	_streamdeck.processor = GodotProcessor.new()
 	_streamdeck.processor.on_key_down.connect(_handle_signal)
-	_streamdeck.connected.connect(func(): Logger.debug("Connected to StreamDeck."))
+	_streamdeck.deck_ready.connect(func(): Logger.info("Connected to StreamDeck."))
+	_streamdeck.deck_closed.connect(func():
+		Logger.warn("Stream Deck Closed, waiting half a second, and connecting again...")
+		await get_tree().create_timer(3).timeout
+		Logger.info("Attempting connection again...")
+		_streamdeck.connect_to_url()
+	)
 	add_child(_streamdeck)
-	_streamdeck.connect_to_url()
+	Managers.init_finished.connect(_streamdeck.connect_to_url)
 #endregion
 
 #region Private Support Functions
