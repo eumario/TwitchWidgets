@@ -13,6 +13,26 @@ class_name SettingsFile extends Resource
 			emit_changed()
 #endregion
 
+#region OBS Connection
+@export var obs_host : String :
+	set(value):
+		if obs_host != value:
+			obs_host = value
+			emit_changed()
+
+@export var obs_port : int :
+	set(value):
+		if obs_port != value:
+			obs_port = value
+			emit_changed()
+
+@export var obs_pass : String :
+	set(value):
+		if obs_pass != value:
+			obs_pass = value
+			emit_changed()
+#endregion
+
 #region Music Settings
 @export var music_folders : Array[String] :
 	set(value):
@@ -47,10 +67,10 @@ class_name SettingsFile extends Resource
 		if collection_name != value:
 			collection_name = value
 			emit_changed()	
-@export var selected_alert_set : String :
+@export var alert_set_name : String :
 	set(value):
-		if selected_alert_set != value:
-			selected_alert_set = value
+		if alert_set_name != value:
+			alert_set_name = value
 			emit_changed()
 #endregion
 
@@ -109,6 +129,7 @@ func snapshot() -> void:
 	_stage = duplicate(true)
 
 func restore() -> void:
+	if _stage == null: return
 	for prop in get_property_list():
 		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE == PROPERTY_USAGE_SCRIPT_VARIABLE:
 			set(prop.name, _stage.get(prop.name))
