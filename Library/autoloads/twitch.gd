@@ -1,5 +1,6 @@
 class_name TwitchManager extends Node
 
+#region Signals
 signal channel_update(data : Dictionary)
 signal follow(data : Dictionary)
 signal ad_break(data : Dictionary)
@@ -17,17 +18,35 @@ signal goal(state : State, data : Dictionary)
 signal shoutout(data : Dictionary)
 signal received_shoutout(data : Dictionary)
 signal custom_reward(data : Dictionary)
+#endregion
 
+#region Enumerations
 enum State {
 	BEGIN,
 	PROGRESS,
 	LOCK,
 	END
 }
+#endregion
 
-var twitch_service : TwitchService
+#region Properties
+var service : TwitchService
 var broadcaster : TwitchUser
+var api : TwitchAPI :
+	get():
+		return service.api
+var eventsub : TwitchEventsub :
+	get():
+		return service.eventsub
+var auth : TwitchAuth :
+	get():
+		return service.auth
+var media_loader : TwitchMediaLoader :
+	get():
+		return service.media_loader
+#endregion
 
+#region EventSub Events Array
 var EVENTSUB_EVENTS : Array[TwitchEventsubDefinition] = [
 	TwitchEventsubDefinition.CHANNEL_UPDATE,
 	TwitchEventsubDefinition.CHANNEL_FOLLOW,
@@ -52,20 +71,26 @@ var EVENTSUB_EVENTS : Array[TwitchEventsubDefinition] = [
 	TwitchEventsubDefinition.CHANNEL_SHOUTOUT_CREATE,
 	TwitchEventsubDefinition.CHANNEL_SHOUTOUT_RECEIVE,
 ]
+#endregion
 
+#region Godot Overrides
 func _ready() -> void:
-	var settings = Managers.settings.data
-	if settings.client_id == "" and settings.client_secret == "": return
-	if settings.auto_connect_twitch:
-		setup_auth_info(settings.client_id, settings.client_secret)
+	Managers.init_finished.connect(func():
+		var settings = Managers.settings.data
+		if settings.client_id == "" and settings.client_secret == "": return
+		if settings.auto_connect_twitch:
+			setup_auth_info(settings.client_id, settings.client_secret)
+	)
+#endregion
 
+#region Signal Handler functions
 func _wait_for_ready() -> void:
-	await twitch_service.eventsub.wait_for_session_established()
-	var info : TwitchGetUsersResponse = await twitch_service.api.get_users([], [])
+	await service.eventsub.wait_for_session_established()
+	var info : TwitchGetUsersResponse = await service.api.get_users([], [])
 	broadcaster = info.data[0]
 
 func _enable_events() -> void:
-	twitch_service.eventsub.event.connect(_handle_eventsub)
+	service.eventsub.event.connect(_handle_eventsub)
 
 func _handle_eventsub(type : String, data : Dictionary) -> void:
 	if type == TwitchEventsubDefinition.CHANNEL_UPDATE.get_readable_name(): channel_update.emit(data)
@@ -92,7 +117,45 @@ func _handle_eventsub(type : String, data : Dictionary) -> void:
 	if type == TwitchEventsubDefinition.CHANNEL_GOAL_PROGRESS.get_readable_name(): goal.emit(State.PROGRESS, data)
 	if type == TwitchEventsubDefinition.CHANNEL_GOAL_END.get_readable_name(): goal.emit(State.END, data)
 	if type == TwitchEventsubDefinition.CHANNEL_CHANNEL_POINTS_CUSTOM_REWARD_REDEMPTION_ADD.get_readable_name(): custom_reward.emit(data)
+#endregion
 
+#region Private Support Functions
+func _setup_nodes(oauth : OAuthSetting) -> void:
+	service = TwitchService.new()
+	service.name = "TwitchService"
+	service.oauth_setting = oauth
+	service.scopes = load("res://Resources/twitch_scopes.tres")
+	service.token = load("res://Resources/twitch_token.tres")
+	var api := TwitchAPI.new()
+	api.name = "Api"
+	service.add_child(api)
+	var eventsub := TwitchEventsub.new()
+	eventsub.name = "EventSub"
+	eventsub.api = api
+	service.add_child(eventsub)
+	var media_loader := TwitchMediaLoader.new()
+	media_loader.name = "MediaLoader"
+	media_loader.api = api
+	service.add_child(media_loader)
+	add_child(service)
+
+func _setup_eventsub() -> void:
+	for event in EVENTSUB_EVENTS:
+		var conditions = {}
+		for condition in event.conditions:
+			conditions[condition] = broadcaster.id
+		service.subscribe_event(event, conditions)
+
+func _get_custom_rewards() -> void:
+	var awards := await service.api.get_custom_reward([], false)
+	var conditions = {"broadcaster_user_id": broadcaster.id}
+	for reward : TwitchCustomReward in awards.data:
+		conditions["reward_id"] = reward.id
+		service.subscribe_event(TwitchEventsubDefinition.CHANNEL_CHANNEL_POINTS_CUSTOM_REWARD_REDEMPTION_ADD, conditions)
+		print("(", reward.id, ") ", reward.title)
+#endregion
+
+#region Public API
 func send_chat_message(message : String) -> void:
 	var body := TwitchSendChatMessageBody.new()
 	body.broadcaster_id = broadcaster.id
@@ -100,7 +163,7 @@ func send_chat_message(message : String) -> void:
 	body.message = message
 	
 	Logger.debug("Sending Message: %s> %s" % [broadcaster.login, message])
-	var _res : TwitchSendChatMessageResponse = await twitch_service.api.send_chat_message(body)
+	var _res : TwitchSendChatMessageResponse = await service.api.send_chat_message(body)
 
 func send_reply_message(id : String, message : String) -> void:
 	var body := TwitchSendChatMessageBody.new()
@@ -110,7 +173,7 @@ func send_reply_message(id : String, message : String) -> void:
 	body.reply_parent_message_id = id
 	
 	Logger.debug("Sending Reply Message: %s:(%s)> %s" % [broadcaster.id, id, message])
-	var _res : TwitchSendChatMessageResponse = await twitch_service.api.send_chat_message(body)
+	var _res : TwitchSendChatMessageResponse = await service.api.send_chat_message(body)
 
 func setup_auth_info(client_id : String, client_secret : String) -> void:
 	var oauth : OAuthSetting = load("res://addons/twitcher/default_oauth_setting.tres").duplicate()
@@ -120,44 +183,11 @@ func setup_auth_info(client_id : String, client_secret : String) -> void:
 	
 	_setup_nodes(oauth)
 	
-	await twitch_service.setup()
+	await service.setup()
 	
-	var res = await twitch_service.api.get_users([],[])
+	var res = await service.api.get_users([],[])
 	broadcaster = res.data[0]
 	_setup_eventsub()
 	_get_custom_rewards()
 	_enable_events()
-
-func _setup_nodes(oauth : OAuthSetting) -> void:
-	twitch_service = TwitchService.new()
-	twitch_service.name = "TwitchService"
-	twitch_service.oauth_setting = oauth
-	twitch_service.scopes = load("res://Resources/twitch_scopes.tres")
-	twitch_service.token = load("res://Resources/twitch_token.tres")
-	var api := TwitchAPI.new()
-	api.name = "Api"
-	twitch_service.add_child(api)
-	var eventsub := TwitchEventsub.new()
-	eventsub.name = "EventSub"
-	eventsub.api = api
-	twitch_service.add_child(eventsub)
-	var media_loader := TwitchMediaLoader.new()
-	media_loader.name = "MediaLoader"
-	media_loader.api = api
-	twitch_service.add_child(media_loader)
-	add_child(twitch_service)
-
-func _setup_eventsub() -> void:
-	for event in EVENTSUB_EVENTS:
-		var conditions = {}
-		for condition in event.conditions:
-			conditions[condition] = broadcaster.id
-		twitch_service.subscribe_event(event, conditions)
-
-func _get_custom_rewards() -> void:
-	var awards := await twitch_service.api.get_custom_reward([], false)
-	var conditions = {"broadcaster_user_id": broadcaster.id}
-	for reward : TwitchCustomReward in awards.data:
-		conditions["reward_id"] = reward.id
-		twitch_service.subscribe_event(TwitchEventsubDefinition.CHANNEL_CHANNEL_POINTS_CUSTOM_REWARD_REDEMPTION_ADD, conditions)
-		print("(", reward.id, ") ", reward.title)
+#endregion
