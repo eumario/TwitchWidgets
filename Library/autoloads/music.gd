@@ -20,7 +20,7 @@ var _tags : Dictionary[String, MP3ID3Tag] = {}
 
 #region Public Properties
 var current_song_tag : MP3ID3Tag
-var current_song_index : int = 0
+var current_song_index : int = -1
 #endregion
 
 #region Godot Overrides
@@ -41,7 +41,7 @@ func _ready() -> void:
 	Managers.streamdeck.music_volume.connect(_handle_music_volume)
 	_player.finished.connect(_handle_player_finished)
 	
-	_generate_songs()
+	Managers.init_finished.connect(_generate_songs)
 #endregion
 
 #region Public API
