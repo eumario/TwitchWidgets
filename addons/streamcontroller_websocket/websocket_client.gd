@@ -5,10 +5,10 @@ var processor : SocketProcessor
 
 var last_state : WebSocketPeer.State = WebSocketPeer.STATE_CLOSED
 
-signal connecting()
-signal connected()
-signal closing()
-signal closed()
+signal deck_connecting()
+signal deck_ready()
+signal deck_closing()
+signal deck_closed()
 signal recv_packet(data : Dictionary)
 
 func _ready() -> void:
@@ -19,20 +19,28 @@ func connect_to_url(url : String = "ws://localhost:8765") -> Error:
 	if socket:
 		if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
 			socket.close()
+			socket = null
 	
 	socket = WebSocketPeer.new()
+	last_state = WebSocketPeer.STATE_CLOSED
 	return socket.connect_to_url(url)
 
 func _process(delta: float) -> void:
+	if socket == null: return
 	socket.poll()
 	
 	var state := socket.get_ready_state()
+	
+	if state == last_state and state == WebSocketPeer.STATE_CLOSED:
+		socket = null
+		deck_closed.emit()
+		return
 	
 	if state == last_state and state != WebSocketPeer.STATE_OPEN:
 		return
 	
 	if last_state == WebSocketPeer.STATE_CONNECTING and state == WebSocketPeer.STATE_OPEN:
-		connected.emit()
+		deck_ready.emit()
 	
 	last_state = state
 	match state:
@@ -42,8 +50,8 @@ func _process(delta: float) -> void:
 				
 				processor.processs_packet(data)
 		WebSocketPeer.STATE_CONNECTING:
-			connecting.emit()
+			deck_connecting.emit()
 		WebSocketPeer.STATE_CLOSING:
-			closing.emit()
+			deck_closing.emit()
 		WebSocketPeer.STATE_CLOSED:
-			closed.emit()
+			deck_closed.emit()
