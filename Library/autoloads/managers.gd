@@ -1,5 +1,10 @@
 extends Node
 
+#region Signals
+signal init_finished()
+#endregion
+
+#region Managers
 var settings : SettingsManager
 var twitch : TwitchManager
 var streamdeck : StreamDeckManager
@@ -8,15 +13,17 @@ var music : MusicManager
 var tts : TtsManager
 var scene : SceneManager
 var alert : AlertManager
+#endregion
 
+#region Godot Overrides
 func _ready() -> void:
 	settings = SettingsManager.new()
 	settings.name = "SettingsManager"
 	add_child(settings)
-	Logger.info("Loaded SettingsManager.")
 	
 	Logger.new("user://logs/widgets.log")
 	Logger.instance.log_level = Logger.LogLevel.ERROR
+	Logger.info("Loaded SettingsManager.")
 	
 	twitch = TwitchManager.new()
 	twitch.name = "TwitchManager"
@@ -52,3 +59,11 @@ func _ready() -> void:
 	alert.name = "AlertManager"
 	add_child(alert)
 	Logger.info("Loaded AlertManager.")
+	
+	for pack in PackManager.get_pack_names():
+		Logger.info("Found pack %s, setting up..." % pack)
+		PackManager.setup_pack(pack)
+		Logger.info("Setup of %s completed." % pack)
+	
+	init_finished.emit()
+#endregion
