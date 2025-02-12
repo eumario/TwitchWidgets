@@ -11,7 +11,7 @@ var _ws: WebSocketPeer
 var _requests: Dictionary = {}
 var _batch_requests: Dictionary = {}
 
-const WS_URL := "127.0.0.1:%s"
+const WS_URL := "ws://%s:%s"
 
 signal connection_ready()
 signal connection_failed()
@@ -24,9 +24,9 @@ signal event_received(event: Message)
 signal _auth_required()
 
 
-func connect_to_obsws(port: int, password: String = "") -> void:
+func connect_to_obsws(host : String = "localhost", port: int = 4455, password: String = "") -> void:
 	_ws = WebSocketPeer.new()
-	_ws.connect_to_url(WS_URL % port)
+	_ws.connect_to_url(WS_URL % [host, port])
 	_auth_required.connect(_authenticate.bind(password))
 
 
@@ -111,7 +111,7 @@ func _handle_packet(packet: PackedByteArray) -> void:
 
 
 func _handle_message(message: Message) -> void:
-#	print(message)
+	#print(message)
 	match message.op_code:
 		Enums.WebSocketOpCode.HELLO:
 			if message.get("authentication") != null:
