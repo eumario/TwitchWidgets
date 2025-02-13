@@ -2,10 +2,12 @@
 class_name Utils extends RefCounted
 
 static func format_time(secs : float) -> String:
+	@warning_ignore_start("integer_division")
 	var minutes : int = floori(secs / 60)
 	secs -= floori(minutes * 60)
 	var hours : int = floori(minutes / 60)
-	minutes -= hours / 60
+	minutes -= floori(hours / 60)
+	@warning_ignore_restore("integer_division")
 	if hours > 0:
 		return "%02d:%02d:%02d" % [hours, minutes, secs]
 	else:
