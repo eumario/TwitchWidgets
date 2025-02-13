@@ -11,8 +11,8 @@ var _currentFrame : int = -1
 		if frames == null:
 			return
 		if is_node_ready():
-			var frames = frames.get_frame_count(&"default")
-			if frames > 1:
+			var count = frames.get_frame_count(&"default")
+			if count > 1:
 				play_animation()
 			else:
 				show_static()
