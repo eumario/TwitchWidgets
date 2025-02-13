@@ -30,7 +30,7 @@ func _ready() -> void:
 			_timer.stop()
 	)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if _timer.is_stopped():
 		if countdown and text != countdown_complete_text:
 			text = countdown_complete_text
