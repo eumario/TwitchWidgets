@@ -126,17 +126,17 @@ func _setup_nodes(oauth : OAuthSetting) -> void:
 	service.oauth_setting = oauth
 	service.scopes = load("res://Resources/twitch_scopes.tres")
 	service.token = load("res://Resources/twitch_token.tres")
-	var api := TwitchAPI.new()
-	api.name = "Api"
-	service.add_child(api)
-	var eventsub := TwitchEventsub.new()
-	eventsub.name = "EventSub"
-	eventsub.api = api
-	service.add_child(eventsub)
-	var media_loader := TwitchMediaLoader.new()
-	media_loader.name = "MediaLoader"
-	media_loader.api = api
-	service.add_child(media_loader)
+	var napi := TwitchAPI.new()
+	napi.name = "Api"
+	service.add_child(napi)
+	var neventsub := TwitchEventsub.new()
+	neventsub.name = "EventSub"
+	neventsub.api = napi
+	service.add_child(neventsub)
+	var nmedia_loader := TwitchMediaLoader.new()
+	nmedia_loader.name = "MediaLoader"
+	nmedia_loader.api = napi
+	service.add_child(nmedia_loader)
 	add_child(service)
 
 func _setup_eventsub() -> void:
