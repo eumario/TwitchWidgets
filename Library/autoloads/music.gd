@@ -98,7 +98,7 @@ func reset_music(play : bool = false) -> void:
 
 func change_volume(vol : float) -> void:
 	var newVol := clampf(_curVol + vol, 0.0, 1.0)
-	Logger.debug("Volume Changed: %f -> %s (Change: %f)" % [_curVol, newVol, vol])
+	Logger.debug("MusicManager: Volume Changed: %f -> %s (Change: %f)" % [_curVol, newVol, vol])
 	_curVol = newVol;
 	
 	Managers.settings.data.music_vol = newVol
@@ -160,6 +160,7 @@ func _get_all_files(path : String) -> Array[String]:
 func _handle_updated_settings() -> void:
 	if is_playing():
 		_player.stop()
+	Logger.debug("MusicManager: Settings Updated, Generating Songs...")
 	_generate_songs()
 
 func _handle_player_finished() -> void:
@@ -178,6 +179,7 @@ func _handle_player_finished() -> void:
 	
 	_player.stream = _cacheSongs[_currSong]
 	current_song_tag = _tags[_currSong]
+	Logger.debug("MusicManager: PlayNextSong('%s')" % [_currSong])
 	song_changed.emit()
 	_player.play()
 
