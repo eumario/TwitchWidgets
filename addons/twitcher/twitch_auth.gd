@@ -12,7 +12,10 @@ signal device_code_requested(device_code: OAuth.OAuthDeviceCodeResponse);
 ## Where and how to authorize.
 @export var oauth_setting: OAuthSetting
 ## Shows the what to authorize page of twitch again. (for example you need to relogin with a different account aka bot account)
-@export var force_verify: bool
+@export var force_verify: bool:
+	set(value):
+		force_verify = value
+		if auth: auth.force_verify = &"true" if value else &"false"
 ## Where should the tokens be saved into
 @export var token: OAuthToken
 ## Scopes for the token that should be requested
