@@ -31,7 +31,7 @@ func _run() -> void:
 	print(players)
 	
 	print("Delete %s: " % players[1].name, players[1].delete())
-	players.assign(Player.all())
+	players.assign(TestPlayer.all())
 	print(players)
 	
 	db.close_db()
