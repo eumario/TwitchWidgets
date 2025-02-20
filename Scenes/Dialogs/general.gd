@@ -35,6 +35,7 @@ func _ready() -> void:
 		Managers.settings.data.use_screen = %UseScreen.button_pressed
 		%ScreenSelect.disabled = !%UseScreen.button_pressed
 	)
+	%ScreenSelect.item_selected.connect(func(i): Managers.settings.data.selected_screen = i)
 	%ShowDebug.pressed.connect(func(): Managers.settings.data.log_debug = %ShowDebug.button_pressed)
 	%LogToConsole.pressed.connect(func(): Managers.settings.data.log_to_console = %LogToConsole.button_pressed)
 	
