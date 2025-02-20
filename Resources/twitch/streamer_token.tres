@@ -7,5 +7,5 @@
 script = ExtResource("2_0sdwj")
 _crypto_key_provider = ExtResource("1_7lsdl")
 _identifier = "Auth-3918"
-_cache_path = "user://auth.conf"
-metadata/_custom_type_script = ExtResource("2_0sdwj")
+_cache_path = "user://streamer.conf"
+metadata/_custom_type_script = "uid://b52xp7c23ucfk"

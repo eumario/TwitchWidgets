@@ -51,7 +51,7 @@ layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="MarginContainer/TabContainer/Connection/Connection"]
 layout_mode = 2
-columns = 3
+columns = 4
 
 [node name="Label" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 layout_mode = 2
@@ -64,10 +64,20 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 placeholder_text = "Enter Client ID"
 
-[node name="Authorize" type="Button" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
+[node name="AuthorizeStreamer" type="Button" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Authorize"
+text = "Authorize Streamer"
+
+[node name="StreamerOnline" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 layout_mode = 2
@@ -81,10 +91,20 @@ layout_mode = 2
 placeholder_text = "Enter Client Secret"
 secret = true
 
-[node name="Connect" type="Button" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
+[node name="AuthorizeBot" type="Button" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Connect"
+text = "Authorize Bot"
+
+[node name="BotOnline" type="RichTextLabel" parent="MarginContainer/TabContainer/Connection/Connection/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Control" type="Control" parent="MarginContainer/TabContainer/Connection/Connection"]
 custom_minimum_size = Vector2(0, 20)

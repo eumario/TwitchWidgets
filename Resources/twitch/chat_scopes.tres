@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="OAuthScopes" load_steps=2 format=3 uid="uid://cw7kc78tc1dia"]
+
+[ext_resource type="Script" uid="uid://dexweyb521tu0" path="res://addons/twitcher/lib/oOuch/oauth_scopes.gd" id="1_ciaqs"]
+
+[resource]
+script = ExtResource("1_ciaqs")
+used_scopes = Array[StringName]([&"channel:bot", &"user:bot", &"user:read:chat", &"user:write:chat", &"chat:edit", &"chat:read"])
+metadata/_custom_type_script = "uid://dexweyb521tu0"

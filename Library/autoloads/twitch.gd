@@ -29,21 +29,69 @@ enum State {
 }
 #endregion
 
+#region Support Classes
+class Twitcher extends RefCounted:
+	var user : TwitchUser
+	var service : TwitchService
+	var api : TwitchAPI :
+		get(): return service.api
+	var eventsub : TwitchEventsub :
+		get(): return service.eventsub
+	var auth : TwitchAuth :
+		get(): return service.auth
+	var media_loader : TwitchMediaLoader:
+		get(): return service.media_loader
+	var name : String :
+		get(): return name
+		set(value):
+			name = value
+			service.name = name + "-TwitchService"
+			if service.api: service.api.name = name + "-Api"
+			if service.auth: service.auth.name = name + "-Auth"
+			if service.eventsub: service.eventsub.name = name + "-EventSub"
+			if service.media_loader: service.media_loader.name = name + "-MediaLoader"
+			
+	
+	func _init(oauth : OAuthSetting, scopes : OAuthScopes, token : OAuthToken, is_bot : bool = false) -> void:
+		service = TwitchService.new()
+		service.oauth_setting = oauth
+		service.scopes = scopes # load("res://Resources/twitch_scopes.tres")
+		service.token = token # load("res://Resources/streamer_token.tres")
+		var napi := TwitchAPI.new()
+		service.add_child(napi)
+		if not is_bot:
+			var neventsub := TwitchEventsub.new()
+			neventsub.api = napi
+			service.eventsub = neventsub
+			service.add_child(neventsub)
+		var nmedia_loader := TwitchMediaLoader.new()
+		nmedia_loader.api = napi
+		service.add_child(nmedia_loader)
+		name = "Twitcher"
+	
+	func get_user() -> bool:
+		var info : TwitchGetUsersResponse = await service.api.get_users([], [])
+		if info.data.size() > 0:
+			user = info.data[0]
+			return true
+		return false
+	
+	func authorize() -> bool:
+		auth.force_verify = true
+		await auth.authorize()
+		user = await service.get_current_user()
+		return auth.is_authenticated
+	
+	func login() -> bool:
+		auth.force_verify = false
+		await service.setup()
+		user = await service.get_current_user()
+		return auth.is_authenticated
+#endregion
+
 #region Properties
-var service : TwitchService
-var broadcaster : TwitchUser
-var api : TwitchAPI :
-	get():
-		return service.api
-var eventsub : TwitchEventsub :
-	get():
-		return service.eventsub
-var auth : TwitchAuth :
-	get():
-		return service.auth
-var media_loader : TwitchMediaLoader :
-	get():
-		return service.media_loader
+var broadcaster : Twitcher
+var bot : Twitcher
 #endregion
 
 #region EventSub Events Array
@@ -78,19 +126,25 @@ func _ready() -> void:
 	Managers.init_finished.connect(func():
 		var settings = Managers.settings.data
 		if settings.client_id == "" and settings.client_secret == "": return
+		
+		setup_streamer_auth(settings.client_id, settings.client_secret)
+		setup_bot_auth(settings.client_id, settings.client_secret)
+		
+		if broadcaster.auth.is_authenticated:
+			await broadcaster.get_user()
+		
+		if bot.auth.is_authenticated:
+			await bot.get_user()
+		
 		if settings.auto_connect_twitch:
-			setup_auth_info(settings.client_id, settings.client_secret)
+			if broadcaster: await broadcaster.login()
+			if bot: await bot.login()
 	)
 #endregion
 
 #region Signal Handler functions
-func _wait_for_ready() -> void:
-	await service.eventsub.wait_for_session_established()
-	var info : TwitchGetUsersResponse = await service.api.get_users([], [])
-	broadcaster = info.data[0]
-
 func _enable_events() -> void:
-	service.eventsub.event.connect(_handle_eventsub)
+	broadcaster.eventsub.event.connect(_handle_eventsub)
 
 func _handle_eventsub(type : String, data : Dictionary) -> void:
 	if type == TwitchEventsubDefinition.CHANNEL_UPDATE.get_readable_name(): channel_update.emit(data)
@@ -120,74 +174,106 @@ func _handle_eventsub(type : String, data : Dictionary) -> void:
 #endregion
 
 #region Private Support Functions
-func _setup_nodes(oauth : OAuthSetting) -> void:
-	service = TwitchService.new()
-	service.name = "TwitchService"
-	service.oauth_setting = oauth
-	service.scopes = load("res://Resources/twitch_scopes.tres")
-	service.token = load("res://Resources/twitch_token.tres")
-	var napi := TwitchAPI.new()
-	napi.name = "Api"
-	service.add_child(napi)
-	var neventsub := TwitchEventsub.new()
-	neventsub.name = "EventSub"
-	neventsub.api = napi
-	service.add_child(neventsub)
-	var nmedia_loader := TwitchMediaLoader.new()
-	nmedia_loader.name = "MediaLoader"
-	nmedia_loader.api = napi
-	service.add_child(nmedia_loader)
-	add_child(service)
+func _setup_broadcaster_nodes(oauth : OAuthSetting) -> void:
+	broadcaster = Twitcher.new(
+		oauth,
+		load("res://Resources/twitch/twitch_scopes.tres"),
+		load("res://Resources/twitch/streamer_token.tres")
+	)
+	add_child(broadcaster.service)
+	await get_tree().process_frame
+	broadcaster.name = "Broadcaster"
+
+func _setup_bot_nodes(oauth : OAuthSetting) -> void:
+	bot = Twitcher.new(
+		oauth,
+		load("res://Resources/twitch/chat_scopes.tres"),
+		load("res://Resources/twitch/bot_token.tres"),
+		true
+	)
+	add_child(bot.service)
+	await get_tree().process_frame
+	bot.name = "Bot"
 
 func _setup_eventsub() -> void:
 	for event in EVENTSUB_EVENTS:
 		var conditions = {}
 		for condition in event.conditions:
-			conditions[condition] = broadcaster.id
-		service.subscribe_event(event, conditions)
+			conditions[condition] = broadcaster.user.id
+		broadcaster.service.subscribe_event(event, conditions)
 
 func _get_custom_rewards() -> void:
-	var awards := await service.api.get_custom_reward([], false)
-	var conditions = {"broadcaster_user_id": broadcaster.id}
+	var awards := await broadcaster.service.api.get_custom_reward([], false)
+	var conditions = {"broadcaster_user_id": broadcaster.user.id}
 	for reward : TwitchCustomReward in awards.data:
 		conditions["reward_id"] = reward.id
-		service.subscribe_event(TwitchEventsubDefinition.CHANNEL_CHANNEL_POINTS_CUSTOM_REWARD_REDEMPTION_ADD, conditions)
+		broadcaster.service.subscribe_event(TwitchEventsubDefinition.CHANNEL_CHANNEL_POINTS_CUSTOM_REWARD_REDEMPTION_ADD, conditions)
 		print("(", reward.id, ") ", reward.title)
+
+func _setup_eventsub_stuff(_id : String) -> void:
+	_setup_eventsub()
+	_get_custom_rewards()
+	broadcaster.eventsub.session_id_received.disconnect(_setup_eventsub_stuff)
 #endregion
 
 #region Public API
 func send_chat_message(message : String) -> void:
 	var body := TwitchSendChatMessageBody.new()
-	body.broadcaster_id = broadcaster.id
-	body.sender_id = broadcaster.id
+	body.broadcaster_id = broadcaster.user.id
+	body.sender_id = broadcaster.user.id
 	body.message = message
 	
-	Logger.debug("Sending Message: %s> %s" % [broadcaster.login, message])
-	var _res : TwitchSendChatMessageResponse = await service.api.send_chat_message(body)
+	Logger.debug("Sending Message: %s> %s" % [broadcaster.user.login, message])
+	var _res : TwitchSendChatMessageResponse = await broadcaster.service.api.send_chat_message(body)
 
 func send_reply_message(id : String, message : String) -> void:
 	var body := TwitchSendChatMessageBody.new()
-	body.broadcaster_id = broadcaster.id
-	body.sender_id = broadcaster.id
+	body.broadcaster_id = broadcaster.user.id
+	body.sender_id = broadcaster.user.id
 	body.message = message
 	body.reply_parent_message_id = id
 	
-	Logger.debug("Sending Reply Message: %s:(%s)> %s" % [broadcaster.id, id, message])
-	var _res : TwitchSendChatMessageResponse = await service.api.send_chat_message(body)
+	Logger.debug("Sending Reply Message: %s:(%s)> %s" % [broadcaster.user.login, id, message])
+	var _res : TwitchSendChatMessageResponse = await broadcaster.service.api.send_chat_message(body)
 
-func setup_auth_info(client_id : String, client_secret : String) -> void:
+func send_bot_message(message : String) -> void:
+	var body := TwitchSendChatMessageBody.new()
+	body.broadcaster_id = broadcaster.user.id
+	body.sender_id = bot.user.id
+	body.message = message
+	
+	Logger.debug("Bot Sending Message: %s> %s" % [bot.user.login, message])
+	var _res : TwitchSendChatMessageResponse = await bot.service.api.send_chat_message(body)
+
+func send_bot_reply_message(id : String, message : String) -> void:
+	var body := TwitchSendChatMessageBody.new()
+	body.broadcaster_id = broadcaster.user.id
+	body.sender_id = bot.user.id
+	body.message = message
+	body.reply_parent_message_id = id
+	
+	Logger.debug("Sending Reply Message: %s:(%s)> %s" % [bot.user.login, id, message])
+	var _res : TwitchSendChatMessageResponse = await bot.service.api.send_chat_message(body)
+
+func setup_streamer_auth(client_id : String = "", client_secret : String = "") -> void:
 	var oauth : OAuthSetting = load("res://addons/twitcher/default_oauth_setting.tres").duplicate()
 	
 	oauth.client_id = client_id
 	oauth.client_secret = client_secret
 	
-	_setup_nodes(oauth)
-	
-	await service.setup()
-	
-	var res = await service.api.get_users([],[])
-	broadcaster = res.data[0]
-	_setup_eventsub()
-	_get_custom_rewards()
+	await _setup_broadcaster_nodes(oauth)
 	_enable_events()
+	await get_tree().process_frame
+	
+	broadcaster.eventsub.session_id_received.connect(_setup_eventsub_stuff)
+
+func setup_bot_auth(client_id : String = "", client_secret : String = "") -> void:
+	var oauth : OAuthSetting = load("res://addons/twitcher/default_oauth_setting.tres").duplicate()
+	
+	oauth.client_id = client_id
+	oauth.client_secret = client_secret
+	
+	_setup_bot_nodes(oauth)
+	await get_tree().process_frame
+	
 #endregion

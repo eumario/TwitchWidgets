@@ -16,10 +16,26 @@ func _ready() -> void:
 		if recording.output_active:
 			%RecordingStatus.text = "[color=green]Recording[/color]"
 	
+	if Managers.twitch.broadcaster != null:
+		if Managers.twitch.broadcaster.auth.is_authenticated:
+			%StreamerOnline.text = "[color=green]Authorized: %s[/color] - [color=red]Offline[/color]" % Managers.twitch.broadcaster.user.display_name
+		else:
+			%StreamerOnline.text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
+	else:
+		%StreamerOnline.text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
+	
+	if Managers.twitch.bot != null:
+		if Managers.twitch.bot.auth.is_authenticated:
+			%BotOnline.text = "[color=green]Authorized: %s[/color] - [color=red]Offline[/color]" % Managers.twitch.bot.user.display_name
+		else:
+			%BotOnline.text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
+	else:
+		%BotOnline.text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
+	
 	Managers.obs.streaming_state.connect(_handle_stream_state)
 	Managers.obs.recording_state.connect(_handle_record_state)
 	
-	%Authorize.pressed.connect(func():
+	%AuthorizeStreamer.pressed.connect(func():
 		var id = %ClientId.text
 		var secret = %ClientSecret.text
 		
@@ -27,10 +43,43 @@ func _ready() -> void:
 			print("Need to provide a ID and Secret")
 			return
 		
-		Managers.settings.data.client_id = id
-		Managers.settings.data.client_secret = secret
+		if Managers.twitch.broadcaster == null:
+			await Managers.twitch.setup_streamer_auth(id, secret)
+			
+		if Managers.twitch.broadcaster.auth.is_authenticated:
+			Managers.settings.data.client_id = id
+			Managers.settings.data.client_secret = secret
+			await Managers.twitch.broadcaster.get_user()
+			%StreamerOnline.text = "[color=green]Authorized: %s[/color] - [color=red]Offline[/color]" % Managers.twitch.broadcaster.user.display_name
+			return
 		
-		Managers.twitch.setup_auth_info(id, secret)
+		if await Managers.twitch.broadcaster.authorize():
+			%StreamerOnline.text = "[color=green]Authorized: %s[/color] - [color=red]Offline[/color]" % Managers.twitch.broadcaster.user.display_name
+		else:
+			%StreamerOnline.text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
+	)
+	%AuthorizeBot.pressed.connect(func():
+		var id = %ClientId.text
+		var secret = %ClientSecret.text
+		
+		if id == "" and secret == "":
+			print("Need to provide a ID and Secret")
+			return
+		
+		if Managers.twitch.bot == null:
+			Managers.twitch.setup_bot_auth(id, secret)
+			
+		if Managers.twitch.bot.auth.is_authenticated:
+			Managers.settings.data.client_id = id
+			Managers.settings.data.client_secret = secret
+			await Managers.twitch.bot.get_user()
+			%BotOnline.text = "[color=green]Authorized: %s[/color] - [color=red]Offline[/color]" % Managers.twitch.bot.user.display_name
+			return
+		
+		if await Managers.twitch.bot.authorize():
+			%BotOnline.text = "[color=green]Authorized: %s[/color] - [color=red]Offline[/color]" % Managers.twitch.bot.user.display_name
+		else:
+			%BotOnline.text = "[color=red]Authroized: null[/color] - [color=red]Offline[/color]"
 	)
 	
 	%ConnectOBS.pressed.connect(func():
@@ -53,7 +102,7 @@ func _handle_save_obs() -> void:
 	Managers.obs.connection_failed.disconnect(_handle_fail_obs)
 	Managers.obs.connection_closed_clean.disconnect(_handle_fail_obs)
 
-func _handle_fail_obs(code : int = -1, message : String = "Unable to connect to host.") -> void:
+func _handle_fail_obs(_code : int = -1, message : String = "Unable to connect to host.") -> void:
 	%ConnectStatus.text = "[color=red]Failed to connect to OBS, (Reason: %s)[/color]" % message
 	Managers.obs.connection_ready.disconnect(_handle_save_obs)
 	Managers.obs.connection_failed.disconnect(_handle_fail_obs)
